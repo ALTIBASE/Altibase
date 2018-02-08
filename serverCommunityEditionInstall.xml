@@ -1,0 +1,3166 @@
+<project>
+    <shortName>altibase</shortName>
+    <fullName>Altibase Server ${altibase_base_version}.${altibase_tagset_version}.${altibase_tag_version}</fullName>
+    <version>${altibase_base_version}</version>
+    <installerFilename>${product_shortname}-CE-${altibase_product_type}-${altibase_base_version}.${altibase_tagset_version}.${altibase_tag_version}-${altibase_target_os}-${altibase_cfg_cpu_value}-${altibase_compile_bit}bit-${altibase_build_mode}.${platform_exec_suffix}</installerFilename>
+    <debugLevel>4</debugLevel>
+    <leftImage>ut/Installer/images/left_side600.png</leftImage>
+    <logoImage>ut/Installer/images/logo.png</logoImage>
+    <preBuildActionList>
+        <actionGroup>
+            <explanation>cp additional files</explanation>
+            <actionList>
+                <copyFile>
+                    <destination>${altibase_build_dir}/bin</destination>
+                    <origin>${additional_files_dir}/altibase_java/altilinker.jar</origin>
+                </copyFile>
+                <copyFile>
+                    <destination>${altibase_build_dir}/lib</destination>
+                    <origin>${additional_files_dir}/altibase_java/Altibase.jar</origin>
+                </copyFile>
+                <copyFile>
+                    <destination>${altibase_build_dir}/lib</destination>
+                    <origin>${additional_files_dir}/altibase_java/Altibase${altibase_major_version}_${altibase_minor_version}.jar</origin>
+                </copyFile>
+                <copyFile>
+                    <destination>${altibase_build_dir}/lib</destination>
+                    <origin>${additional_files_dir}/altibase_java/Altibase_t.jar</origin>
+                </copyFile>
+            </actionList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>check  os version  for hp</explanation>
+            <actionList>
+                <writeFile>
+                    <encoding>utf-8</encoding>
+                    <path>~/.get_os_version.sh</path>
+                    <text>${'#!bin/sh'}
+
+${'uname -r | awk -F'.' '{print "MAJOR=" $2}' &gt; .get_os_version.tmp'}
+${'uname -r | awk -F'.' '{print "MINOR=" $3}' &gt;&gt; .get_os_version.tmp'}</text>
+                </writeFile>
+                <runProgram>
+                    <program>sh</program>
+                    <programArguments>~/.get_os_version.sh</programArguments>
+                    <workingDirectory>~</workingDirectory>
+                </runProgram>
+                <propertiesFileGet>
+                    <file>~/.get_os_version.tmp</file>
+                    <key>MAJOR</key>
+                    <variable>hp_build_major_ver</variable>
+                </propertiesFileGet>
+                <propertiesFileGet>
+                    <file>~/.get_os_version.tmp</file>
+                    <key>MINOR</key>
+                    <variable>hp_build_minor_ver</variable>
+                </propertiesFileGet>
+                <deleteFile>
+                    <path>hp_build_minor_ver</path>
+                </deleteFile>
+                <deleteFile>
+                    <path>~/.get_os_version.tmp</path>
+                </deleteFile>
+            </actionList>
+            <ruleList>
+                <platformTest>
+                    <type>hpux</type>
+                </platformTest>
+            </ruleList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>set Diagnostic option</explanation>
+            <actionList>
+                <setInstallerVariableFromRegEx>
+                    <name>temp_variable</name>
+                    <pattern>_[a-zA-Z0-9]+$</pattern>
+                    <substitution></substitution>
+                    <text>${altibase_tag_version}</text>
+                </setInstallerVariableFromRegEx>
+                <setInstallerVariable>
+                    <name>project.installerFilename</name>
+                    <value>${product_shortname}-${altibase_product_type}-${altibase_base_version}.${altibase_tagset_version}.${temp_variable}-${altibase_target_os}-${altibase_cfg_cpu_value}-${altibase_compile_bit}bit-${altibase_dist_type}-R${altibase_revision_num}.${platform_exec_suffix}</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>altibase_dist_type</name>
+                    <value> - DIAGNOSTIC Patch</value>
+                </setInstallerVariable>
+            </actionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>DIAGNOSTIC</text>
+                    <value>${altibase_dist_type}</value>
+                </compareText>
+            </ruleList>
+        </actionGroup>
+    </preBuildActionList>
+    <initializationActionList>
+        <setInstallerVariable name="project.enableRollback" value="0">
+            <ruleList>
+                <platformTest type="hpux"/>
+            </ruleList>
+        </setInstallerVariable>
+    </initializationActionList>
+    <preInstallationActionList>
+        <actionGroup>
+            <explanation>bit check</explanation>
+            <actionList>
+                <setInstallerVariable>
+                    <name>kernel_guide_head</name>
+                    <value>It is first necessary to set your system environment to ensure that Altibase will run properly. Before installing Altibase, the kernel parameter values must be set using the root user account. The kernel parameter values may be modified after installation; however, they must be set prior to starting Altibase.
+
+Please refer to the installation manual and pre_install.sh script file.
+${'(pre_install.sh: '$Altibase_install_dir'/install/pre_install.sh)'}
+</value>
+                </setInstallerVariable>
+                <if>
+                    <explanation>bit check HP</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>getconf</program>
+                            <programArguments>KERNEL_BITS &gt; .osbit.tmp </programArguments>
+                            <workingDirectory>~</workingDirectory>
+                        </runProgram>
+                        <setInstallerVariable>
+                            <name>current_os</name>
+                            <value>hpux</value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>kernel_guide_val</name>
+                            <value>
+================ HP UX ================
+[ Recommended Kernel Parameter Values ] 
+
+shmmax = 2147483648
+shmmni = 500 
+shmseg = 200 
+semmap = 1001
+semmni = 1000
+semmns = 4096
+semmnu = 1000
+semume = 1000
+max_thread_proc = 600
+maxusers = 64
+dbc_min_pct = 5
+dbc_max_pct = 5
+maxdsiz = 1073741824
+maxdsiz_64bit = 4294967296  # applies only to 32-bit applications
+
+# maxdsiz_64bit
+The Altibase server needs sufficient memory space in order to function properly.
+Please set the value to 70% of system memory or greater.
+
+# dbc_min_pct and dbc_max_pct 
+dbc_min_pct and dbc_max_pct were renamed filecache_min and filecache_max, respectively, in HP-UX 11.31 and subsequent releases.
+
+[ How to modify kernel parameter values ] 
+
+/usr/sbin/kmtune -s shmmax=2147483648
+/usr/sbin/kmtune -s shmmni=500 
+/usr/sbin/kmtune -s shmseg=200
+/usr/sbin/kmtune -s semmap=1001 
+/usr/sbin/kmtune -s semmni=1000
+/usr/sbin/kmtune -s semmns=4096 
+/usr/sbin/kmtune -s semmnu=1000
+/usr/sbin/kmtune -s semume=1000
+/usr/sbin/kmtune -s max_thread_proc=600
+/usr/sbin/kmtune -s maxusers=64
+/usr/sbin/kmtune -s dbc_min_pct=5
+/usr/sbin/kmtune -s dbc_max_pct=5
+/usr/sbin/kmtune -s maxdsiz=1073741824 # applies only to 32-bit applications
+/usr/sbin/kmtune -s maxdsiz_64bit=4294967296
+
+# maxdsiz_64bit
+The Altibase server needs sufficient memory space in order to function properly.
+Please set the value to 70% of system memory or greater.
+
+# dbc_min_pct and dbc_max_pct 
+dbc_min_pct and dbc_max_pct were renamed filecache_min and filecache_max, respectively, in HP-UX 11.31 and subsequent releases.
+
+These values must be set in order for Altibase to operate properly.
+They must be set such that they are suitable for the system configuration.
+
+=======================================
+
+</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <platformTest>
+                            <type>hpux</type>
+                        </platformTest>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>bit check LINUX</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>getconf</program>
+                            <programArguments>LONG_BIT &gt; .osbit.tmp</programArguments>
+                            <workingDirectory>~</workingDirectory>
+                        </runProgram>
+                        <setInstallerVariable>
+                            <name>current_os</name>
+                            <value>linux</value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>kernel_guide_val</name>
+                            <value>
+================ LINUX ================
+[ How to modify kernel parameter values ]
+
+echo 512 32000 512 512 &gt; /proc/sys/kernel/sem
+echo 872415232 &gt; /proc/sys/kernel/shmall
+
+# shmall 
+If it is desired to use Altibase in shared memory mode, the value of 'shmall' must be set. This value determines the maximum size of an Altibase database.
+
+These values must be set in order for Altibase to operate properly.
+They must be set such that they are suitable for the system configuration.
+
+=====================================
+
+</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <platformTest>
+                            <type>linux</type>
+                        </platformTest>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>bit check AIX</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>getconf</program>
+                            <programArguments>KERNEL_BITMODE &gt; .osbit.tmp</programArguments>
+                            <workingDirectory>~</workingDirectory>
+                        </runProgram>
+                        <setInstallerVariable>
+                            <name>current_os</name>
+                            <value>aix</value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>kernel_guide_val</name>
+                            <value>
+================ AIX ================
+[ Recommended Kernel Parameter Values ]
+
+fsize = -1
+data = -1
+rss = -1
+
+Maximum number of processes allowed per user
+     Must be greater than the value set using the Altibase property MAX_CLIENT
+
+Size of the File System BufferCache
+     Must be less than 20% of total memory
+
+AIO = Available
+
+AMO = AIX version 5.2 ML04 and above
+              lru_file_repage=0
+              strict_maxclient%=0
+           = Versions prior to AIX version 5.2 ML04
+               lru_file_repage=0
+
+[ How to modify kernel parameter values ]
+
+Edit /etc/security/limits file
+Set fsize, data and rss variables.
+
+Run 'smit'
+  1) System Environments
+      System Environments -&gt; Change / Show Characteristics Of Operating System
+      Change: 
+          Maximum number of processes allowed per user
+              Must be greater than the value set using the Altibase MAX_CLIENT property
+          Size of the File System BufferCache
+              Must be less than 20% of total memory.
+  2) AIO 
+      Device -&gt; Asynchronous I/O -&gt; Posix Asynchronous I/O 
+      -&gt; Configure Defined Asynchronous I/O
+      Change: posix_aio0=Available
+
+  3) AMO 
+      Performance &amp; Resource Scheduling -&gt; Tuning Kernel &amp; Network Parameters 
+      -&gt; Tuning Virtual Memory Manager, File System and Logical Volumes
+      Manager Parameters -&gt;
+         + List All Characteristics of Current Parameters --- Check
+         + Change / Show Current Parameters --- Current Changes
+         + Change / Show Parameters for Next Boot --- Change upon Reboot
+
+      When using AIX version 5.2 ML04 or above:
+             Change: lru_file_repage=0
+             strict_maxclient%=0
+      The case of Versions prior to AIX version 5.2 ML04:
+             Change: lru_file_repage=0
+
+These values must be set in order for Altibase to operate properly.
+They must be set such that they are suitable for the system configuration.
+
+===================================
+
+</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <platformTest>
+                            <type>aix</type>
+                        </platformTest>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>bit check SUN</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>isainfo</program>
+                            <programArguments>-kv | cut -f1 -d "-" &gt; .osbit.tmp</programArguments>
+                            <workingDirectory>~</workingDirectory>
+                        </runProgram>
+                        <setInstallerVariable>
+                            <name>current_os</name>
+                            <value>solaris</value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>kernel_guide_val</name>
+                            <value>
+================ SunOS ================
+[ Recommended Kernel Parameter Values ]
+
+When Altibase uses the file system cache rather than direct I/O, the priority_paging parameter (related to the file system cache on Sun systems) must be set in order to prevent issues related to excessive memory use. 
+(Applies only to SunOS version 5.7 and above.)
+
+shminfo_shmmax = 2147483648
+shminfo_shmmin = 1
+shminfo_shmmni = 500
+shminfo_shmseg = 200
+seminfo_semmns = 8192
+seminfo_semmni = 5029
+seminfo_semmsl = 2000
+seminfo_semmap = 5024
+seminfo_semmnu = 1024
+seminfo_semopm = 512
+seminfo_semume = 512
+rlim_fd_max = 4096
+rlim_fd_cur = 2048
+
+[ How to modify kernel parameter values ]
+
+ =  Solaris 10  =
+cf) projadd -U [user name] -K "project.max-sem-ids=(priv,5029,deny)" user.[user name] 
+cf) projmod -a -K "project.max-shm-memory=(priv, real memory max value,deny)" user.[user name] 
+
+# Default Values for sem- and shm-related Parameters
+    projadd -U altibase -K "project.max-sem-ids=(priv,5029,deny)" user.altibase
+    projmod -a -K "project.max-shm-memory=(priv, real memory max value,deny)" user.altibase 
+    projmod -a -K "process.max-sem-nsems=(priv,2000,deny)" user.altibase 
+    projmod -a -K "process.max-sem-ops=(priv,512,deny)" user.altibase 
+    projmod -a -K "project.max-shm-ids=(priv,1024,deny)" user.altibase
+
+# Message Queue-related Parameters
+    projmod -a -K "project.max-msg-messages=(priv,100,deny)" user.altibase 
+    projmod -a -K "project.max-msg-ids=(priv,100,deny)" user.altibase
+    projmod -a -K "process.max-msg-qbytes=(priv,1048576,deny)" user.altibase
+
+ = is not  Solaris 10  =
+Edit /etc/system file.
+
+# Default Values for sem- and shm-related Parameters
+    set shmsys:shminfo_shmmax = 2147483648
+    set shmsys:shminfo_shmmin = 1
+    set shmsys:shminfo_shmmni = 500 
+    set shmsys:shminfo_shmseg = 200
+    set semsys:seminfo_semmns = 8192 
+    set semsys:seminfo_semmni = 5029 
+    set semsys:seminfo_semmsl = 2000 
+    set semsys:seminfo_semmap = 5024 
+    set semsys:seminfo_semmnu = 1024
+    set semsys:seminfo_semopm = 512 
+    set semsys:seminfo_semume = 512
+    set rlim_fd_max = 4096 
+    set rlim_fd_cur = 2048
+
+# Message Queue-related Parameters
+    projmod -a -K "project.max-msg-messages=(priv,100,deny)" user.altibase 
+    projmod -a -K "project.max-msg-ids=(priv,100,deny)" user.altibase
+    projmod -a -K "process.max-msg-qbytes=(priv,1048576,deny)" user.altibase
+
+These values must be set in order for Altibase to operate properly.
+They must be set such that they are suitable for the system configuration.
+
+=====================================
+
+
+</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <platformTest>
+                            <type>solaris</type>
+                        </platformTest>
+                    </conditionRuleList>
+                </if>
+                <readFile>
+                    <name>current_os_bit</name>
+                    <path>~/.osbit.tmp</path>
+                    <removeBOM>1</removeBOM>
+                </readFile>
+                <runProgram>
+                    <program>rm</program>
+                    <programArguments>-rf .osbit.tmp</programArguments>
+                    <workingDirectory>~</workingDirectory>
+                </runProgram>
+                <if>
+                    <explanation>OS BIT / pkg BIT  check</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>compare- os-package bit (os64bit)</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>This package is not suitable for this environment.
+OS          : 64-bit
+Package  : 32-bit</text>
+                                </showWarning>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>64</text>
+                                    <value>${current_os_bit}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                        <if>
+                            <explanation>compare- os-package bit (os32bit)</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>This package is not suitable for this environment.
+OS          : 32-bit
+Package  : 64-bit</text>
+                                </showWarning>
+                                <exit>
+                                    <exitCode>1</exitCode>
+                                </exit>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>32</text>
+                                    <value>${current_os_bit}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                        <if>
+                            <explanation>compare- os-package bit</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>OS bit type check failure.
+: ${current_os_bit}</text>
+                                </showWarning>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>32</text>
+                                    <value>${current_os_bit}</value>
+                                </compareText>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>64</text>
+                                    <value>${current_os_bit}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareValues>
+                            <logic>equals</logic>
+                            <negate>1</negate>
+                            <value1>${current_os_bit}</value1>
+                            <value2>${altibase_compile_bit}</value2>
+                        </compareValues>
+                    </conditionRuleList>
+                </if>
+            </actionList>
+        </actionGroup>
+    </preInstallationActionList>
+    <readyToInstallActionList>
+        <if>
+            <explanation>full or patch install</explanation>
+            <actionList>
+                <propertiesFileGet>
+                    <file>${patch_info_file}</file>
+                    <key>PRODUCT_SIGNATURE</key>
+                    <variable>read_altibase_product_signature</variable>
+                    <onErrorActionList>
+                        <showWarning>
+                            <text>Can't read ALTIBASE Product signature.</text>
+                        </showWarning>
+                        <exit>
+                            <exitCode>1</exitCode>
+                        </exit>
+                    </onErrorActionList>
+                </propertiesFileGet>
+                <if>
+                    <explanation>signature valiation</explanation>
+                    <actionList>
+                        <showWarning>
+                            <text>The product signature of the patch you are trying to install
+${altibase_product_signature} doesn't match
+the product signature of the previously installed
+${read_altibase_product_signature}.
+
+The patch installation will be terminated.</text>
+                        </showWarning>
+                        <exit>
+                            <exitCode>1</exitCode>
+                        </exit>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <negate>1</negate>
+                            <text>${altibase_product_signature}</text>
+                            <value>${read_altibase_product_signature}</value>
+                        </compareText>
+                    </conditionRuleList>
+                </if>
+            </actionList>
+            <conditionRuleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>patchpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </conditionRuleList>
+            <elseActionList>
+                <if>
+                    <explanation>APatch Exist</explanation>
+                    <actionList>
+                        <throwError>
+                            <text>You can't install this on ${installdir}. Remove or uninstall it prior to installation.</text>
+                        </throwError>
+                    </actionList>
+                    <conditionRuleList>
+                        <fileExists>
+                            <path>${patch_dir}</path>
+                        </fileExists>
+                    </conditionRuleList>
+                </if>
+            </elseActionList>
+        </if>
+    </readyToInstallActionList>
+    <postInstallationActionList>
+        <substitute>
+            <encoding>utf-8</encoding>
+            <files>${installdir}/install/post_install.sh</files>
+            <type>regexp</type>
+            <substitutionList>
+                <substitution>
+                    <pattern>INSTALLDIR=XXXX</pattern>
+                    <value>INSTALLDIR=${installdir}</value>
+                </substitution>
+            </substitutionList>
+        </substitute>
+        <if>
+            <explanation>FULL : make propery file</explanation>
+            <actionList>
+                <actionGroup>
+                    <explanation>set post_install.sh file</explanation>
+                    <actionList>
+                        <setInstallerVariableFromScriptOutput>
+                            <exec>${installdir}/install/post_install.sh</exec>
+                            <execArgs>setenv a</execArgs>
+                            <name>set_env_result</name>
+                            <workingDirectory>${installdir}/install/</workingDirectory>
+                        </setInstallerVariableFromScriptOutput>
+                        <if>
+                            <explanation>check createdb_option</explanation>
+                            <actionList>
+                                <substitute>
+                                    <encoding>utf-8</encoding>
+                                    <files>${installdir}/install/post_install.sh</files>
+                                    <type>regexp</type>
+                                    <substitutionList>
+                                        <substitution>
+                                            <pattern># create DB code</pattern>
+                                            <value>ADMIN="${'${ALTIBASE_HOME}'}/bin/isql -u sys -p manager -sysdba -noprompt"
+
+${'${ADMIN}'} &lt;&lt; EOF
+startup process;
+create database ${altibase_user_dbname} INITSIZE=${init_db_size} ${archivelog_values} character set ${db_char_set} national character set ${national_char_set};
+alter database mydb service;
+start ?/packages/catproc.sql;
+shutdown abort;
+quit;
+EOF</value>
+                                        </substitution>
+                                        <substitution>
+                                            <pattern>DBCREATE_FLAG=0</pattern>
+                                            <value>DBCREATE_FLAG=1</value>
+                                        </substitution>
+                                    </substitutionList>
+                                </substitute>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>yes</text>
+                                    <value>${createdb_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <actionList>
+                        <copyFile>
+                            <destination>${installdir}/conf/aexport.properties</destination>
+                            <origin>${installdir}/conf/aexport.properties.sample</origin>
+                        </copyFile>
+                        <copyFile>
+                            <destination>${installdir}/conf/altibase.properties</destination>
+                            <origin>${installdir}/conf/altibase.properties.sample</origin>
+                        </copyFile>
+                        <substitute>
+                            <encoding>utf-8</encoding>
+                            <files>${installdir}/conf/altibase.properties</files>
+                            <type>regexp</type>
+                            <substitutionList>
+                                <substitution>
+                                    <pattern>mydb</pattern>
+                                    <value>${altibase_user_dbname}</value>
+                                </substitution>
+                                <substitution>
+                                    <pattern>20300(\s)*#(\s)*PORT_NO</pattern>
+                                    <value>${altibase_server_port_no} # PORT_NO</value>
+                                </substitution>
+                                <substitution>
+                                    <pattern>134217728(\s)*#(\s)*BUFFER_AREA_SIZE</pattern>
+                                    <value>${buffer_area_size} # BUFFER_AREA_SIZE</value>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/logs(\s)*#(\s)*LOGANCHOR_DIR1</pattern>
+                                    <value>${loganchor_dir1} # LOGANCHOR_DIR1</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/logs</text>
+                                            <value>${loganchor_dir1}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/logs(\s)*#(\s)*LOGANCHOR_DIR2</pattern>
+                                    <value>${loganchor_dir2} # LOGANCHOR_DIR2</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/logs</text>
+                                            <value>${loganchor_dir2}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/logs(\s)*#(\s)*LOGANCHOR_DIR3</pattern>
+                                    <value>${loganchor_dir3} # LOGANCHOR_DIR3</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/logs</text>
+                                            <value>${loganchor_dir3}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/logs(\s)*#(\s)*LOG_DIR </pattern>
+                                    <value>${log_dir} # LOG_DIR </value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/logs</text>
+                                            <value>${log_dir}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/dbs(\s)*#(\s)*Memory(\s)*DB(\s)*Directory</pattern>
+                                    <value>${mem_db_dir} # Memory DB Directory</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/dbs</text>
+                                            <value>${mem_db_dir}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/dbs(\s)*#(\s)*Disk(\s)*DB(\s)*Directory</pattern>
+                                    <value>${default_disk_db_dir} # Disk   DB Directory</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/dbs</text>
+                                            <value>${default_disk_db_dir}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                                <substitution>
+                                    <pattern>\?/arch_logs(\s)*#(\s)*ARCHIVE_DIR</pattern>
+                                    <value>${archive_dir} # ARCHIVE_DIR</value>
+                                    <ruleList>
+                                        <compareText>
+                                            <logic>does_not_equal</logic>
+                                            <text>${installdir}/arch_logs</text>
+                                            <value>${archive_dir}</value>
+                                        </compareText>
+                                    </ruleList>
+                                </substitution>
+                            </substitutionList>
+                        </substitute>
+                        <substitute>
+                            <encoding>utf-8</encoding>
+                            <files>${installdir}/bin/server</files>
+                            <type>regexp</type>
+                            <substitutionList>
+                                <substitution>
+                                    <pattern>mydb</pattern>
+                                    <value>${altibase_user_dbname}</value>
+                                </substitution>
+                            </substitutionList>
+                        </substitute>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Make readme file</explanation>
+                    <actionList>
+                        <writeFile>
+                            <encoding>utf-8</encoding>
+                            <path>${installdir}/README</path>
+                            <text>Please refer to the following file to check the Altibase version.
+    ${patch_dir}patchinfo 
+
+[ Quick Guide to Making Settings in Altibase ]
+
+1. Set kernel variables using the root user account.
+    run the '${installdir}/install/pre_install.sh' file
+    - This script helps you make kernel parameter settings.
+${kernel_guide_val}
+
+
+2. Provide a license.
+    Please rename and locate the license file as shown below.
+    ${installdir}/conf/license
+
+    If no license file has been issued or if the license file has expired,
+    Altibase services will not start.
+    In this case, please visit http://support.altibase.com
+
+
+3. Configure user environment variables 
+    (using the user account with which Altibase was installed).
+    Run the '${installdir}/install/post_install.sh' file
+    under the account with which Altibase was installed.
+
+    This script performs necessary post-installation configuration.
+
+    1) Create the Altibase user environment file and apply it to the user profile.
+         (${installdir}/conf/altibase_user.env)
+    2) Create a database.
+
+         If you selected 'YES' in response to the question about whether to create 
+         a database after installation, at "Altibase Property setting step 1", 
+         a database will be automatically created.
+
+         If you selected 'NO' in response to this question,
+         you need to create a database manually.
+
+         shell&gt; server create [DB Character Set] [National Character Set]
+
+
+4. Start up and shut down the server
+    shell&gt; server start
+    shell&gt; server stop
+
+5. Runs all scripts required for or used with PSM
+    Run the '${installdir}/packages/catproc.sql' file.
+
+6. Connect to the database using iSQL
+    shell&gt; isql -s 127.0.0.1 -u SYS -p MANAGER</text>
+                        </writeFile>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>add db directory</explanation>
+                    <actionList>
+                        <createDirectory>
+                            <path>${default_disk_db_dir}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${default_disk_db_dir}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${mem_db_dir}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${mem_db_dir}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${archive_dir}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${archive_dir}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${log_dir}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${log_dir}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${loganchor_dir1}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${loganchor_dir1}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${loganchor_dir2}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${loganchor_dir2}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                        <createDirectory>
+                            <path>${loganchor_dir3}</path>
+                            <ruleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${loganchor_dir3}</path>
+                                </fileExists>
+                            </ruleList>
+                        </createDirectory>
+                    </actionList>
+                </actionGroup>
+            </actionList>
+            <conditionRuleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </conditionRuleList>
+        </if>
+        <actionGroup>
+            <explanation>set altibase_env.mk</explanation>
+            <actionList>
+                <substitute>
+                    <encoding>utf-8</encoding>
+                    <files>${installdir}/install/altibase_env.mk</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>${hp_build_major_ver}${hp_build_minor_ver}</pattern>
+                            <value></value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+            </actionList>
+            <ruleList>
+                <platformTest>
+                    <type>hpux</type>
+                </platformTest>
+            </ruleList>
+        </actionGroup>
+    </postInstallationActionList>
+    <preUninstallationActionList>
+        <actionGroup>
+            <explanation>check server status</explanation>
+            <actionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>"ps -ef"</program>
+                    <programArguments>| grep "altibase -p boot" | grep -v grep | awk '{print $1}'  | grep '^${system_username}$'  &gt; .altibase_server_check</programArguments>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>~</workingDirectory>
+                </runProgram>
+                <readFile>
+                    <abortOnError>0</abortOnError>
+                    <encoding>utf-8</encoding>
+                    <name>check_altibase_server</name>
+                    <path>~/.altibase_server_check</path>
+                    <showMessageOnError>0</showMessageOnError>
+                    <ruleList>
+                        <fileExists>
+                            <path>~/.altibase_server_check</path>
+                        </fileExists>
+                    </ruleList>
+                </readFile>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>rm</program>
+                    <programArguments>-rf .altibase_server_check</programArguments>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>~</workingDirectory>
+                    <ruleList>
+                        <fileExists>
+                            <path>~/.altibase_server_check</path>
+                        </fileExists>
+                    </ruleList>
+                </runProgram>
+                <if>
+                    <explanation>check server running</explanation>
+                    <actionList>
+                        <showWarning>
+                            <text>Altibase server is running.
+Please shut it down before proceeding to the next step.
+</text>
+                        </showWarning>
+                        <exit>
+                            <exitCode>1</exitCode>
+                        </exit>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>${system_username}</pattern>
+                            <text>${check_altibase_server}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+            </actionList>
+        </actionGroup>
+        <propertiesFileGet>
+            <file>${patch_info_file}</file>
+            <key>PRODUCT_SIGNATURE</key>
+            <variable>read_altibase_product_signature</variable>
+            <onErrorActionList>
+                <showWarning>
+                    <text>Can't read ALTIBASE Product signature.</text>
+                </showWarning>
+                <exit>
+                    <exitCode>1</exitCode>
+                </exit>
+            </onErrorActionList>
+        </propertiesFileGet>
+        <propertiesFileGet>
+            <file>${patch_info_file}</file>
+            <key>PATCH_VERSION</key>
+            <variable>read_altibase_patch_version</variable>
+            <onErrorActionList>
+                <showWarning>
+                    <text>Can't read ALTIBASE Patch version.</text>
+                </showWarning>
+                <exit>
+                    <exitCode>1</exitCode>
+                </exit>
+            </onErrorActionList>
+        </propertiesFileGet>
+        <if>
+            <explanation>signature validation</explanation>
+            <actionList>
+                <showWarning>
+                    <text>The Altibase Product Signature doesn't match 
+between ${altibase_product_signature} and ${read_altibase_product_signature}
+Exit from uninstallation.
+</text>
+                </showWarning>
+                <exit>
+                    <exitCode>1</exitCode>
+                </exit>
+            </actionList>
+            <conditionRuleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <negate>1</negate>
+                    <text>${altibase_product_signature}</text>
+                    <value>${read_altibase_product_signature}</value>
+                </compareText>
+            </conditionRuleList>
+        </if>
+        <if>
+            <explanation>patch valiation</explanation>
+            <actionList>
+                <showWarning>
+                    <text>The Altibase Patch Version doesn't match between ${altibase_patch_version} and ${read_altibase_patch_version}
+Exit from uninstallation.</text>
+                </showWarning>
+                <exit>
+                    <exitCode>1</exitCode>
+                </exit>
+            </actionList>
+            <conditionRuleList>
+                <compareValues>
+                    <logic>equals</logic>
+                    <negate>1</negate>
+                    <value1>${altibase_patch_version}</value1>
+                    <value2>${read_altibase_patch_version}</value2>
+                </compareValues>
+            </conditionRuleList>
+        </if>
+        <if>
+            <explanation>full or patch install</explanation>
+            <actionList>
+                <if>
+                    <explanation>check backup directory</explanation>
+                    <actionList>
+                        <showInfo>
+                            <text>Can't find backup data.</text>
+                        </showInfo>
+                        <exit>
+                            <exitCode>1</exitCode>
+                        </exit>
+                    </actionList>
+                    <conditionRuleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${patch_dir}/rollback-p${altibase_patch_version}</path>
+                        </fileExists>
+                    </conditionRuleList>
+                </if>
+                <showInfo>
+                    <text>The Altibase server patch will be rolled back
+from patch-${altibase_patch_version} 
+to patch-${prev_altibase_patch_version}</text>
+                    <title>Uninstall</title>
+                </showInfo>
+            </actionList>
+            <conditionRuleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>patchpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </conditionRuleList>
+        </if>
+    </preUninstallationActionList>
+    <postUninstallationActionList>
+        <if>
+            <explanation>full or patch install</explanation>
+            <actionList>
+                <actionGroup>
+                    <explanation>recover</explanation>
+                    <actionList>
+                        <locate>
+                            <command>cp</command>
+                            <variable>cp_found</variable>
+                        </locate>
+                        <if>
+                            <actionList>
+                                <showWarning>
+                                    <text>There is no copy utility(cp) on this platform.
+
+You must execute below command to recover the previous installation.
+
+cp -rf ${patch_dir}/rollback-p${altibase_patch_version}/*  /</text>
+                                </showWarning>
+                            </actionList>
+                            <conditionRuleList>
+                                <stringTest>
+                                    <text>${cp_found}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <runProgram>
+                                    <program>${cp_found}</program>
+                                    <programArguments>-rf   * /${installdir}</programArguments>
+                                    <workingDirectory>${patch_dir}rollback-p${altibase_patch_version}${installdir}</workingDirectory>
+                                </runProgram>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>unix</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+            </actionList>
+            <conditionRuleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>patchpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </conditionRuleList>
+        </if>
+    </postUninstallationActionList>
+    <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>600</height>
+    <installationLogFile>${installdir}/APatch/altibase_base_install.log</installationLogFile>
+    <licenseFileEncoding>utf-8</licenseFileEncoding>
+    <outputDirectory>${build_project_directory}</outputDirectory>
+    <readmeFileEncoding>utf-8</readmeFileEncoding>
+    <rollbackBackupDirectory>${patch_dir}/rollback-p${altibase_patch_version}</rollbackBackupDirectory>
+    <saveRelativePaths>1</saveRelativePaths>
+    <uninstallationLogFile>${installdir}/APatch/altibase_base_uninstall.log</uninstallationLogFile>
+    <uninstallerDirectory>${installdir}/APatch</uninstallerDirectory>
+    <uninstallerName>uninstall-p${altibase_patch_version}</uninstallerName>
+    <vendor>Altibase</vendor>
+    <width>700</width>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>linux linux-x64 linux-ia64 osx solaris-sparc solaris-intel linux-ppc linux-s390 freebsd freebsd4 freebsd6 freebsd6-x64 openbsd3 hpux aix irix-n32</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>altipkgdir_server_patch/report.txt</origin>
+                        </distributionFile>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/APatch</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/admin</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/arch_logs</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/altiComp</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/bin</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/conf</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/dbs</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/global</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/include</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/install</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/lib</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/logs</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/msg</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/sample</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/thirdparty</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/trc</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/altiMon</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>altipkgdir_server_patch/packages</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Uninstall</comment>
+                            <exec>${installdir}/APatch/${uninstallerName}</exec>
+                            <icon></icon>
+                            <name>Uninstall ${product_fullname}</name>
+                            <path>${installdir}</path>
+                            <platforms>all</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec></windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath></windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                </folder>
+            </folderList>
+        </component>
+    </componentList>
+    <customLanguageFileList>
+        <language>
+            <code>en</code>
+            <file>altibase_home/APatch/server-custom-en.lng</file>
+        </language>
+    </customLanguageFileList>
+    <finalPageActionList>
+        <showInfo>
+            <show>0</show>
+            <text>${set_env_result}</text>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+        </showInfo>
+    </finalPageActionList>
+    <parameterList>
+        <infoParameter>
+            <name>diagnostic_warning</name>
+            <title>Warning</title>
+            <description></description>
+            <explanation></explanation>
+            <value>Warning : 
+
+This is a special diagnostic package intended only for use in tracking problems 
+or for other special purposes. 
+
+Because this package is not officially supported, do not use it for extended periods 
+or in production environments.
+</value>
+            <default></default>
+            <insertAfter>welcome</insertAfter>
+            <trimMarginNumChars>0</trimMarginNumChars>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value></value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value></value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text> - DIAGNOSTIC Patch</text>
+                    <value>${altibase_dist_type}</value>
+                </compareText>
+            </ruleList>
+        </infoParameter>
+        <stringParameter>
+            <name>kernel_guide_head</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>kernel_guide_val</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>patch_dir</name>
+            <description></description>
+            <explanation></explanation>
+            <value>${installdir}/APatch/</value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>patch_info_file</name>
+            <description></description>
+            <explanation></explanation>
+            <value>${patch_dir}/patchinfo</value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <parameterGroup>
+            <name>inputDir_AND_installType</name>
+            <title>Installation Directory${altibase_dist_type}</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir</name>
+                    <description>Installation directory</description>
+                    <explanation>Please specify the installation directory for Altibase Server ${altibase_base_version}.${altibase_tagset_version}.${altibase_tag_version}</explanation>
+                    <value></value>
+                    <default>${platform_install_prefix}/${product_shortname}-${altibase_product_type}-${product_version}</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <cliOptionName>prefix</cliOptionName>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <choiceParameter>
+                    <name>select_install_type</name>
+                    <description>Installation type</description>
+                    <explanation>Please select the installation type.</explanation>
+                    <value></value>
+                    <default>fullpkg</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <insertAfter>installdir</insertAfter>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description>full package install</description>
+                            <image></image>
+                            <text>Full installation</text>
+                            <value>fullpkg</value>
+                        </option>
+                        <option>
+                            <description>patch package install</description>
+                            <image></image>
+                            <text>Patch</text>
+                            <value>patchpkg</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>Add license</text>
+                            <value>addlicense</value>
+                        </option>
+                    </optionList>
+                    <postShowPageActionList>
+                        <if>
+                            <explanation>select Fullpkg page or patchpkg page</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>pre_installation_action</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>fullpkg</text>
+                                    <value>${select_install_type}</value>
+                                </compareText>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>back_page</name>
+                                            <value>inputDir_AND_installType</value>
+                                        </setInstallerVariable>
+                                        <setInstallerVariable>
+                                            <name>next_page</name>
+                                            <value>altibase_license_guide</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <compareText>
+                                            <logic>equals</logic>
+                                            <text>addlicense</text>
+                                            <value>${select_install_type}</value>
+                                        </compareText>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <setInstallerVariable>
+                                            <name>project.fullName</name>
+                                            <value>Altibase Server Patch ${altibase_base_version}.${altibase_tagset_version}.${altibase_tag_version}</value>
+                                        </setInstallerVariable>
+                                        <setInstallerVariable>
+                                            <name>next_page</name>
+                                            <value>show</value>
+                                        </setInstallerVariable>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </postShowPageActionList>
+                </choiceParameter>
+            </parameterList>
+            <preShowPageActionList>
+                <if>
+                    <explanation>check ALTIBASE_HOME</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>installdir</name>
+                            <value>${platform_install_prefix}/${product_shortname}-${altibase_product_type}-${product_version}</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text></text>
+                            <value>${env(ALTIBASE_HOME)}</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>installdir</name>
+                            <value>${env(ALTIBASE_HOME)}</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>inputDir_AND_installType</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <validationActionList>
+                <if>
+                    <explanation>full or patch install</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>check APatch</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>The Altibase Server package cannot be installed in 
+${installdir}
+because a previous version is already installed in the same location.
+
+Please uninstall the previous installation of Altibase Server and try again.
+</text>
+                                </showWarning>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>inputDir_AND_installType</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>${patch_dir}patchinfo</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>clean or not</explanation>
+                                    <actionList>
+                                        <showWarning>
+                                            <text>Previous installed Altibase files detected.
+(some properties, logs, DB data files)
+
+Before starting installation,
+remove or backup old Altibase Environment/DB files.</text>
+                                        </showWarning>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>${patch_dir}altibase_base_uninstall.log</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>fullpkg</text>
+                            <value>${select_install_type}</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <if>
+                            <explanation>check base version for Patch</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>The Altibase patch upgrade wizard cannot proceed because Altibase is not installed.
+Please install Altibase before attempting to upgrade it.</text>
+                                </showWarning>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>inputDir_AND_installType</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <negate>1</negate>
+                                    <path>${patch_dir}</path>
+                                </fileExists>
+                            </conditionRuleList>
+                        </if>
+                    </elseActionList>
+                </if>
+            </validationActionList>
+        </parameterGroup>
+        <infoParameter>
+            <name>pre_installation_action</name>
+            <title>Pre-Installation Requirements for Altibase${altibase_dist_type}</title>
+            <description></description>
+            <explanation></explanation>
+            <value>${kernel_guide_head}
+${kernel_guide_val}</value>
+            <default></default>
+            <trimMarginNumChars>0</trimMarginNumChars>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>Property</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>inputDir_AND_installType</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+        </infoParameter>
+        <infoParameter>
+            <name>show</name>
+            <title>Patch Upgrade - Patch-${altibase_patch_version}</title>
+            <description></description>
+            <explanation></explanation>
+            <value>Altibase ${altibase_base_version}.${altibase_tagset_version}.${altibase_tag_version} Patch Upgrade 
+
+Current version :  Patch ${prev_altibase_patch_version}
+Patch version    :  Patch ${altibase_patch_version}
+</value>
+            <default></default>
+            <insertAfter>inputDir_AND_installType</insertAfter>
+            <trimMarginNumChars>0</trimMarginNumChars>
+            <postShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>show</value>
+                </setInstallerVariable>
+            </postShowPageActionList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>readytoinstall</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>inputDir_AND_installType</value>
+                </setInstallerVariable>
+                <actionGroup>
+                    <explanation>get current installed version</explanation>
+                    <actionList>
+                        <propertiesFileGet>
+                            <file>${patch_info_file}</file>
+                            <key>PATCH_VERSION</key>
+                            <variable>prev_altibase_patch_version</variable>
+                            <onErrorActionList>
+                                <showWarning>
+                                    <text>Can't read ALTIBASE Patch version.</text>
+                                </showWarning>
+                                <exit>
+                                    <exitCode>1</exitCode>
+                                </exit>
+                            </onErrorActionList>
+                        </propertiesFileGet>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>check server running</explanation>
+                    <actionList>
+                        <runProgram>
+                            <abortOnError>0</abortOnError>
+                            <program>"ps -ef"</program>
+                            <programArguments>| grep "altibase -p boot" | grep -v grep | awk '{print $1}'  | grep '^${system_username}$'  &gt; .altibase_server_check</programArguments>
+                            <showMessageOnError>0</showMessageOnError>
+                            <workingDirectory>~</workingDirectory>
+                        </runProgram>
+                        <readFile>
+                            <abortOnError>0</abortOnError>
+                            <encoding>utf-8</encoding>
+                            <name>check_altibase_server</name>
+                            <path>~/.altibase_server_check</path>
+                            <showMessageOnError>0</showMessageOnError>
+                            <ruleList>
+                                <fileExists>
+                                    <path>~/.altibase_server_check</path>
+                                </fileExists>
+                            </ruleList>
+                        </readFile>
+                        <runProgram>
+                            <abortOnError>0</abortOnError>
+                            <program>rm</program>
+                            <programArguments>-rf .altibase_server_check</programArguments>
+                            <showMessageOnError>0</showMessageOnError>
+                            <workingDirectory>~</workingDirectory>
+                            <ruleList>
+                                <fileExists>
+                                    <path>~/.altibase_server_check</path>
+                                </fileExists>
+                            </ruleList>
+                        </runProgram>
+                        <if>
+                            <explanation>check server running</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>Altibase server is running.
+Please shut it down before proceeding to the next step.
+</text>
+                                </showWarning>
+                                <exit>
+                                    <exitCode>1</exitCode>
+                                </exit>
+                            </actionList>
+                            <conditionRuleList>
+                                <regExMatch>
+                                    <logic>matches</logic>
+                                    <pattern>${system_username}</pattern>
+                                    <text>${check_altibase_server}</text>
+                                </regExMatch>
+                            </conditionRuleList>
+                        </if>
+                        <setInstallerVariable>
+                            <name>check_altibase_server</name>
+                            <value></value>
+                        </setInstallerVariable>
+                    </actionList>
+                </actionGroup>
+            </preShowPageActionList>
+        </infoParameter>
+        <stringParameter>
+            <name>altibase_target_os</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_product_type</name>
+            <description></description>
+            <explanation></explanation>
+            <value>server</value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_base_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_from_tagset_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_from_tag_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_tagset_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_tag_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_patch_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value>${altibase_from_tagset_version}_${altibase_from_tag_version}_${altibase_tagset_version}_${altibase_tag_version}</value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <insertBefore>show</insertBefore>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_compile_bit</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>64</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_cfg_cpu_value</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_build_mode</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_build_dir</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>additional_files_dir</name>
+            <description></description>
+            <explanation></explanation>
+            <value>../pgm_pkg</value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_product_signature</name>
+            <description></description>
+            <explanation></explanation>
+            <value>${altibase_product_type}-${altibase_base_version}-${altibase_compile_bit}-${altibase_build_mode}</value>
+            <default>${altibase_product_type}-${altibase_base_version}-${altibase_compile_bit}-${altibase_build_mode}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>prev_altibase_patch_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>current_os_bit</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>current_os</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>property2_result</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>    # Nothing</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_major_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_minor_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <parameterGroup>
+            <name>Property</name>
+            <title>Altibase Property Settings
+Step 1: Basic Database Operation Properties${altibase_dist_type}</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>altibase_user_dbname</name>
+                    <description>Database name</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>mydb</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>10</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>DB Name is invalid</text>
+                            <ruleList>
+                                <stringTest>
+                                    <text>${altibase_user_dbname}</text>
+                                    <type>not_alphanumeric</type>
+                                </stringTest>
+                                <stringTest>
+                                    <text>${altibase_user_dbname}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>free_space01</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_server_port_no</name>
+                    <description>Altibase connection port number (1024-65535)     </description>
+                    <explanation></explanation>
+                    <value>20300</value>
+                    <default>20300</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>10</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${altibase_server_port_no}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${altibase_server_port_no}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${altibase_server_port_no}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${altibase_server_port_no}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>free_space02</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>buffer_area_size</name>
+                    <description>- MIN value: 1M (K = kB, M = MB, G = GB)</description>
+                    <explanation>Buffer area size for caching disk-based database pages</explanation>
+                    <value></value>
+                    <default>128M</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>10</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid Buffer area size for caching disk-based database pages</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^\d+[K,M,G]$</pattern>
+                                    <text>${buffer_area_size}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                        <setInstallerVariableFromRegEx>
+                            <name>tmp_number</name>
+                            <pattern>[K,M,G]$</pattern>
+                            <substitution></substitution>
+                            <text>${buffer_area_size}</text>
+                        </setInstallerVariableFromRegEx>
+                        <setInstallerVariableFromRegEx>
+                            <name>tmp_unit</name>
+                            <pattern>^\d+</pattern>
+                            <substitution></substitution>
+                            <text>${buffer_area_size}</text>
+                        </setInstallerVariableFromRegEx>
+                        <throwError>
+                            <text>Invalid Buffer area size for caching disk-based database pages</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>K</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                        <throwError>
+                            <text>Invalid Buffer area size for caching disk-based database pages</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>M</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>1</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                        <throwError>
+                            <text>Invalid Buffer area size for caching disk-based database pages</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>G</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>1</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>free_space03</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>createdb_option</name>
+                    <description>Do you want to create a database after the installation process is complete?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>10</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>yes</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>no</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+            </parameterList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>pre_installation_action</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value></value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property2</name>
+            <title>Altibase Property Settings
+Step 2: Database Creation Properties${altibase_dist_type}</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>init_db_size</name>
+                    <description>Initial database size
+- 4M-1024GB (K = kB,M = MB,G = GB)</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>10M</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <width>10</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid Initial database size</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^\d+[K,M,G]$</pattern>
+                                    <text>${init_db_size}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                        <setInstallerVariableFromRegEx>
+                            <name>tmp_number</name>
+                            <pattern>[K,M,G]$</pattern>
+                            <substitution></substitution>
+                            <text>${init_db_size}</text>
+                        </setInstallerVariableFromRegEx>
+                        <setInstallerVariableFromRegEx>
+                            <name>tmp_unit</name>
+                            <pattern>^\d+</pattern>
+                            <substitution></substitution>
+                            <text>${init_db_size}</text>
+                        </setInstallerVariableFromRegEx>
+                        <throwError>
+                            <text>Invalid Initial database size</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>K</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>4096</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                        <throwError>
+                            <text>Invalid Initial database size</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>M</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>4</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                        <throwError>
+                            <text>Invalid Initial database size</text>
+                            <ruleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>${tmp_unit}</text>
+                                    <value>G</value>
+                                </compareText>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${tmp_number}</value1>
+                                    <value2>1</value2>
+                                </compareValues>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>free_space04</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>archivelog_values</name>
+                    <description>Database archive logging mode </description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>No archivelog</text>
+                            <value>noarchivelog</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>Archivelog</text>
+                            <value>archivelog</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <labelParameter>
+                    <name>free_space05</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>db_char_set</name>
+                    <description>Database character set</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>UTF-8</text>
+                            <value>UTF8</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>MS949</text>
+                            <value>MS949</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>US7ASCII</text>
+                            <value>US7ASCII</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>KO16KSC5601</text>
+                            <value>KO16KSC5601</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>BIG5</text>
+                            <value>BIG5</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>GB231280</text>
+                            <value>GB231280</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>MS936</text>
+                            <value>MS936</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>SHIFT-JIS</text>
+                            <value>SHIFTJIS</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>EUC-JP</text>
+                            <value>EUCJP</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>MS932</text>
+                            <value>MS932</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <labelParameter>
+                    <name>free_space06</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>national_char_set</name>
+                    <description>National character set</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>UTF-8</text>
+                            <value>UTF8</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>UTF-16</text>
+                            <value>UTF16</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+            </parameterList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value></value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value></value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>yes</text>
+                    <value>${createdb_option}</value>
+                </compareText>
+            </ruleList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property3</name>
+            <title>Altibase Property Settings
+Step 3: Set Database Directories${altibase_dist_type}</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <directoryParameter>
+                    <name>default_disk_db_dir</name>
+                    <description>Default disk database directory</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/dbs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>mem_db_dir</name>
+                    <description>Memory database directory</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/dbs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>archive_dir</name>
+                    <description>Archive log directory</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/arch_logs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>log_dir</name>
+                    <description>Transaction log directory</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/logs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>loganchor_dir1</name>
+                    <description>Directory 1.</description>
+                    <explanation>[Log Anchor file directories ]
+Altibase maintains three sets of log anchor files. These files contain important information
+about the database. By default, they are located in the "logs" folder. 
+The location can be changed here or by modifying the contents of the Altibase properties file, 
+which is named "altibase.properties".</explanation>
+                    <value></value>
+                    <default>${installdir}/logs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>loganchor_dir2</name>
+                    <description>Directory 2.</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/logs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+                <directoryParameter>
+                    <name>loganchor_dir3</name>
+                    <description>Directory 3.</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>${installdir}/logs</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>Property3</value>
+                </setInstallerVariable>
+            </postShowPageActionList>
+            <preShowPageActionList>
+                <if>
+                    <explanation>check_createdb</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value>Property2</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>yes</text>
+                            <value>${createdb_option}</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value>Property</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>property_report</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+        </parameterGroup>
+        <infoParameter>
+            <name>property_report</name>
+            <title>Property Review${altibase_dist_type}</title>
+            <description></description>
+            <explanation>Please check your property settings. </explanation>
+            <value>
+To change these properties after installation is complete, 
+please modify the following file:
+  ${installdir}/conf/altibase.properties.
+
+1. Altibase Property Settings:
+    Step 1: Basic Database Operation Properties
+
+    1) Database name: 
+         [${altibase_user_dbname}]
+
+    2) Altibase connection port number (1024-65535): 
+         [${altibase_server_port_no}]
+
+    3) Buffer area size for caching disk-based database pages:
+         [${buffer_area_size}]
+
+2. Altibase Property Settings:
+    Step 2: Database Creation Properties
+
+${property2_result}
+
+3. Altibase Property Settings:
+    Step 3: Set Database Directories
+
+    The database will not operate properly if any of these directories are removed.
+
+    1) Disk database directory: 
+         [${default_disk_db_dir}] 
+
+    2) Memory database directory:
+         [${mem_db_dir}] 
+
+    3) Archive log directory: 
+         [${archive_dir}] 
+
+    4) Transaction log directory: 
+         [${log_dir}] 
+
+    5) Log Anchor file directories:
+         Directory 1: 
+         [${loganchor_dir1}] 
+
+         Directory 2: 
+         [${loganchor_dir2}] 
+
+         Directory 3: 
+         [${loganchor_dir3}] 
+
+
+</value>
+            <default></default>
+            <trimMarginNumChars>0</trimMarginNumChars>
+            <postShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>property_report</value>
+                </setInstallerVariable>
+            </postShowPageActionList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value></value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>Property3</value>
+                </setInstallerVariable>
+                <actionGroup>
+                    <explanation>make property2 report</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>check createDb selection</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>property2_result</name>
+                                    <value>    1) Initial database size
+         [${init_db_size}]
+
+    2) Database archive logging mode
+         [${archivelog_values}]
+
+    3) Database character set
+         [${db_char_set}]
+
+    4) National character set
+         [${national_char_set}]</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>yes</text>
+                                    <value>${createdb_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <setInstallerVariable>
+                                    <name>property2_result</name>
+                                    <value>    # Nothing</value>
+                                </setInstallerVariable>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                </actionGroup>
+            </preShowPageActionList>
+        </infoParameter>
+        <parameterGroup>
+            <name>altibase_select_edition</name>
+            <title>Altibase Edition</title>
+            <explanation>Community Edition provides the same functions, features and tools as Enterprise Edition, 
+but has data size limitations of 4GB in-memory and 8GB on disk.
+Upgrade to Enterprise Edition to get unlimited data storage and premium support.</explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>installation</insertAfter>
+            <parameterList>
+                <labelParameter>
+                    <name>select_edition_freespace</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>select_edition_option</name>
+                    <description></description>
+                    <explanation>Choose an option for Altibase Edition</explanation>
+                    <value>CE</value>
+                    <default>CE</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>radiobuttons</displayType>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>Altibase Community Edition</text>
+                            <value>CE</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>Altibase Enterprise Edition</text>
+                            <value>EE</value>
+                        </option>
+                    </optionList>
+                    <preShowPageActionList>
+                        <setInstallerVariable>
+                            <name>next_page</name>
+                            <value></value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value></value>
+                        </setInstallerVariable>
+                    </preShowPageActionList>
+                    <validationActionList>
+                        <if>
+                            <explanation>check_edition_option</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>altibase_set_guide</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>back_page</name>
+                                    <value>altibase_select_edition</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>CE</text>
+                                    <value>${select_edition_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>altibase_license_guide</value>
+                                </setInstallerVariable>
+                            </elseActionList>
+                        </if>
+                    </validationActionList>
+                </choiceParameter>
+            </parameterList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>altibase_license_guide</name>
+            <title>Altibase License${altibase_dist_type}</title>
+            <explanation>If a license has not been issued or if it has expired,
+Altibase services will not start.
+
+If this is the case, Please visit   http://support.altibase.com
+</explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>altibase_select_edition</insertAfter>
+            <parameterList>
+                <labelParameter>
+                    <name>license_freespace</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>select_license_option</name>
+                    <description></description>
+                    <explanation>Choose an option for Altibase license registration.</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>radiobuttons</displayType>
+                    <ordering>default</ordering>
+                    <width>30</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>I will input a license key.</text>
+                            <value>write</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>I will select a license file.</text>
+                            <value>select</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>I want to register an Altibase license later.</text>
+                            <value>no</value>
+                        </option>
+                    </optionList>
+                    <postShowPageActionList>
+                        <if>
+                            <explanation>choose 'write'</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>input_license_key</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>write</text>
+                                    <value>${select_license_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                        <if>
+                            <explanation>choose 'select'</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>select_license_file</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>select</text>
+                                    <value>${select_license_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                        <if>
+                            <explanation>choose 'no'</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>altibase_set_guide</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>back_page</name>
+                                    <value>altibase_license_guide</value>
+                                </setInstallerVariable>
+                                <showInfo>
+                                    <text>After you have obtained an Altibase license,
+please move the license file to 
+${installdir}/conf/
+</text>
+                                </showInfo>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>no</text>
+                                    <value>${select_license_option}</value>
+                                </compareText>
+                            </conditionRuleList>
+                        </if>
+                    </postShowPageActionList>
+                    <preShowPageActionList>
+                        <setInstallerVariable>
+                            <name>next_page</name>
+                            <value></value>
+                        </setInstallerVariable>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value></value>
+                        </setInstallerVariable>
+                    </preShowPageActionList>
+                </choiceParameter>
+            </parameterList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value></value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value></value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+        </parameterGroup>
+        <stringParameter>
+            <name>input_license_key</name>
+            <title>Altibase License${altibase_dist_type}</title>
+            <description></description>
+            <explanation>Please enter your Altibase license key.</explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <insertAfter>altibase_license_guide</insertAfter>
+            <width>30</width>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>altibase_license_guide</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>altibase_set_guide</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+            <validationActionList>
+                <if>
+                    <explanation>check input value</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>next_page</name>
+                            <value>altibase_license_guide</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text></text>
+                            <value>${input_license_key}</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value>input_license_key</value>
+                        </setInstallerVariable>
+                        <writeFile>
+                            <encoding>utf-8</encoding>
+                            <path>${installdir}/conf/license</path>
+                            <text>${input_license_key}</text>
+                        </writeFile>
+                    </elseActionList>
+                </if>
+            </validationActionList>
+        </stringParameter>
+        <fileParameter>
+            <name>select_license_file</name>
+            <title>Altibase License${altibase_dist_type}</title>
+            <description>Please select your license file</description>
+            <explanation></explanation>
+            <value></value>
+            <default>${installdir}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <insertAfter>altibase_license_guide</insertAfter>
+            <mustBeWritable>0</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>30</width>
+            <postShowPageActionList>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>select_license_file</value>
+                </setInstallerVariable>
+            </postShowPageActionList>
+            <preShowPageActionList>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>altibase_set_guide</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>back_page</name>
+                    <value>altibase_license_guide</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+            <validationActionList>
+                <if>
+                    <explanation>check License file</explanation>
+                    <actionList>
+                        <showInfo>
+                            <text>License file does not exist.
+
+If has not been issued or expired,
+Altibase services will not start.
+In this case,
+Please visit http://support.altibase.com
+</text>
+                        </showInfo>
+                        <setInstallerVariable>
+                            <name>next_page</name>
+                            <value>altibase_license_guide</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${select_license_file}</path>
+                        </fileExists>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <copyFile>
+                            <destination>${installdir}/conf/license</destination>
+                            <origin>${select_license_file}</origin>
+                            <ruleList>
+                                <compareText>
+                                    <logic>does_not_equal</logic>
+                                    <text>${select_license_file}</text>
+                                    <value>${installdir}/conf/license</value>
+                                </compareText>
+                            </ruleList>
+                        </copyFile>
+                    </elseActionList>
+                </if>
+            </validationActionList>
+        </fileParameter>
+        <parameterGroup>
+            <name>altibase_set_guide</name>
+            <title>Altibase Quick Setting Guide${altibase_dist_type}</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>altibase_license_guide</insertAfter>
+            <parameterList>
+                <infoParameter>
+                    <name>altibase_set_guide_in</name>
+                    <title>Altibase Quick Setting Guide</title>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>[  Installation complete  ]
+Please refer to the file listed below to verify the Altibase version.
+    ${patch_dir}patchinfo 
+
+
+[ Quick Guide to Making Settings in Altibase ] 
+
+1. Set kernel variables using the root user account.
+    run the '${installdir}/install/pre_install.sh' file 
+    - This script helps you make kernel parameter settings.
+${kernel_guide_val}
+ 
+
+2. Provide a license.
+    Please rename and locate the license file as shown below.
+    ${installdir}/conf/license 
+
+    If no license file has been issued or if the license file has expired,
+    Altibase services will not start.
+    In this case, please visit http://support.altibase.com
+
+
+3. Configure user environment variables (using the user account with which Altibase was installed).
+    Run the '${installdir}/install/post_install.sh' file 
+    under the account with which Altibase was installed.
+
+    This script performs necessary post-installation configuration. 
+
+    1) Create the Altibase user environment file and apply it to the user profile.
+         (${installdir}/conf/altibase_user.env)
+    2) Create a database.
+
+         If you selected 'YES' in response to the question about whether to create 
+         a database after installation, at "Altibase Property setting step 1", 
+         a database will be automatically created.
+
+         If you selected 'NO' in response to this question,
+         you need to create a database manually.
+
+         shell&gt; server create [DB Character Set] [National Character Set]
+
+
+4. Start up and shut down the server
+    shell&gt; server start
+    shell&gt; server stop
+
+5. Runs all scripts required for or used with PSM
+    Run the '${installdir}/packages/catproc.sql' file.
+
+6. Connect to the database using iSQL
+    shell&gt; isql -s 127.0.0.1 -u SYS -p MANAGER
+
+</value>
+                    <default></default>
+                    <insertAfter>altibase_license_guide</insertAfter>
+                    <trimMarginNumChars>0</trimMarginNumChars>
+                </infoParameter>
+                <booleanParameter>
+                    <name>post_install_select</name>
+                    <description>Would you like to launch 'post_install.sh', 'catproc.sql' now ?
+ - This will create the Altibase database. Runs all scripts required for or used with PSM</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>1</default>
+                    <displayStyle>checkbox-left</displayStyle>
+                    <ruleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${createdb_option}</text>
+                            <value>yes</value>
+                        </compareText>
+                        <compareText>
+                            <logic>does_not_equal</logic>
+                            <text>${select_license_option}</text>
+                            <value>no</value>
+                        </compareText>
+                    </ruleList>
+                </booleanParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <if>
+                    <explanation>check post_install_select values</explanation>
+                    <actionList>
+                        <showProgressDialog>
+                            <title>Please wait</title>
+                            <actionList>
+                                <setInstallerVariableFromScriptOutput>
+                                    <exec>${installdir}/install/post_install.sh</exec>
+                                    <execArgs>dbcreate</execArgs>
+                                    <name>post_install_result</name>
+                                    <progressText>An Altibase database is being created.
+Please be patient; this may take some time.</progressText>
+                                    <workingDirectory>${installdir}/install/</workingDirectory>
+                                </setInstallerVariableFromScriptOutput>
+                            </actionList>
+                        </showProgressDialog>
+                        <showText>
+                            <text>${post_install_result}</text>
+                            <title>Result</title>
+                        </showText>
+                    </actionList>
+                    <conditionRuleList>
+                        <isTrue>
+                            <value>${post_install_select}</value>
+                        </isTrue>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${createdb_option}</text>
+                            <value>yes</value>
+                        </compareText>
+                        <compareText>
+                            <logic>does_not_equal</logic>
+                            <text>${select_license_option}</text>
+                            <value>no</value>
+                        </compareText>
+                    </conditionRuleList>
+                </if>
+            </postShowPageActionList>
+            <preShowPageActionList>
+                <if>
+                    <explanation>check license option</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>back_page</name>
+                            <value>altibase_license_guide</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>no</text>
+                            <value>${select_license_option}</value>
+                        </compareText>
+                    </conditionRuleList>
+                </if>
+                <setInstallerVariable>
+                    <name>next_page</name>
+                    <value>installationFinished</value>
+                </setInstallerVariable>
+            </preShowPageActionList>
+            <ruleList>
+                <compareText>
+                    <logic>equals</logic>
+                    <text>fullpkg</text>
+                    <value>${select_install_type}</value>
+                </compareText>
+            </ruleList>
+        </parameterGroup>
+        <stringParameter>
+            <name>check_altibase_server</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>post_install_result</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>target_env_file</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>hp_build_major_ver</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>hp_build_minor_ver</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>0</default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>temp_variable</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_dist_type</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altibase_revision_num</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>tmp_number</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>tmp_unit</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>tmp_Flag</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+    </parameterList>
+</project>
+

@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+# ALTIBASE iloader multi-upload script
+#   : iloaderup lets you upload data one or more files at the same time.
+#
+
+
+index=0
+infileindex=0
+select=0
+
+if [ ! -n "$1" ]
+then
+    echo
+    echo "Usage help: iloaderup lets you upload data one or more files at the same time."
+    echo "            Usage options are same as the iloader."
+    iloader -h
+    exit 1
+fi
+
+for arg in "$@"
+do
+    if [ $select -eq 0 ]
+    then
+        if [ "$arg" == "-d" ]
+        then
+            firstarg="$firstarg $arg"
+            select=1
+            continue
+        fi
+        if [ "$arg" == "-h" ]
+        then
+            echo
+            echo "Usage help: iloaderup lets you upload data one or more files at the same time."
+            echo "            Usage options are same as the iloader."
+            iloader -h
+            exit 1
+        fi
+        firstarg="$firstarg $arg"
+    fi
+
+    if [ $select -eq 1 ]
+    then
+        if [[ $arg == -* && $infileindex -eq 0 ]]
+        then
+            echo
+            echo "ERROR: -d option has no input data file"
+            echo "Usage help: iloaderup lets you upload data one or more files at the same time."
+            echo "            Usage options are same as the iloader."
+            iloader -h
+            exit 1
+        fi
+        if [[ $arg == -* ]]
+        then
+            lastarg="$arg"
+            select=2
+            continue
+        fi
+        d_files[infileindex]="$arg"
+        let "infileindex+=1"
+    fi
+
+    if [ $select -eq 2 ]
+    then
+        lastarg="$lastarg $arg"
+    fi
+done
+
+while [ $index -lt $infileindex ]
+do
+    echo "#Excute$index : iloader in$firstarg ${d_files[$index]} $lastarg"
+    (iloader in$firstarg ${d_files[$index]} $lastarg)&
+    let "index += 1"
+done
+
+wait
+
+exit 0

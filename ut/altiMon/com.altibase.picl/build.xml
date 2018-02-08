@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project name="SqlConvBuild" default="build" basedir="." >
+    <property name="module.name" value="picl"/>
+    <property name="src.dir" value="${basedir}/src" />
+    <property name="lib.dir" value="${basedir}/lib" />
+    <property name="conf.dir" value="${basedir}/conf" />
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="class.dir" value="${build.dir}/classes"/>
+    <property name="deploy.dir" value="${build.dir}/dist"/>
+    <property name="deploy.conf.dir" value="${deploy.dir}/conf" />
+    <property name="deploy.lib.dir" value="${deploy.dir}/lib" />
+    <property name="hdb.dir" value="${basedir}/../com.altibase.hdb" />  
+    
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${class.dir}"/>
+        <mkdir dir="${deploy.dir}"/>
+        <mkdir dir="${deploy.conf.dir}"/>
+        <mkdir dir="${deploy.lib.dir}"/>
+    </target>
+    
+    <target name="compile">
+        <copy file="${hdb.dir}/hdbUtil.jar" todir="${lib.dir}"/>        
+        <javac srcdir="${src.dir}" destdir="${class.dir}" includeantruntime="false" debug="on" target="1.5">
+            <classpath refid="compile.classpath" />
+        </javac>
+    </target>
+  
+    <path id="compile.classpath">
+      <pathelement location="${class.dir}"/>
+      <fileset dir="${lib.dir}">
+          <include name="**/*.jar"/>
+      </fileset>
+    </path>
+    
+    <target name="jar">
+        <jar jarfile="${deploy.lib.dir}/com.altibase.picl.jar" 
+        basedir="${class.dir}" 
+        includes="**/*.class">
+        </jar>
+    </target>  
+    
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+    
+    <target name="package" description="Zip">
+        <copy todir="${deploy.dir}" overwrite="true">
+                        <fileset dir="${basedir}" includes="*.txt"/>
+                </copy> 
+        <copy todir="${deploy.lib.dir}" overwrite="true">
+                <fileset dir="${lib.dir}" includes="*.jar"/>
+        </copy>     
+        <copy todir="${deploy.conf.dir}" overwrite="true">
+                <fileset dir="${conf.dir}" includes="*.*"/>
+        </copy> 
+        <!--<copy todir="${deploy.dir}" overwrite="true">
+                <fileset dir="${basedir}" includes="log4j.properties"/>
+        </copy> -->
+        <zip destfile="${basedir}/${module.name}.zip"
+               basedir="${deploy.dir}/"
+          />
+    </target>
+    
+    <target name="build4hudson" depends="init, compile, jar">
+    </target>   
+    
+    <target name="build" depends="init, compile, jar, package">
+        <antcall target="clean"/>
+     </target>
+</project> 

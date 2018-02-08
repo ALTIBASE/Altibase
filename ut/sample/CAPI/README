@@ -1,0 +1,91 @@
+Altibase C Interface 샘플 프로그램은 schema 생성 파일과 테스트 프로그램이
+짝으로 구성되어있다. 테스트 프로그램을 실행하기 전에 같은 이름의 schema 생성
+파일(*.sql)을 먼저 isql을 이용해 실행해 schema를 생성 해야한다.
+아래의 리스트는 각 샘플명과 해당 샘플에서 사용하는 API를 열거한 것이다.
+모든 프로그램에는 핸들의 할당(altibase_init, altibase_stmt_init)과 DB 로의
+연결 부분(altibase_connect), 핸들 해제(altibase_close, altibase_stmt_close,
+altibase_free_result, altibase_stmt_free_result), 그리고 에러 진단 부분이
+포함되어 있다.
+
+< QUERY 수행 >
+1. demo_ex1 (select) :
+	altibase_fields
+	altibase_stmt_bind_reault
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_field_count
+	altibase_stmt_prepare
+	altibase_stmt_result_metadata
+2. demo_ex2 (select with bind param) :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+3. demo_ex3 (array fetch) :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_fetched
+	altibase_stmt_prepare
+	altibase_stmt_set_array_fetch
+	altibase_stmt_status
+4. demo_ex4 (array bind - INSERT) :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+	altibase_stmt_set_array_bind
+5. demo_ex5 (update) :
+	altibase_stmt_affected_rows
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+6. demo_ex6 (exec procedure) :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+7. demo_ex7 (array bind - UPDATE) :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+	altibase_stmt_set_array_bind
+	altibase_stmt_status
+
+< Transaction 수행 >
+1. demo_tran1 :
+	altibase_commit
+	altibase_rollback
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+
+< SELECT - UPDATE >
+1. demo_tran2 :
+	altibase_stmt_bind_param
+	altibase_stmt_bind_result
+	altibase_stmt_execute
+	altibase_stmt_fetch
+	altibase_stmt_prepare
+
+< Multi-Thread >
+1. demo_mt
+
+< meta 검색 >
+1. demo_meta1 : altibase_list_tables
+2. demo_meta2 : altibase_list_fields
+8. demo_meta8 : altibase_stmt_result_metadata, altibase_fields
+
+< shared library >
+1. demo_rtl : shared library를 사용하는 demo_ex2
+

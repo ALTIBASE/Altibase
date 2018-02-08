@@ -1,0 +1,324 @@
+========
+DEMO EX1
+========
+[0]
+ID : CHAR/VARCHAR(8)
+[1]
+NAME : CHAR/VARCHAR(20)
+[2]
+AGE : INTEGER
+[3]
+BIRTH : DATE
+[4]
+SEX : SMALLINT
+[5]
+ETC : NUMERIC(10,3)
+==========================================================================
+10000000	name1	10	1990/10/11 07:10:10	0	100.220
+20000000	name2	20	1980/04/21 12:10:10	0	{null}
+30000000	name3	30	1970/12/06 08:08:08	0	300.220
+40000000	name4	40	1960/11/10 05:05:05	0	400.220
+========
+DEMO EX2
+========
+id	Name	Age	birth	sex	etc
+=====================================================================
+10000000 name1                28 1980/10/10 08:50:10  1  10.200
+20000000 name2                10 1990/05/20 17:15:15  0  {null}
+30000000 name3                30 1970/12/07 09:20:08  1  30.200
+========
+DEMO EX3
+========
+id	Name	Age	birth	sex	etc
+=====================================================================
+00000000  name0               10   1970/01/10 08:15:10	0 	10.200
+10000000  name1               11   1971/02/11 09:16:11	1 	11.200
+20000000  name2               12   1972/03/12 10:17:12	0 	12.200
+30000000  name3               13   1973/04/13 11:18:13	1 	13.200
+40000000  name4               14   1974/05/14 12:19:14	0 	14.200
+50000000  name5               15   1975/06/15 13:20:15	1 	15.200
+60000000  name6               16   1976/07/16 14:21:16	0 	16.200
+70000000  name7               17   1977/08/17 15:22:17	1 	17.200
+80000000  name8               18   1978/09/18 16:23:18	0 	18.200
+90000000  name9               19   1979/10/19 17:24:19	1 	19.200
+========
+DEMO EX4
+========
+id	Name	Age	birth	sex	etc
+=====================================================================
+00000000  name0               10   1970/01/10 08:05:10	0 	10.200
+10000000  name1               11   1971/02/11 09:06:11	1 	NULL
+20000000  name2               12   1972/03/12 10:07:12	0 	12.200
+30000000  name3               13   1973/04/13 11:08:13	1 	NULL
+40000000  name4               14   1974/05/14 12:09:14	0 	14.200
+50000000  name5               15   1975/06/15 13:10:15	1 	NULL
+60000000  name6               16   1976/07/16 14:11:16	0 	16.200
+70000000  name7               17   1977/08/17 15:12:17	1 	NULL
+80000000  name8               18   1978/09/18 16:13:18	0 	18.200
+90000000  name9               19   1979/10/19 17:14:19	1 	NULL
+========
+DEMO EX5
+========
+id	Name	Age	birth	sex	etc
+=====================================================================
+10000000  name1               10   1990/10/11 07:10:10	0 	100.220
+20000000  name2               20   1980/04/21 12:10:10	0 	200.220
+30000000  name3               30   1970/12/06 08:08:08	0 	300.220
+40000000  name4               40   1960/11/10 05:05:05	0 	400.220
+1. update ... where id='10000000'
+UPDATED COUNT : 1
+
+2. update ... where id='80000000'
+No rows Updated
+
+DELETED COUNT : 1
+id	Name	Age	birth	sex	etc
+=====================================================================
+30000000  name3               30   1970/12/06 08:08:08	0 	300.220
+40000000  name4               40   1960/11/10 05:05:05	0 	400.220
+10000000  name1               15   1990/10/11 07:10:10	0 	100.220
+========
+DEMO EX6
+========
+id	        Name	birth
+=====================================================================
+1               name1	1990/10/11 07:10:10
+2               name2	1980/04/21 12:10:10
+3               name3	1970/12/06 08:08:08
+4               name4	1960/11/10 05:05:05
+
+======= exec procedure ======
+
+id	        Name	birth
+=====================================================================
+1               name1	1990/10/11 07:10:10
+2               name2	1980/04/21 12:10:10
+3               name3	1970/12/06 08:08:08
+4               name4	1960/11/10 05:05:05
+5               name5	2004/05/14 15:17:20
+========
+DEMO EX7
+========
+[0] : success
+[1] : success
+[2] : success
+[3] : success
+[4] : no data found
+[5] : success
+[6] : success
+[7] : success
+[8] : success
+[9] : success
+i1	i2
+===================
+5	30
+1	1
+2	2
+3	3
+4	4
+6	6
+7	7
+8	8
+9	9
+10	10
+==========
+DEMO META1
+==========
+TABLE_SCHEM         TABLE_NAME                              TABLE_TYPE
+=========================================================================
+(null)              DELETE_COLUMN_STATS                     SYNONYM
+(null)              DELETE_DATABASE_STATS                   SYNONYM
+(null)              DELETE_INDEX_STATS                      SYNONYM
+(null)              DELETE_SYSTEM_STATS                     SYNONYM
+(null)              DELETE_TABLE_STATS                      SYNONYM
+(null)              DUAL                                    SYNONYM
+(null)              FCLOSE                                  SYNONYM
+(null)              FCLOSE_ALL                              SYNONYM
+(null)              FCOPY                                   SYNONYM
+(null)              FFLUSH                                  SYNONYM
+(null)              FOPEN                                   SYNONYM
+(null)              FREMOVE                                 SYNONYM
+(null)              FRENAME                                 SYNONYM
+(null)              GATHER_DATABASE_STATS                   SYNONYM
+(null)              GATHER_INDEX_STATS                      SYNONYM
+(null)              GATHER_SYSTEM_STATS                     SYNONYM
+(null)              GATHER_TABLE_STATS                      SYNONYM
+(null)              GET_COLUMN_STATS                        SYNONYM
+(null)              GET_INDEX_STATS                         SYNONYM
+(null)              GET_LINE                                SYNONYM
+(null)              GET_SYSTEM_STATS                        SYNONYM
+(null)              GET_TABLE_STATS                         SYNONYM
+(null)              IS_ARRAY_BOUND                          SYNONYM
+(null)              IS_FIRST_ARRAY_BOUND                    SYNONYM
+(null)              IS_LAST_ARRAY_BOUND                     SYNONYM
+(null)              IS_OPEN                                 SYNONYM
+(null)              MEMORY_ALLOCATOR_DUMP                   SYNONYM
+(null)              NEW_LINE                                SYNONYM
+(null)              PRINT                                   SYNONYM
+(null)              PRINTLN                                 SYNONYM
+(null)              PUT                                     SYNONYM
+(null)              PUT_LINE                                SYNONYM
+(null)              RAISE_APPLICATION_ERROR                 SYNONYM
+(null)              RECYCLEBIN                              SYNONYM
+(null)              REFRESH_MATERIALIZED_VIEW               SYNONYM
+(null)              REMOTE_EXECUTE_IMMEDIATE                SYNONYM
+(null)              REMOTE_FREE_STATEMENT                   SYNONYM
+(null)              REMOVE_XID                              SYNONYM
+(null)              SET_CLIENT_INFO                         SYNONYM
+(null)              SET_COLUMN_STATS                        SYNONYM
+(null)              SET_INDEX_STATS                         SYNONYM
+(null)              SET_MODULE                              SYNONYM
+(null)              SET_SYSTEM_STATS                        SYNONYM
+(null)              SET_TABLE_STATS                         SYNONYM
+(null)              SLEEP                                   SYNONYM
+SYSTEM_             DBA_USERS_                              SYSTEM TABLE
+SYSTEM_             STO_COLUMNS_                            SYSTEM TABLE
+SYSTEM_             STO_DATUMS_                             SYSTEM TABLE
+SYSTEM_             STO_ELLIPSOIDS_                         SYSTEM TABLE
+SYSTEM_             STO_GEOCCS_                             SYSTEM TABLE
+SYSTEM_             STO_GEOGCS_                             SYSTEM TABLE
+SYSTEM_             STO_PRIMEMS_                            SYSTEM TABLE
+SYSTEM_             STO_PROJCS_                             SYSTEM TABLE
+SYSTEM_             STO_PROJECTIONS_                        SYSTEM TABLE
+SYSTEM_             STO_SRS_                                SYSTEM TABLE
+SYSTEM_             STO_USER_COLUMNS_                       SYSTEM TABLE
+SYSTEM_             SYS_AUDIT_                              SYSTEM TABLE
+SYSTEM_             SYS_AUDIT_ALL_OPTS_                     SYSTEM TABLE
+SYSTEM_             SYS_COLUMNS_                            SYSTEM TABLE
+SYSTEM_             SYS_COMMENTS_                           SYSTEM TABLE
+SYSTEM_             SYS_COMPRESSION_TABLES_                 SYSTEM TABLE
+SYSTEM_             SYS_CONSTRAINTS_                        SYSTEM TABLE
+SYSTEM_             SYS_CONSTRAINT_COLUMNS_                 SYSTEM TABLE
+SYSTEM_             SYS_CONSTRAINT_RELATED_                 SYSTEM TABLE
+SYSTEM_             SYS_DATABASE_                           SYSTEM TABLE
+SYSTEM_             SYS_DATABASE_LINKS_                     SYSTEM TABLE
+SYSTEM_             SYS_DIRECTORIES_                        SYSTEM TABLE
+SYSTEM_             SYS_DN_USERS_                           SYSTEM TABLE
+SYSTEM_             SYS_DUMMY_                              SYSTEM TABLE
+SYSTEM_             SYS_ENCRYPTED_COLUMNS_                  SYSTEM TABLE
+SYSTEM_             SYS_GRANT_OBJECT_                       SYSTEM TABLE
+SYSTEM_             SYS_GRANT_SYSTEM_                       SYSTEM TABLE
+SYSTEM_             SYS_INDEX_COLUMNS_                      SYSTEM TABLE
+SYSTEM_             SYS_INDEX_PARTITIONS_                   SYSTEM TABLE
+SYSTEM_             SYS_INDEX_RELATED_                      SYSTEM TABLE
+SYSTEM_             SYS_INDICES_                            SYSTEM TABLE
+SYSTEM_             SYS_JOBS_                               SYSTEM TABLE
+SYSTEM_             SYS_LIBRARIES_                          SYSTEM TABLE
+SYSTEM_             SYS_LOBS_                               SYSTEM TABLE
+SYSTEM_             SYS_MATERIALIZED_VIEWS_                 SYSTEM TABLE
+SYSTEM_             SYS_PACKAGES_                           SYSTEM TABLE
+SYSTEM_             SYS_PACKAGE_PARAS_                      SYSTEM TABLE
+SYSTEM_             SYS_PACKAGE_PARSE_                      SYSTEM TABLE
+SYSTEM_             SYS_PACKAGE_RELATED_                    SYSTEM TABLE
+SYSTEM_             SYS_PART_INDICES_                       SYSTEM TABLE
+SYSTEM_             SYS_PART_KEY_COLUMNS_                   SYSTEM TABLE
+SYSTEM_             SYS_PART_LOBS_                          SYSTEM TABLE
+SYSTEM_             SYS_PART_TABLES_                        SYSTEM TABLE
+SYSTEM_             SYS_PASSWORD_HISTORY_                   SYSTEM TABLE
+SYSTEM_             SYS_PRIVILEGES_                         SYSTEM TABLE
+SYSTEM_             SYS_PROCEDURES_                         SYSTEM TABLE
+SYSTEM_             SYS_PROC_PARAS_                         SYSTEM TABLE
+SYSTEM_             SYS_PROC_PARSE_                         SYSTEM TABLE
+SYSTEM_             SYS_PROC_RELATED_                       SYSTEM TABLE
+SYSTEM_             SYS_REPLICATIONS_                       SYSTEM TABLE
+SYSTEM_             SYS_REPL_HOSTS_                         SYSTEM TABLE
+SYSTEM_             SYS_REPL_ITEMS_                         SYSTEM TABLE
+SYSTEM_             SYS_REPL_OFFLINE_DIR_                   SYSTEM TABLE
+SYSTEM_             SYS_REPL_OLD_COLUMNS_                   SYSTEM TABLE
+SYSTEM_             SYS_REPL_OLD_INDEX_COLUMNS_             SYSTEM TABLE
+SYSTEM_             SYS_REPL_OLD_INDICES_                   SYSTEM TABLE
+SYSTEM_             SYS_REPL_OLD_ITEMS_                     SYSTEM TABLE
+SYSTEM_             SYS_REPL_RECOVERY_INFOS_                SYSTEM TABLE
+SYSTEM_             SYS_SECURITY_                           SYSTEM TABLE
+SYSTEM_             SYS_SYNONYMS_                           SYSTEM TABLE
+SYSTEM_             SYS_TABLES_                             SYSTEM TABLE
+SYSTEM_             SYS_TABLE_PARTITIONS_                   SYSTEM TABLE
+SYSTEM_             SYS_TBS_USERS_                          SYSTEM TABLE
+SYSTEM_             SYS_TRIGGERS_                           SYSTEM TABLE
+SYSTEM_             SYS_TRIGGER_DML_TABLES_                 SYSTEM TABLE
+SYSTEM_             SYS_TRIGGER_STRINGS_                    SYSTEM TABLE
+SYSTEM_             SYS_TRIGGER_UPDATE_COLUMNS_             SYSTEM TABLE
+SYSTEM_             SYS_USER_ROLES_                         SYSTEM TABLE
+SYSTEM_             SYS_VIEWS_                              SYSTEM TABLE
+SYSTEM_             SYS_VIEW_PARSE_                         SYSTEM TABLE
+SYSTEM_             SYS_VIEW_RELATED_                       SYSTEM TABLE
+SYSTEM_             SYS_XA_HEURISTIC_TRANS_                 SYSTEM TABLE
+SYSTEM_             SYS_AUDIT_OPTS_                         SYSTEM VIEW
+SYSTEM_             SYS_PASSWORD_LIMITS_                    SYSTEM VIEW
+SYSTEM_             SYS_RECYCLEBIN_                         SYSTEM VIEW
+SYSTEM_             SYS_TABLE_SIZE_                         SYSTEM VIEW
+SYSTEM_             SYS_USERS_                              SYSTEM VIEW
+SYS                 DEMO_EX1                                TABLE
+SYS                 DEMO_EX2                                TABLE
+SYS                 DEMO_EX3                                TABLE
+SYS                 DEMO_EX4                                TABLE
+SYS                 DEMO_EX5                                TABLE
+SYS                 DEMO_EX6                                TABLE
+SYS                 DEMO_EX7                                TABLE
+==========
+DEMO META2
+==========
+POSITION	COL_NAME	DATA_TYPE	PRECISION	SCALE	IsNullable
+=======================================================================================
+1         	ID                  CHAR                8         0         YES
+2         	NAME                VARCHAR             20        0         YES
+3         	AGE                 INTEGER             10        0         YES
+4         	BIRTH               DATE                19        0         YES
+5         	SEX                 SMALLINT            5         0         YES
+6         	ETC                 NUMERIC             10        3         YES
+==========
+DEMO META8
+==========
+ID : CHAR(8)
+NAME : VARCHAR(20)
+AGE : INTEGER
+BIRTH : DATE
+SEX : SMALLINT
+ETC : NUMERIC(10,3)
+==========
+DEMO TRAN1
+==========
+Name	Age
+===================
+NAME1	28
+NAME3	NULL
+==========
+DEMO TRAN2
+==========
+iSQL> SELECT count(*) FROM demo_tran2 WHERE (id)+1 = age;
+COUNT(*)             
+-----------------------
+1000                 
+1 row selected.
+==========
+DEMO MT   
+==========
+Join [0]
+Join [1]
+Join [2]
+Join [3]
+Join [4]
+Join [5]
+Join [6]
+Join [7]
+Join [8]
+Join [9]
+finish the job.
+==========
+DEMO RTL  
+==========
+id	Name	Age	birth	sex	etc
+=====================================================================
+10000000 name1                28 1980/10/10 08:50:10  1  10.200
+20000000 name2                10 1990/05/20 17:15:15  0  {null}
+30000000 name3                30 1970/12/07 09:20:08  1  30.200
+==========
+DEMO CLOB 
+==========
+1 : (14) ^insert-value$
+1 : (14) ^update-value$
+==========
+DEMO BLOB 
+==========
+1 : (10) 10 11 12 13 14 15 16 17 18 19
+1 : (10) 20 21 22 23 24 25 26 27 28 29

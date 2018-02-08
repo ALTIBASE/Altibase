@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Metrics (CommandMetric | OSMetric | SQLMetric)*>
+    <!ELEMENT CommandMetric (Command, Alert?)>
+        <!ATTLIST CommandMetric Activate (true|false) #REQUIRED>
+        <!ATTLIST CommandMetric Name ID #REQUIRED>
+        <!ATTLIST CommandMetric Interval CDATA #REQUIRED>
+        <!ATTLIST CommandMetric Description CDATA #IMPLIED>
+        <!ELEMENT Command (#PCDATA)>
+    <!ELEMENT OSMetric (Argument?, Alert?)>
+        <!ATTLIST OSMetric Activate (true|false) #REQUIRED>
+        <!ATTLIST OSMetric Name ID #REQUIRED>
+        <!ATTLIST OSMetric Interval CDATA #REQUIRED>
+        <!ATTLIST OSMetric Description CDATA #IMPLIED>
+        <!ELEMENT Disk (#PCDATA)>
+    <!ELEMENT SQLMetric (Query, Alert?)>
+        <!ATTLIST SQLMetric Activate (true|false)"true" #IMPLIED>
+        <!ATTLIST SQLMetric Name ID #REQUIRED>
+        <!ATTLIST SQLMetric Interval CDATA #REQUIRED>
+        <!ATTLIST SQLMetric Description CDATA #IMPLIED>
+        <!ELEMENT Query (#PCDATA)>
+        <!ELEMENT Alert (WaringThreshold?, CriticalThreshold?)>
+            <!ATTLIST Alert Activate (true|false)"true" #IMPLIED>
+            <!ATTLIST Alert ComparisonColumn CDATA #IMPLIED>
+            <!ATTLIST Alert ComparisonType (eq|ne|gt|lt|ge|le)"gt" #IMPLIED>
+            <!ELEMENT WarningThreshold (ActionScript?)>
+                <!ATTLIST WarningThreshold Value CDATA #REQUIRED>
+            <!ELEMENT CriticalThreshold (ActionScript?)>
+                <!ATTLIST CriticalThreshold Value CDATA #REQUIRED>
+                <!ELEMENT ActionScript (#PCDATA)>
+                    <!ATTLIST ActionScript Name ID #REQUIRED>

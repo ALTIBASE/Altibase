@@ -1,0 +1,148 @@
+#!/bin/bash
+# ALTIBASE_HOME and JDBC_ADAPTER_HOME environment variables are required.
+
+START_SLEEP_TIME=2
+CHECK_SLEEP_TIME=1
+JDBC_ADAPTER_NAME=$JDBC_ADAPTER_HOME/bin/jdbcAdapter
+CONSTRAINT_CONF_FILE=$JDBC_ADAPTER_HOME/conf/jdbcAdapter.conf
+REPLICATION_TABLE_FILE=_ReplicationTable_$PPID
+
+# check environment variable
+if [ -z $JDBC_ADAPTER_HOME ]
+then
+    echo "Please set JDBC_ADAPTER_HOME environment variable."
+    exit 255
+fi
+if [ -z "$ALTIBASE_HOME" ]
+then
+    echo "Please set ALTIBASE_HOME environment variable."
+    exit 255
+fi
+
+# usage print function
+printUsage()
+{
+    echo "Usage: oaUtility [start|stop|check alive|status]"
+}
+
+# jdbcAdapter start function
+startFunc()
+{
+    ALIVE=`ps -ef | grep $JDBC_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+    if [ $ALIVE -eq 0 ]
+    then
+        echo "Start $JDBC_ADAPTER_NAME..."
+        $JDBC_ADAPTER_NAME
+        sleep $START_SLEEP_TIME
+
+        ALIVE=`ps -ef | grep $JDBC_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+        if [ $ALIVE -ne 1 ]
+        then
+            echo "Failed to start $JDBC_ADAPTER_NAME, please check trace log."
+        else
+            echo "JDBC Adapter started."
+        fi
+        
+    elif [ $ALIVE -eq 1 ]
+    then
+        echo "$JDBC_ADAPTER_NAME was already started."
+    elif [ $ALIVE -gt 1 ]
+    then
+        echo "Multiple $JDBC_ADAPTER_NAME are detected, please check $JDBC_ADAPTER_NAME process."
+    fi
+}
+
+checkAlive()
+{
+    RETURN_VALUE=0
+
+    ALIVE=`ps -ef | grep $JDBC_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+    if [ $ALIVE -eq 0 ]
+    then
+        echo "$JDBC_ADAPTER_NAME is terminated."
+        RETURN_VALUE=1
+    elif [ $ALIVE -gt 1 ]
+    then
+        echo "Multiple $JDBC_ADAPTER_NAME are detected, please check $JDBC_ADAPTER_NAME process."
+        RETURN_VALUE=2
+    else
+        echo "$JDBC_ADAPTER_NAME is alive."
+    fi
+
+    return $RETURN_VALUE
+}
+
+checkConfFile()
+{
+    RETURN_VALUE=0
+        
+    if [ -e $CONSTRAINT_CONF_FILE ]
+    then
+        RETURN_VALUE=1
+    else
+        echo "The constraints configuration file does not exist."
+    fi
+    
+    return $RETURN_VALUE
+}
+
+# main processing routine
+case "$1" in
+'start')
+    checkConfFile
+    if [ $? -eq 1 ]
+    then
+        startFunc
+    else
+        echo "Failed to start $JDBC_ADAPTER_NAME"
+    fi
+;;
+'stop')
+    JDBC_ADAPTER_PID=`ps -ef | grep $JDBC_ADAPTER_NAME | grep "\-\-daemon" | grep -v grep | awk '{print $2}' | head -1`
+    if [ -z $JDBC_ADAPTER_PID ]
+    then
+        echo "$JDBC_ADAPTER_NAME is not started."
+    else
+        echo "$JDBC_ADAPTER_NAME's PID is $JDBC_ADAPTER_PID."
+        echo "Shutdown $JDBC_ADAPTER_NAME..."
+        kill -9 $JDBC_ADAPTER_PID
+    fi
+;;
+'check')
+    case "$2" in
+    'alive')
+        checkAlive
+    ;;
+    'constraints')
+        echo "$JDBC_ADAPTER_NAME does not support constraints."
+    ;;
+    *)
+        while [ 1 ]
+        do
+            checkAlive
+            if [ $? -eq 1 ]
+            then
+                echo "Try auto startup..."
+                checkConfFile
+                if [ $? -eq 1 ]
+                then
+                    startFunc
+                else
+                    echo "Failed to start $JDBC_ADAPTER_NAME"
+                fi
+            fi
+
+            sleep $CHECK_SLEEP_TIME
+        done
+    ;;
+    esac
+;;
+'status')
+    checkAlive
+;;
+*)
+    printUsage
+;;
+esac
+
+exit 0

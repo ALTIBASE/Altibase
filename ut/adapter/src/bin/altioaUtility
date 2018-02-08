@@ -1,0 +1,132 @@
+#!/bin/bash
+# ALTIBASE_HOME and ALTIBASE_ADAPTER_HOME environment variables are required.
+
+START_SLEEP_TIME=2
+CHECK_SLEEP_TIME=1
+ALTI_ADAPTER_NAME=$ALTIBASE_ADAPTER_HOME/bin/altiAdapter
+
+# check environment variable
+if [ -z $ALTIBASE_ADAPTER_HOME ]
+then
+    echo "Please set ALTIBASE_ADAPTER_HOME environment variable."
+    exit 255
+fi
+if [ -z "$ALTIBASE_HOME" ]
+then
+    echo "Please set ALTIBASE_HOME environment variable."
+    exit 255
+fi
+
+# usage print function
+printUsage()
+{
+    echo "Usage: oaUtility [start|stop|check [alive|constraints]|status]"
+}
+
+# oraAdapter start function
+startFunc()
+{
+    ALIVE=`ps -ef | grep $ALTI_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+    if [ $ALIVE -eq 0 ]
+    then
+        echo "Start $ALTI_ADAPTER_NAME..."
+        $ALTI_ADAPTER_NAME 
+        sleep $START_SLEEP_TIME
+
+        ALIVE=`ps -ef | grep $ALTI_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+        if [ $ALIVE -ne 1 ]
+        then
+            echo "Failed to start $ALTI_ADAPTER_NAME, please check trace log."
+        else
+            echo "ALTIBASE Adapter started."
+        fi
+
+    elif [ $ALIVE -eq 1 ]
+    then
+        echo "$ALTI_ADAPTER_NAME was already started."
+    elif [ $ALIVE -gt 1 ]
+    then
+        echo "Multiple $ALTI_ADAPTER_NAME are detected, please check $ALTI_ADAPTER_NAME process."
+    fi
+}
+
+checkAlive()
+{
+    RETURN_VALUE=0
+
+    ALIVE=`ps -ef | grep $ALTI_ADAPTER_NAME | grep "\-\-daemon" | grep -v $0 | grep -v grep | wc -l`
+    if [ $ALIVE -eq 0 ]
+    then
+        echo "$ALTI_ADAPTER_NAME is terminated."
+        RETURN_VALUE=1
+    elif [ $ALIVE -gt 1 ]
+    then
+        echo "Multiple $ALTI_ADAPTER_NAME are detected, please check $ALTI_ADAPTER_NAME process."
+        RETURN_VALUE=2
+    else
+        echo "$ALTI_ADAPTER_NAME is alive."
+    fi
+
+    return $RETURN_VALUE
+}
+
+# main processing routine
+case "$1" in
+'start')
+    oaCheckConstraints
+    if [ $? -eq 0 ]
+    then
+        startFunc
+    else
+        echo "Failed to start $ALTI_ADAPTER_NAME, please check constraints."
+    fi
+;;
+'stop')
+    ALTI_ADAPTER_PID=`ps -ef | grep $ALTI_ADAPTER_NAME | grep "\-\-daemon" | grep -v grep | awk '{print $2}' | head -1`
+    if [ -z $ALTI_ADAPTER_PID ]
+    then
+        echo "$ALTI_ADAPTER_NAME is not started."
+    else
+        echo "$ALTI_ADAPTER_NAME's PID is $ALTI_ADAPTER_PID."
+        echo "Shutdown $ALTI_ADAPTER_NAME..."
+        kill -9 $ALTI_ADAPTER_PID
+    fi
+;;
+'check')
+    case "$2" in
+    'alive')
+        checkAlive
+    ;;
+    'constraints')
+        oaCheckConstraints
+    ;;
+    *)
+        while [ 1 ]
+        do
+            checkAlive
+            if [ $? -eq 1 ]
+            then
+                echo "Try auto startup..."
+                oaCheckConstraints
+                if [ $? -eq 0 ]
+                then
+                    startFunc
+                else
+                    echo "Failed to start $ALTI_ADAPTER_NAME, please check constraints."
+                fi
+            fi
+
+            sleep $CHECK_SLEEP_TIME
+        done
+    ;;
+    esac
+;;
+'status')
+    checkAlive
+;;
+*)
+    printUsage
+;;
+esac
+
+exit 0

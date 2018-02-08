@@ -1,0 +1,299 @@
+#
+# This file is for packaging altibase product.
+#
+# Category Explain
+#   - PLATFORM [CPU-OS-V-V]
+#     ^ : reverse 
+#         ex) [^*-WINDOWS-*-*] : copy all except windows platform
+#   - EDITION  [STANDARD, ENTERPRISE, MINI, MOBILE, DISK, OPEN]
+#   - DEVTYPE  [SERVER, CLIENT]
+#   - BITTYPE  [32/64]
+#   - COMPTYPE [CC/GCC/ICC]
+#   - PERMTYPE [0644]
+#   - EXTTYPE  [*]  (EXE, OBJ, ARL, SHL, DIR) 
+#     ! : ignore the file existence. 
+#         ex)  [!EXE] : just try copy if there no nothing, ignore it.
+#  
+
+################################################################################################
+#
+#  NATC PART : HEADER FILES
+#
+################################################################################################
+
+# CLIENT header files 
+
+#0644 ./src/pd/include/Handle_Set2.h                       ./include/Handle_Set2.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+Handle_Set2.h
+include
+Handle_Set2.h
+
+
+#0644 ./src/pd/include/Handle_Set2.i                    /include/Handle_Set2.i
+[*][*][*][*][*][0644][*]
+src/pd/include
+Handle_Set2.i
+include
+Handle_Set2.i
+
+#0644 ./src/pd/include/PDL2.h                           /include/PDL2.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+PDL2.h
+include
+PDL2.h
+
+#0644 ./src/pd/include/PDL2.i                           /include/PDL2.i
+[*][*][*][*][*][0644][*]
+src/pd/include
+PDL2.i
+include
+PDL2.i
+
+#0644 ./src/pd/include/Basic_Types.h                    /include/Basic_Types.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+Basic_Types.h
+include
+Basic_Types.h
+
+#0644 ./src/pd/include/Basic_Types.i                    /include/Basic_Types.i
+[*][*][*][*][*][0644][*]
+src/pd/include
+Basic_Types.i
+include
+Basic_Types.i
+
+#0644 ./src/pd/include/Min_Max.h                        /include/Min_Max.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+Min_Max.h
+include
+Min_Max.h
+
+#0644 ./src/pd/include/OS.h                             /include/OS.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+OS.h
+include
+OS.h
+
+#0644 ./src/pd/include/OS.i                             /include/OS.i
+[*][*][*][*][*][0644][*]
+src/pd/include
+OS.i
+include
+OS.i
+
+#0644 ./src/pd/makeinclude/config-linkage.h             /include/config-linkage.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-linkage.h
+include
+config-linkage.h
+
+#0644 ./src/pd/makeinclude/config-minimal.h             /include/config-minimal.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-minimal.h
+include
+config-minimal.h
+
+#0644 ./src/pd/makeinclude/config-altibase.h            /include/config-altibase.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-altibase.h
+include
+config-altibase.h
+
+#0644 ./src/pd/makeinclude/config-sunos5.5.h            /include/config-sunos5.5.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-sunos5.5.h
+include
+config-sunos5.5.h
+
+#0644 ./src/pd/makeinclude/config-sunos5.6.h            /include/config-sunos5.6.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-sunos5.6.h
+include
+config-sunos5.6.h
+
+#0644 ./src/pd/makeinclude/config-sunos5.7.h            /include/config-sunos5.7.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-sunos5.7.h
+include
+config-sunos5.7.h
+
+#0644 ./src/pd/makeinclude/config-sunos5.8.h            /include/config-sunos5.8.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-sunos5.8.h
+include
+config-sunos5.8.h
+
+#0644 ./src/pd/makeinclude/config-sunos5.9.h            /include/config-sunos5.9.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-sunos5.9.h
+include
+config-sunos5.9.h
+
+#0644 ./src/pd/makeinclude/config-aix-4.x.h             /include/config-aix-4.x.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-aix-4.x.h
+include
+config-aix-4.x.h
+
+#0644 ./src/pd/makeinclude/config-osf1-4.0.h            /include/config-osf1-4.0.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-osf1-4.0.h
+include
+config-osf1-4.0.h
+
+#0644 ./src/pd/makeinclude/config-cxx-common.h          /include/config-cxx-common.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-cxx-common.h
+include
+config-cxx-common.h
+
+#0644 ./src/pd/makeinclude/config-linux-common.h        /include/config-linux-common.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-linux-common.h
+include
+config-linux-common.h
+
+#0644 ./src/pd/makeinclude/config-win32.h        /include/config-win32.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-win32.h
+include
+config-win32.h
+
+#0644 ./src/pd/makeinclude/config-win32-common.h        /include/config-win32-common.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-win32-common.h
+include
+config-win32-common.h
+
+#0644 ./src/pd/makeinclude/config-win32-msvc.h        /include/config-win32-msvc.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-win32-msvc.h
+include
+config-win32-msvc.h
+
+#0644 ./src/pd/makeinclude/config-g++-common.h          /include/config-g++-common.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config-g++-common.h
+include
+config-g++-common.h
+
+#0644 ./src/pd/makeinclude/config.h                     /include/config.h
+[*][*][*][*][*][0644][*]
+src/pd/makeinclude
+config.h
+include
+config.h
+
+
+#0644 ./src/pd/include/inc_user_config.h                /include/inc_user_config.h
+[*][*][*][*][*][0644][*]
+src/pd/include
+inc_user_config.h
+include
+inc_user_config.h
+
+#0644 ./src/id/idConfig.h                               /include/idConfig.h
+[*][*][*][*][*][0644][*]
+src/id
+idConfig.h
+include
+idConfig.h
+
+#0644 ./src/id/include/idl.h                            /include/idl.h
+[*][*][*][*][*][0644][*]
+src/id/include
+idl.h
+include
+idl.h
+
+#0644 ./src/id/include/idl.i                            /include/idl.i
+[*][*][*][*][*][0644][*]
+src/id/include
+idl.i
+include
+idl.i
+
+#0644 ./src/id/include/idtBaseThread.h                  /include/idtBaseThread.h
+[*][*][*][*][*][0644][*]
+src/id/include
+idtBaseThread.h
+include
+idtBaseThread.h
+
+#0644 ./src/id/include/idTypes.h                        /include/idTypes.h
+[*][*][*][*][*][0644][*]
+src/id/include
+idTypes.h
+include
+idTypes.h
+
+#0644 ./src/id/include/iddTypes.h                       /include/iddTypes.h
+[*][*][*][*][*][0644][*]
+src/id/include
+iddTypes.h
+include
+iddTypes.h
+
+#0644 ./src/mm/include/mmx.h                            /include/mmx.h
+[*][*][*][*][*][0644][*]
+src/mm/include
+mmx.h
+include
+mmx.h
+
+#0644 ./src/em/include/server.h                    ./include/server.h
+[*][*][*][*][*][0644][*]
+src/em/include
+server.h
+include
+server.h
+
+#0644 ./src/id/include/idf.h                            /include/idf.h
+[*][*][*][*][*][0644][*]
+src/id/include
+idf.h
+include
+idf.h
+
+#0644 ./src/id/include/idfCore.h                            /include/idfCore.h
+[*][*][*][*][*][0644][*]
+src/id/include
+idfCore.h
+include
+idfCore.h
+
+# win : 0755 ./ut/isql/src/is                        ./bin/is
+[*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/isql/src
+is
+bin
+is
+
+# win : 0755 ./ut/iloader3/src/il                        ./bin/il
+[*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/iloader3/src
+il
+bin
+il

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GroupMetrics>
+	<GroupMetric Name='group1' Interval='40'>
+		<Target MetricName='TOTAL_CPU_USER'/>
+		<Target MetricName='PROC_CPU_USER'/>
+		<Target MetricName='LOGFILE_COUNT'>
+	 	    <Column Name='LOG_GAP' />
+		</Target>
+	</GroupMetric>
+	
+	<GroupMetric Name='group2' Interval='80'>
+		<Target MetricName='PROC_MEM_USED_PERCENTAGE'/>
+		<Target MetricName='MEM_TBL_USAGE'/>
+	</GroupMetric>
+</GroupMetrics>

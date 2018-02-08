@@ -1,0 +1,19 @@
+include $(ALTIBASE_HOME)/install/altibase_env.mk
+
+BINS=cparsefull macro
+SRCS=cparsefull.sc macro.sc
+
+APRES=$(SRCS:.sc=.cpp)
+OBJS=$(SRCS:.cpp=.$(OBJEXT))
+
+%.cpp : %.sc
+	apre -t cpp -parse full $<
+
+all: $(BINS)
+
+cparsefull: cparsefull.$(OBJEXT) cparsefull.cpp
+	$(LD) $(LFLAGS) $(LDOUT)cparsefull$(BINEXT) cparsefull.$(OBJEXT) $(LIBOPT)apre$(LIBAFT) $(LIBOPT)odbccli$(LIBAFT) $(LIBS)
+
+macro: macro.$(OBJEXT) macro.cpp
+	$(LD) $(LFLAGS) $(LDOUT)macro$(BINEXT) macro.$(OBJEXT) $(LIBOPT)apre$(LIBAFT) $(LIBOPT)odbccli$(LIBAFT) $(LIBS)
+

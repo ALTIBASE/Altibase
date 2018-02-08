@@ -1,0 +1,1 @@
+ALTER SESSION SET EVENTS '10503 trace name context forever, level 4000';

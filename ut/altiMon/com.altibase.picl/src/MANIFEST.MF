@@ -1,0 +1,6 @@
+Built-By: Altibase inc.
+Implementation-Vendor: Altibase inc.
+Implementation-Title: Platform Information Collection Library
+Implementation-Version: 1.2.0
+Main-Class: com.altibase.picl.Test
+Class-Path: .

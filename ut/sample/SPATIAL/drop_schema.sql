@@ -1,0 +1,2 @@
+DROP TABLE TEST_TBL;
+

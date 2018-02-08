@@ -1,0 +1,9 @@
+Installer.Welcome.Title=Setup -\n%1$s
+Installer.Ready.Text1=Setup is now ready to install %1$s.
+Installer.Installing.Text=Please wait until the setup wizard finishes installing %1$s.
+Installer.Installation.Finished.Text=Setup has finished installing the %1$s on your computer.
+Installer.Installing.Title=Installing - Altibase Client Value Package
+Installer.Ready.Title=Ready to Install - Altibase Client Value Package
+Installer.Installation.Finished.Title=Completing the Setup Wizard.
+Installer.ComponentSelection.Label=Select the components you want to install; clear the checkbox next to the components you do not want to install. Click Next when you are ready to continue.
+Installer.ComponentDescription=Each application includes its own installer. If you choose an application, the installer will unpack the installation files to a temporary directory.\nAfter the installation is complete, the files in the temporary directory will be deleted automatically.

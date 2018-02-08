@@ -1,0 +1,35 @@
+이 예제는 ALA Library를 통해서 받은 로그를 OCI통해서 Oracle에 반영하는 예제입니다.
+
+이 예제는 다음 파일로 구성되어 있습니다.
+
+ * README           - 읽고 계신 이 문서입니다.
+ * Makefile         - 예제 컴파일을 위한 규칙
+ * Main.c           - 예제의 main() 함수
+ * AlaToOciConfig.h - 예제에서 사용되는 환경 설정 정의
+ * Exception.h      - 예외 처리를 위한 Macro들 모음
+ * AlaReceiver.c    - ALA Library를 이용하여 Replication의 로그를 받아 DB_LOG 자료구조로 변환하는 모듈
+ * AlaReceiver.h    - ALA Receiver의 Interface 정의
+ * DBLog.h          - DB_LOG 자료구조 정의
+ * OciApplier.h     - OCI Applier의 Interface 정의
+ * OciApplier.c     - OCI Library를 이용하여 DB_LOG의 로그를 Oracle에 반영하는 모듈
+
+모든 기능이 완벽하게 구현된 것이 아닌 ALA Library와 OCI Library를 어떻게 이용하는지를 보여줍니다. 따라서 다음과 같은 한계를 가지고 있습니다.
+
+ * Altibase의 Replication에 대상 테이블 개수가 1개로 제한됩니다.
+ * Replication에서 보내주는 모든 로그를 처리하지 않습니다. Commit, Rollback, Insert, Update, Delete의 로그 만을 처리합니다.
+ * Altibase의 다음 Datatype들을 다음 Oracle의 Datatype으로 반영합니다.
+    | Altibase Data Type    | Oracle Data Type  |
+    | NUMERIC               | NUMBER            |
+    | FLOAT                 | NUMBER            |
+    | DOUBLE                | NUMBER            |
+    | REAL                  | NUMBER            |
+    | BIGINT                | NUMBER            |
+    | INTEGER               | NUMBER            |
+    | SMALLINT              | NUMBER            |
+    | CHAR                  | CHAR              |
+    | VARCHAR               | VARCHAR2          |
+    | NCHAR                 | NCHAR             |
+    | NVARCHAR              | NVARCHAR2         |
+    | DATE                  | DATE              |
+ * 문자형 데이터 타입의 크기는 4KB로 제한됩니다.
+ * CHAR, VARCHAR, NCHAR, NVARCHAR가 Primary Key가 되는 경우 Altibase와 Oracle의 차이에 따라서 정상 동작하지 않을 수 있습니다.

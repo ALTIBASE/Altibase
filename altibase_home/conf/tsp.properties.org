@@ -1,0 +1,19 @@
+# $Id: tsp.properties.org 2 2002-12-17 05:44:02Z jdlee $
+#
+
+#                       --  tsp.properties --
+#
+# 환경변수 : ${ALTIBASE_HOME} 에 의해 접근됨
+# % altibase 프로퍼티 화일 설명
+#    1. #은 주석임 
+#    2. QP와 SM에서 사용되는 프로퍼티 기술
+#    3. 프로퍼티 변수명 앞에 DEFAULT_를 붙인 C Macro가 소스코드에 존재함
+#    4. ? is replaced with value of ISPEENER_HOME enviroment variable.
+#
+
+TSP_SEM_KEY    = 34343    # 세마퍼 아이디
+TSP_MAX_SEM    = 100     # 세마퍼 갯수 (많아지면 에러 발생)
+
+# 기준 시간 이상 지나도 서버가 동작하지 않으면 에러로 처리함.
+# default 값을 600으로 함. tsp.h 
+TSP_SERVER_CONTROL_TIMEOUT = 600 

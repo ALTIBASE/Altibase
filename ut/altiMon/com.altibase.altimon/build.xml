@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project name="FatJar altimon.jar (experimental)" default="createJar" basedir=".">
+    <!-- this file was created by Fat-Jar Eclipse Plug-in -->
+    <!-- the ANT-Export is in a very early stage, so this -->
+    <!-- is only experimental, ANT 1.6 or above is        -->
+    <!-- required, feedback is always welcome:            -->
+    <!--       http://sourceforge.net/projects/fjep       -->
+    
+	<property name="ant.reuse.loader" value="true"/>
+	<path id="fjepPath" location="fatjar.jar"/>        
+        <taskdef name="fatjar.build" classname="net.sf.fjep.anttask.FJBuildTask" classpathref="fjepPath"/>
+        <typedef name="fatjar.manifest" classname="net.sf.fjep.anttask.FJManifestType" classpathref="fjepPath"/>
+        <typedef name="fatjar.exclude" classname="net.sf.fjep.anttask.FJExcludeType" classpathref="fjepPath"/>
+        <typedef name="fatjar.jarsource" classname="net.sf.fjep.anttask.FJJarSourceType" classpathref="fjepPath"/>
+        <typedef name="fatjar.filesource" classname="net.sf.fjep.anttask.FJFileSourceType" classpathref="fjepPath"/>    
+    
+	<property name="lib.dir" value="lib"/>
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+    </path>
+	
+	<target name="clean">
+		<delete dir="classes" excludes=".svn/" />
+	</target>
+	
+    <target name="compile" depends="clean">		
+        <!--
+    	<copy todir="classes">
+			<fileset dir="lib" includes="**"/>
+    	</copy>
+        -->
+        <mkdir dir="classes"/>
+    	<javac sourcepath="" debug="true" srcdir="src" destdir="classes" classpathref="classpath" source="1.5" target="1.5" fork="true">    		
+    	</javac>
+    </target>
+	
+	<target name="createJar" depends="compile">
+        <fatjar.build output="altimon.jar">
+            <fatjar.manifest removesigners="false" mainclass="com.altibase.altimon.main.AltimonMain" 
+                classpath=". lib/com.altibase.picl.jar lib/quartz-all-1.6.6.jar lib/commons-collections-3.2.jar lib/commons-logging-1.1.jar lib/log4j.jar lib/ws-commons-java5-1.0.1.jar lib/ws-commons-util-1.0.2.jar lib/stax-api-1.0.1.jar lib/stax-1.2.0.jar lib/commons-codec-1.6.jar"/>
+            <fatjar.filesource path="classes" relpath=""/>
+        </fatjar.build>
+    </target>
+	<target name="createZip" depends="createJar">
+		<zip destfile="altimon.zip">
+            <zipfileset dir="lib" prefix="lib" includes="*.jar *.so *.dll *.sl" />
+			<zipfileset dir="conf" prefix="conf" includes="config.xml, Metrics.xml, GroupMetrics.xml log4j.properties"/>
+			<zipfileset dir="action_scripts" prefix="action_scripts" includes="*.sh" filemode="755"/>
+			<zipfileset dir="action_scripts" prefix="action_scripts" includes="*.bat" filemode="755"/>
+			<zipfileset dir="action_scripts" prefix="action_scripts" includes="*.sql"/>
+            <zipfileset dir="action_logs" prefix="action_logs" includes="*.txt"/>
+			<zipfileset file="*.txt" />			
+			<zipfileset file="altimon.jar" filemode="755"/>
+			<zipfileset file="debug.sh" filemode="755"/>
+			<zipfileset file="altimon.sh" filemode="755"/>
+			<zipfileset file="altimon_win64.bat" filemode="755"/>
+			<zipfileset file="altimon_win32.bat" filemode="755"/>
+			<zipfileset file="procrun-win64.exe" filemode="755"/>
+			<zipfileset file="procrun-win32.exe" filemode="755"/>
+		</zip>
+		<tar destfile="altimon.tar.gz" compression="gzip">
+		  <zipfileset src="altimon.zip"/>
+		</tar>
+	</target>
+</project>

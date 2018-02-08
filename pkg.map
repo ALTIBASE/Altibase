@@ -1,0 +1,3923 @@
+# 
+# This file is for packaging altibase product.
+#
+# Category Explain
+#   - PLATFORM [CPU-OS-V-V]
+#     ^ : reverse 
+#         ex) [^*-WINDOWS-*-*] : copy all except windows platform
+#   - EDITION  [STANDARD, ENTERPRISE, EMBEDDED, MOBILE, COMMUNITY, DISK, OPEN]
+#   - DEVTYPE  [SERVER, CLIENT]
+#   - BITTYPE  [32/64]
+#   - COMPTYPE [CC/GCC/ICC]
+#   - PERMTYPE [0644]
+#   - EXTTYPE  [*]  (EXE, OBJ, ARL, SHL, DIR) 
+#     ! : ignore the file existence. 
+#         ex)  [!EXE] : just try copy if there no nothing, ignore it.
+#  
+
+
+###############################################################################
+#
+#  Directory Creation 
+#
+###############################################################################
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+APatch
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+bin
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+conf
+!
+
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+include
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+lib
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+logs
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+logs/do_not_remove_log_files
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+logs/never_remove_log_files
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+arch_logs
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+msg
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+install
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+trc
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+altiComp
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+global
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+admin
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+dbs
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SQLCLI
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SQLCLI/BLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SQLCLI/CLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SQLCLI/Fail-Over
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SQLCLI/SSL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/BLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/CLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/Fail-Over
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/SimpleSQL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/Logging
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/MultipleResultSet
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/BLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/CLOB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/Fail-Over
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/JDBC/SSL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/include
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/schema
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/APRE/SSL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoODBC
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoODBC/WKT
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoODBC/WKB
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoJDBC
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoJDBC/WKT
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/SPATIAL/GeoJDBC/WKB
+!
+
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/CAPI
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/CAPI/Fail-Over
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/CAPI/SSL
+!
+
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/ALA
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/ALA/Altibase
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/ALA/Oracle
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/ALA/OracleOCI
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+sample/UTIL
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+sample/ILOADERAPI
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+sample/CHECKSERVER
+!
+
+[*][*][S/C][*][*][0755][DIR] # directory creation
+!
+!
+thirdparty
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+thirdparty/ArcGIS
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+thirdparty/SmartSSD
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+altiMon
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/conf
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/lib
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/action_scripts
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/action_logs
+!
+
+[*][*][S][*][*][0755][DIR] # directory creation
+!
+!
+packages
+!
+
+################################################################################################
+#
+#  SERVER SECTION
+#
+################################################################################################
+
+# SERVER : binary & script & batch file 
+#4755 ./altibase_home/bin/altibase                              ./bin/altibase
+[*][*][S][*][*][4755][EXE]
+altibase_home/bin
+altibase
+bin
+altibase
+
+#0755 ./altibase_home/bin/shmutil                               ./bin/shmutil
+[^*-WINDOWS-*-*][*][S][*][*][0755][EXE]
+altibase_home/bin
+shmutil
+bin
+shmutil
+
+#0755 ./altibase_home/bin/checkServer                           ./bin/checkServer
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+checkServer
+bin
+checkServer
+
+#0755 ./altibase_home/bin/killCheckServer                       ./bin/killCheckServer
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+killCheckServer
+bin
+killCheckServer
+
+#0755 ./altibase_home/bin/dumpla                                ./bin/dumpla
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpla
+bin
+dumpla
+
+#0644 ./ut/isql/src/DUMPLA.ban                            ./msg/DUMPLA.ban
+[*][*][S][*][*][0644][*]
+src/sm/util
+DUMPLA.ban
+msg
+DUMPLA.ban
+
+
+#0755 ./altibase_home/bin/dumplf                                ./bin/dumplf
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumplf
+bin
+dumplf
+
+#0644 ./ut/isql/src/DUMPLF.ban                            ./msg/DUMPLF.ban
+[*][*][S][*][*][0644][*]
+src/sm/util
+DUMPLF.ban
+msg
+DUMPLF.ban
+
+#0755 ./altibase_home/bin/dumpci                                ./bin/dumpci
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpci
+bin
+dumpci
+
+#0644 ./ut/isql/src/DUMPCI.ban                            ./msg/DUMPCI.ban
+[*][*][S][*][*][0644][*]
+src/sm/util
+DUMPCI.ban
+msg
+DUMPCI.ban
+
+#0755 ./altibase_home/bin/dumpddf                                ./bin/dumpddf
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpddf
+bin
+dumpddf
+
+#0644 ./ut/isql/src/DUMPDDF.ban                            ./msg/DUMPDDF.ban
+[*][*][S][*][*][0644][*]
+src/sm/util
+DUMPDDF.ban
+msg
+DUMPDDF.ban
+
+#0755 ./altibase_home/bin/dumptbl                                ./bin/dumptbl
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumptbl
+bin
+dumptbl
+
+#0755 ./altibase_home/bin/dumpbi                                ./bin/dumpbi
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpbi
+bin
+dumpbi
+
+#0755 ./altibase_home/bin/dumpct                                ./bin/dumpct
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpct
+bin
+dumpct
+
+#0755 ./altibase_home/bin/altipasswd                            ./bin/altipasswd
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+altipasswd
+bin
+altipasswd
+
+#0755 ./altibase_home/bin/altiProfile                      ./bin/altiProfile
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+altiProfile
+bin
+altiProfile
+
+
+# unix : 0755 ./altibase_home/bin/server                                ./bin/server
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+altibase_home/bin
+server
+bin
+server
+
+# 0755 ./src/pd/port/windows/bin/vc++filt                  ./bin/vc++filt
+[*-WINDOWS-*-*][*][S][*][*][0755][EXE]
+src/pd/port/windows/bin
+vc++filt
+bin
+vc++filt
+
+#0755 altibase_home/bin/dumpdb           ./bin/dumpdb
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumpdb
+bin
+dumpdb
+
+#0755 altibase_home/bin/extprocAgent     ./bin/extprocAgent
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+extprocAgent
+bin
+extprocAgent
+
+#0755 ./altibase_home/bin/altiAudit                    ./bin/altiAudit
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+altiAudit
+bin
+altiAudit
+
+#0666 ./altibase_home/bin/altilinker.jar               ./bin/altilinker.jar
+#[*][*][S][*][*][0666][*]
+#altibase_home/bin
+#altilinker.jar
+#bin
+#altilinker.jar
+
+#0755 ./altibase_home/bin/printkey                    ./bin/prinkey
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+printkey
+bin
+printkey
+
+#0644 ./altibase_home/conf/dblink.conf.sample        ./conf/dblink.conf.sample
+[*][*][S][*][*][0644][*]
+altibase_home/conf
+dblink.conf.sample
+conf
+dblink.conf.sample
+
+#0644 ./altibase_home/conf/altibase.properties.release   ./conf/altibase.properties.sample
+[*][^C][S][*][*][0644][*]
+altibase_home/conf
+altibase.properties.release
+conf
+altibase.properties.sample
+
+#0644 ./altibase_home/conf/altibase.properties.community   ./conf/altibase.properties.sample
+[*][C][S][*][*][0644][*]
+altibase_home/conf
+altibase.properties.community
+conf
+altibase.properties.sample
+
+################################################################################################
+#
+#  SERVER MSB 
+#
+################################################################################################
+
+#0644 ./altibase_home/msg/E_ID_US7ASCII.msb                      ./msg/E_ID_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_ID_US7ASCII.msb
+msg
+E_ID_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_ID_US7ASCII.msb                      ./msg/E_ID_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_ID_US7ASCII.msb
+msg
+E_ID_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_CM_US7ASCII.msb                      ./msg/E_CM_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_CM_US7ASCII.msb
+msg
+E_CM_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_CM_US7ASCII.msb                      ./msg/E_CM_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_CM_US7ASCII.msb
+msg
+E_CM_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_ST_US7ASCII.msb                      ./msg/E_ST_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_ST_US7ASCII.msb
+msg
+E_ST_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_ST_US7ASCII.msb                      ./msg/E_ST_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_ST_US7ASCII.msb
+msg
+E_ST_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_SM_US7ASCII.msb                      ./msg/E_SM_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_SM_US7ASCII.msb
+msg
+E_SM_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_SM_US7ASCII.msb                      ./msg/E_SM_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_SM_US7ASCII.msb
+msg
+E_SM_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_MT_US7ASCII.msb                          ./msg/E_MT_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_MT_US7ASCII.msb
+msg
+E_MT_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_MT_US7ASCII.msb                         ./msg/E_MT_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_MT_US7ASCII.msb
+msg
+E_MT_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_ST_US7ASCII.msb                         ./msg/E_MT_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_ST_US7ASCII.msb
+msg
+E_ST_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_RP_US7ASCII.msb                      ./msg/E_RP_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_RP_US7ASCII.msb
+msg
+E_RP_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_RP_US7ASCII.msb                      ./msg/E_RP_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_RP_US7ASCII.msb
+msg
+E_RP_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_QP_US7ASCII.msb                      ./msg/E_QP_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_QP_US7ASCII.msb
+msg
+E_QP_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_QP_US7ASCII.msb                      ./msg/E_QP_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_QP_US7ASCII.msb
+msg
+E_QP_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_SD_US7ASCII.msb                      ./msg/E_SD_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_SD_US7ASCII.msb
+msg
+E_SD_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_SD_US7ASCII.msb                      ./msg/E_SD_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_SD_US7ASCII.msb
+msg
+E_SD_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_MM_US7ASCII.msb                      ./msg/E_MM_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_MM_US7ASCII.msb
+msg
+E_MM_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_MM_US7ASCII.msb                      ./msg/E_MM_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_MM_US7ASCII.msb
+msg
+E_MM_KO16KSC5601.msb
+
+#0644 ./altibase_home/msg/E_DK_US7ASCII.msb                      ./msg/E_DK_US7ASCII.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_DK_US7ASCII.msb
+msg
+E_DK_US7ASCII.msb
+
+#0644 ./altibase_home/msg/E_DK_US7ASCII.msb                      ./msg/E_DK_KO16KSC5601.msb
+[*][*][S][*][*][0644][*]
+altibase_home/msg
+E_DK_US7ASCII.msb
+msg
+E_DK_KO16KSC5601.msb
+
+#0644 ./install/manual.txt             ./msg/manual.txt
+[*][*][*][*][*][0644][*]
+install/
+manual.txt
+msg
+manual.txt
+
+################################################################################################
+#
+#  CLIENT PART : UTILITY 
+#
+################################################################################################
+
+#0755 ./altibase_home/bin/isql                                ./bin/isql
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+isql
+bin
+isql
+
+#0644 ./ut/isql/src/ISQL.ban                            ./msg/ISQL.ban
+[*][*][*][*][*][0644][*]
+ut/isql/src
+ISQL.ban
+msg
+ISQL.ban
+
+# unix : 0755 ./ut/isql/src/is                                  ./bin/is
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/isql/src
+is
+bin
+is
+
+# win : 0755 ./ut/isql/src/is.bat                        ./bin/is.bat
+[*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/isql/src
+is.bat
+bin
+is.bat
+
+#0755 ./altibase_home/bin/shardLoader                     ./bin/shardLoader
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+shardLoader
+bin
+shardLoader
+
+#0644 ./ut/iloader3/src/SHARDLOADER.ban                   ./msg/SHARDLOADER.ban
+[*][*][*][*][*][0644][*]
+ut/iloader3/src
+SHARDLOADER.ban
+msg
+SHARDLOADER.ban
+
+#0755 ./altibase_home/bin/iloader                         ./bin/iloader
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+iloader
+bin
+iloader
+
+#0644 ./ut/iloader3/src/ILOADER.ban                     ./msg/ILOADER.ban
+[*][*][*][*][*][0644][*]
+ut/iloader3/src
+ILOADER.ban
+msg
+ILOADER.ban
+
+# unix : 0755 ./ut/iloader3/src/il                              ./bin/il
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/iloader3/src
+il
+bin
+il
+
+# win : 0755 ./ut/iloader3/src/il.bat                        ./bin/il.bat
+[*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/iloader3/src
+il.bat
+bin
+il.bat
+
+# win : 0755 ./ut/iloader3/src/iloaderup.bat                     ./bin/iloaderup.bat
+[*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/iloader3/src
+iloaderup.bat
+bin
+iloaderup.bat
+
+# unix : 0755 ./ut/iloader3/src/iloaderup                       ./bin/iloaderup
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+ut/iloader3/src
+iloaderup
+bin
+iloaderup
+
+
+#0755 ./altibase_home/bin/apre                                ./bin/apre
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+apre
+bin
+apre
+
+
+#0755 ./altibase_home/bin/sesc                                ./bin/sesc
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+sesc
+bin
+sesc
+
+
+#0644 ./src/ul/ulp/APRE.ban                            ./msg/APRE.ban
+[*][*][*][*][*][0644][*]
+src/ul/ulp
+APRE.ban
+msg
+APRE.ban
+
+
+#0644 ./altibase_home/lib/libapre.a                             ./lib/libapre.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+apre
+lib
+apre
+
+
+#0644 ./altibase_home/lib/libsesc.a                             ./lib/libsesc.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+sesc
+lib
+sesc
+
+
+#0755 ./altibase_home/lib/libapre_sl.so                ./lib/libapre_sl.so
+[^*-WINDOWS-*-*][*][*][*][*][0755][SHL]
+altibase_home/lib
+apre_sl
+lib
+apre_sl
+
+
+#0755 ./altibase_home/lib/libsesc_sl.so                ./lib/libsesc_sl.so
+[^*-WINDOWS-*-*][*][*][*][*][0755][SHL]
+altibase_home/lib
+sesc_sl
+lib
+sesc_sl
+
+
+
+# altiComp
+#0755 ./altibase_home/bin/altiComp                     ./bin/altiComp
+[^*-WINDOWS-*-*][*][*][*][*][0755][!EXE]
+altibase_home/bin
+altiComp
+bin
+altiComp
+
+#0644 ./ut/audit/src/altiComp.cfg                           ./altiComp/altiComp.cfg
+[^*-WINDOWS-*-*][*][*][*][*][0644][!*]
+ut/audit/src
+altiComp.cfg
+altiComp
+altiComp.cfg
+
+#0755 ./altibase_home/bin/aexport                              ./bin/aexport
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+aexport
+bin
+aexport
+
+#0644 ./ut/utm/src/aexport.properties.org             ./conf/aexport.properties.sample
+[^*-WINDOWS-*-*][*][*][*][*][0644][*]
+ut/utm/src
+aexport.properties.org
+conf
+aexport.properties.sample
+
+#0755 ./altibase_home/bin/altiwrap                    ./bin/altiwrap
+[*][*][*][*][*][0755][EXE]
+altibase_home/bin
+altiwrap
+bin
+altiwrap
+
+
+#altiMon
+#0755 ./ut/altiMon/com.altibase.altimon/altimon.sh                  ./bin/altimon.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+altimon.sh
+bin
+altimon.sh
+
+# 0755 ./ut/altiMon/com.altibase.altimon/altimon_win64.bat                        ./bin/altimon.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+altimon_win64.bat
+bin
+altimon.bat
+
+#0644 ./ut/altiMon/com.altibase.altimon/altimon.jar                         ./altiMon/altimon.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon
+altimon.jar
+altiMon
+altimon.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/ReadMe.txt                         ./altiMon/ReadMe.txt
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon
+ReadMe.txt
+altiMon
+ReadMe.txt
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/config.xml                         ./altiMon/conf/config.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+config.xml
+altiMon/conf
+config.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/Metrics.xml                         ./altiMon/conf/Metrics.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+Metrics.xml
+altiMon/conf
+Metrics.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/GroupMetrics.xml                         ./altiMon/conf/GroupMetrics.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+GroupMetrics.xml
+altiMon/conf
+GroupMetrics.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/log4j.properties                         ./altiMon/conf/log4j.properties
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+log4j.properties
+altiMon/conf
+log4j.properties
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.sh                  ./altiMon/action_scripts/cpu_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.sh
+altiMon/action_scripts
+cpu_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.sh                  ./altiMon/action_scripts/db_usage.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.sh
+altiMon/action_scripts
+db_usage.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.sh                  ./altiMon/action_scripts/logfile_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.sh
+altiMon/action_scripts
+logfile_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.sh                  ./altiMon/action_scripts/long_query.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.sh
+altiMon/action_scripts
+long_query.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.sh                  ./altiMon/action_scripts/mem_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.sh
+altiMon/action_scripts
+mem_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.sh                  ./altiMon/action_scripts/mem_stat.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.sh
+altiMon/action_scripts
+mem_stat.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.sh                  ./altiMon/action_scripts/rep_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.sh
+altiMon/action_scripts
+rep_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.bat                        ./altiMon/action_scripts/cpu_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.bat
+altiMon/action_scripts
+cpu_act.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.bat                        ./altiMon/action_scripts/db_usage.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.bat
+altiMon/action_scripts
+db_usage.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.bat                        ./altiMon/action_scripts/logfile_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.bat
+altiMon/action_scripts
+logfile_act.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.bat                        ./altiMon/action_scripts/long_query.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.bat
+altiMon/action_scripts
+long_query.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.bat                        ./altiMon/action_scripts/mem_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.bat
+altiMon/action_scripts
+mem_act.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.bat                        ./altiMon/action_scripts/mem_stat.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.bat
+altiMon/action_scripts
+mem_stat.bat
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.bat                        ./altiMon/action_scripts/rep_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.bat
+altiMon/action_scripts
+rep_act.bat
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.sql                  ./altiMon/action_scripts/cpu_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.sql
+altiMon/action_scripts
+cpu_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.sql                  ./altiMon/action_scripts/db_usage.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.sql
+altiMon/action_scripts
+db_usage.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.sql                  ./altiMon/action_scripts/logfile_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.sql
+altiMon/action_scripts
+logfile_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.sql                  ./altiMon/action_scripts/long_query.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.sql
+altiMon/action_scripts
+long_query.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.sql                  ./altiMon/action_scripts/mem_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.sql
+altiMon/action_scripts
+mem_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.sql                  ./altiMon/action_scripts/mem_stat.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.sql
+altiMon/action_scripts
+mem_stat.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.sql                  ./altiMon/action_scripts/rep_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.sql
+altiMon/action_scripts
+rep_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/com.altibase.picl.jar                         ./altiMon/lib/com.altibase.picl.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+com.altibase.picl.jar
+altiMon/lib
+com.altibase.picl.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/commons-collections-3.2.jar                         ./altiMon/lib/commons-collections-3.2.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+commons-collections-3.2.jar
+altiMon/lib
+commons-collections-3.2.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/commons-logging-1.1.jar                         ./altiMon/lib/commons-logging-1.1.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+commons-logging-1.1.jar
+altiMon/lib
+commons-logging-1.1.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/log4j.jar                         ./altiMon/lib/log4j.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+log4j.jar
+altiMon/lib
+log4j.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/quartz-all-1.6.6.jar                         ./altiMon/lib/quartz-all-1.6.6.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+quartz-all-1.6.6.jar
+altiMon/lib
+quartz-all-1.6.6.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/stax-1.2.0.jar                         ./altiMon/lib/stax-1.2.0.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+stax-1.2.0.jar
+altiMon/lib
+stax-1.2.0.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/stax-api-1.0.1.jar                         ./altiMon/lib/stax-api-1.0.1.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+stax-api-1.0.1.jar
+altiMon/lib
+stax-api-1.0.1.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/linux-x64.so                         ./altiMon/lib/linux-x64.so
+[X86-LINUX-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+linux-x64.so
+altiMon/lib
+linux-x64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/linux-ppc64.so                         ./altiMon/lib/linux-ppc64.so
+[POWERPC-LINUX-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+linux-ppc64.so
+altiMon/lib
+linux-ppc64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/aix-ppc64-5.so                         ./altiMon/lib/aix-ppc64-5.so
+[*-AIX-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+aix-ppc64-5.so
+altiMon/lib
+aix-ppc64-5.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/hpux-ia64-11.sl                         ./altiMon/lib/hpux-ia64-11.sl
+[*-HPUX-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+hpux-ia64-11.sl
+altiMon/lib
+hpux-ia64-11.sl
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/solaris-sparcv64.so                         ./altiMon/lib/solaris-sparcv64.so
+[*-SOLARIX-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+solaris-sparcv64.so
+altiMon/lib
+solaris-sparcv64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/win-x64-nt.dll                         ./altiMon/lib/win-x64-nt.dll
+[*-WINDOWS-*-*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+win-x64-nt.dll
+altiMon/lib
+win-x64-nt.dll
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/commons-codec-1.6.jar                         ./altiMon/lib/commons-codec-1.6.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+commons-codec-1.6.jar
+altiMon/lib
+commons-codec-1.6.jar
+
+################################################################################################
+#
+#  CLIENT PART : HEADER FILES
+#
+################################################################################################
+
+# CLIENT header files 
+
+#0644 ./src/ul/include/sqlcli.h                       ./include/sqlcli.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+sqlcli.h
+include
+sqlcli.h
+
+#0644 ./src/ul/include/unix-odbc/sql.h                       ./include/sql.h
+[^*-WINDOWS-*-*][*][*][*][*][0644][*]
+src/ul/include/unix-odbc
+sql.h
+include
+sql.h
+
+#0644 ./src/ul/include/unix-odbc/sqlext.h                       ./include/sqlext.h
+[^*-WINDOWS-*-*][*][*][*][*][0644][*]
+src/ul/include/unix-odbc
+sqlext.h
+include
+sqlext.h
+
+#0644 ./src/ul/include/unix-odbc/sqltypes.h                       ./include/sqltypes.h
+[^*-WINDOWS-*-*][*][*][*][*][0644][*]
+src/ul/include/unix-odbc
+sqltypes.h
+include
+sqltypes.h
+
+#0644 ./src/ul/include/unix-odbc/sqlucode.h                       ./include/sqlucode.h
+[^*-WINDOWS-*-*][*][*][*][*][0644][*]
+src/ul/include/unix-odbc
+sqlucode.h
+include
+sqlucode.h
+
+#0644 ./src/ul/cdbc/include/alticdbc.h                       ./include/alticapi.h
+[*][*][*][*][*][0644][*]
+src/ul/cdbc/include
+alticdbc.h
+include
+alticapi.h
+
+#0644 ./src/ul/ulp/include/ulpLibInterface.h            ./include/ulpLibInterface.h
+[*][*][*][*][*][0644][*]
+src/ul/ulp/include
+ulpLibInterface.h
+include
+ulpLibInterface.h
+
+#0644 ./altibase_home/include/ses.h                     ./include/ses.h
+[*][*][*][*][*][0644][*]
+altibase_home/include
+ses.h
+include
+ses.h
+
+#0644 ./altibase_home/include/aprePredefinedTypes.h     ./include/aprePredefinedTypes.h
+[*][*][*][*][*][0644][*]
+altibase_home/include
+aprePredefinedTypes.h
+include
+aprePredefinedTypes.h
+
+#
+#  ACS(Spatio-Temporal) Header Files
+#
+
+#0644 ./src/ul/include/acsTypes.h                       ./include/acsTypes.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+acsTypes.h
+include
+acsTypes.h
+
+#0644 ./src/ul/include/acsAPI.h                         ./include/acsAPI.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+acsAPI.h
+include
+acsAPI.h
+
+#0644 ./src/ul/include/ulsAPI.i                         ./include/ulsAPI.i
+[*][*][*][*][*][0644][*]
+src/ul/include
+ulsAPI.i
+include
+ulsAPI.i
+
+#0644 ./src/ul/include/xa.h                             ./include/xa.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+xa.h
+include
+xa.h
+
+#0644 ./src/ul/include/ulsPrimTypes.i                   ./include/ulsPrimTypes.i
+[*][*][*][*][*][0644][*]
+src/ul/include
+ulsPrimTypes.i
+include
+ulsPrimTypes.i
+
+#0644 ./src/st/include/stdNativeTypes.i                 ./include/stdNativeTypes.i
+[*][*][*][*][*][0644][*]
+src/st/include
+stdNativeTypes.i
+include
+stdNativeTypes.i
+
+#0644 ./src/st/include/stdWKBTypes.i                    ./include/stdWKBTypes.i
+[*][*][*][*][*][0644][*]
+src/st/include
+stdWKBTypes.i
+include
+stdWKBTypes.i
+
+
+
+#
+#  ALA(Altibase Log Analysis API) Header Files
+#
+
+#0644 ./src/ul/include/alaAPI.h                         ./include/alaAPI.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+alaAPI.h
+include
+alaAPI.h
+
+#0644 ./src/ul/include/alaTypes.h                       ./include/alaTypes.h
+[*][*][*][*][*][0644][*]
+src/ul/include
+alaTypes.h
+include
+alaTypes.h
+
+#
+# Altibase Administrative API Header Files
+#
+
+#0644 ./ut/checkServer/include/checkServer.h            ./include/chksvr.h
+[*][*][S][*][*][0644][*]
+ut/checkServer/include
+checkServer.h
+include
+chksvr.h
+
+#0644 ./ut/iloader3/include/iloApi.h                    ./include/iloaderApi.h
+[*][*][*][*][*][0644][*]
+ut/iloader3/include
+iloApi.h
+include
+iloaderApi.h
+
+#
+# Altibase Monitor
+#
+
+#0644 ./altibase_home/include/altibaseMonitor.h         ./include/altibaseMonitor.h
+[*][*][*][*][*][0644][*]
+altibase_home/include
+altibaseMonitor.h
+include
+altibaseMonitor.h
+
+
+################################################################################################
+#
+#  CLIENT PART : LIBRARIES
+#
+################################################################################################
+
+#0755 ./altibase_home/lib/libaltibase_odbc-64bit-ul64.so            ./lib/libaltibase_odbc-64bit-ul64.so
+[^*-WINDOWS-*-*][*][*][64][*][0755][SHL]
+altibase_home/lib
+altibase_odbc-64bit-ul64
+lib
+altibase_odbc-64bit-ul64
+
+#0755 ./altibase_home/lib/libaltibase_odbc-64bit-ul32.so            ./lib/libaltibase_odbc-64bit-ul32.so
+[^*-WINDOWS-*-*][*][*][64][*][0755][SHL]
+altibase_home/lib
+altibase_odbc-64bit-ul32
+lib
+altibase_odbc-64bit-ul32
+
+#0755 ./altibase_home/lib/libaltibase_odbc.so            ./lib/libaltibase_odbc.so
+[^*-WINDOWS-*-*][*][*][32][*][0755][SHL]
+altibase_home/lib
+altibase_odbc
+lib
+altibase_odbc
+
+# odbccli library 
+#0644 ./altibase_home/lib/libodbccli.a                    ./lib/libodbccli.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+odbccli
+lib
+odbccli
+
+#0755 ./altibase_home/lib/libodbccli_sl.so                ./lib/libodbccli_sl.so
+[*][*][*][*][*][0755][SHL]
+altibase_home/lib
+odbccli_sl
+lib
+odbccli_sl
+
+#0755 ./altibase_home/lib/libodbccli_sl.lib                ./lib/libodbccli_sl.lib
+[*-WINDOWS-*-*][*][*][*][*][0755][ARL]
+altibase_home/lib
+odbccli_sl
+lib
+odbccli_sl
+
+#0644 ./altibase_home/lib/libshardcli.a                    ./lib/libshardcli.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+shardcli
+lib
+shardcli
+
+#0755 ./altibase_home/lib/libshardcli_sl.so                ./lib/libshardcli_sl.so
+[*][*][*][*][*][0755][SHL]
+altibase_home/lib
+shardcli_sl
+lib
+shardcli_sl
+
+#0644 ./altibase_home/lib/Altibase.Data.AltibaseClient.dll   ./lib/Altibase.Data.AltibaseClient.dll
+[*-WINDOWS-*-*][*][*][*][*][0644][SHL]
+altibase_home/lib
+Altibase.Data.AltibaseClient
+lib
+Altibase.Data.AltibaseClient
+
+# altibase c interface library 
+#0644 ./altibase_home/lib/libalticapi.a                    ./lib/libalticapi.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+alticapi
+lib
+alticapi
+
+#0755 ./altibase_home/lib/libalticapi_sl.so                ./lib/libalticapi_sl.so
+[*][*][*][*][*][0755][SHL]
+altibase_home/lib
+alticapi_sl
+lib
+alticapi_sl
+
+#0755 ./altibase_home/lib/libaltijext.so                   ./lib/libaltijext.so
+[*-LINUX-*-*][*][*][*][*][0755][SHL]
+altibase_home/lib
+altijext
+lib
+altijext
+
+# ut library & object 
+#0644 ./ut/util/lib/libaltiutil.a                         ./lib/libaltiutil.a
+[*][*][*][*][*][0644][ARL]
+ut/util/lib
+altiutil
+lib
+altiutil
+
+# ut library & object 
+#0755 ./ut/util/lib/libaltiutil_sl.so                         ./lib/libaltiutil_sl.so
+[*][*][*][*][*][0755][SHL]
+ut/util/lib
+altiutil_sl
+lib
+altiutil_sl
+
+#0644 ./altibase_home/lib/altiutil_sl.lib               ./lib/altiutil_sl.lib
+[*-WINDOWS-*-*][*][*][*][*][0755][ARL]
+altibase_home/lib
+altiutil_sl
+lib
+altiutil_sl
+
+#
+# ACS(Spatio-Temporal) libraries
+#
+
+#0644 ./altibase_home/lib/libacs.a                      ./lib/libacs.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+acs
+lib
+acs
+
+#
+#  ALA(Altibase Log Analysis API) libraries
+#
+
+#0644 ./altibase_home/lib/libala.a                      ./lib/libala.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+ala
+lib
+ala
+
+#0755 ./altibase_home/lib/libala_sl.so                  ./lib/libala_sl.so
+[*][*][*][*][*][0755][SHL]
+altibase_home/lib
+ala_sl
+lib
+ala_sl
+
+
+#
+# Altibase Administrative API libraries
+#
+
+#0644 ./altibase_home/lib/libchksvr.a                      ./lib/libchksvr.a
+[^*-WINDOWS-*-*][*][S][*][*][0644][ARL]
+altibase_home/lib
+chksvr
+lib
+chksvr
+
+#0644 ./altibase_home/lib/libchksvr_sl.so                      ./lib/libchksvr_sl.so
+[^*-WINDOWS-*-*][*][S][*][*][0755][SHL]
+altibase_home/lib
+chksvr_sl
+lib
+chksvr_sl
+
+
+#0644 ./altibase_home/lib/libiloader.a                      ./lib/libiloader.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+iloader
+lib
+iloader
+
+#0644 ./altibase_home/lib/libiloader_sl.so                      ./lib/libiloader_sl.so
+[*][*][*][*][*][0755][SHL]
+altibase_home/lib
+iloader_sl
+lib
+iloader_sl
+
+#0644 ./altibase_home/lib/iloader_sl.lib                      ./lib/iloader_sl.lib
+[*-WINDOWS-*-*][*][*][*][*][0755][ARL]
+altibase_home/lib
+iloader_sl
+lib
+iloader_sl
+
+#
+# Altibase Monitor
+#
+
+#0644 ./altibase_home/lib/libaltibaseMonitor.a                    ./lib/libaltibaseMonitor.a
+[*][*][*][*][*][0644][ARL]
+altibase_home/lib
+altibaseMonitor
+lib
+altibaseMonitor
+
+#0755 ./altibase_home/lib/libaltibaseMonitor_sl.so                ./lib/libaltibaseMonitor_sl.so
+[^*-WINDOWS-*-*][*][*][*][*][0755][SHL]
+altibase_home/lib
+altibaseMonitor_sl
+lib
+altibaseMonitor_sl
+
+
+##############################################################################
+#  JAVA
+##############################################################################
+
+# build, SUN SPARC java 5
+#0644 ./src/ul/ulj/lib/Altibase.jar                         ./lib/Altibase.jar
+#[*][*][*][*][*][0644][*]
+#src/ul/ulj/lib
+#Altibase.jar
+#lib
+#Altibase.jar
+
+#0644 ./src/ul/ulj/lib/Altibase7_1.jar                       ./lib/Altibase7_1.jar
+#[*][*][*][*][*][0644][*]
+#src/ul/ulj/lib
+#Altibase7_1.jar
+#lib
+#Altibase7_1.jar
+
+# install files 
+#0644 ./install/altibase_env.mk                         ./install/altibase_env.mk
+[*][*][*][*][*][0644][*]
+install
+altibase_env.mk
+install
+altibase_env.mk
+
+################################################################################################
+#
+#  SAMPLE
+#
+################################################################################################
+
+#sample 
+#0644 ./ut/sample/SQLCLI/README                         ./sample/SQLCLI/README
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+README
+sample/SQLCLI
+README
+
+#0644 ./ut/sample/SQLCLI/demo_cpool.cpp                 ./sample/SQLCLI/demo_cpool.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_cpool.cpp
+sample/SQLCLI
+demo_cpool.cpp
+
+#0644 ./ut/sample/SQLCLI/demo_ex1.cpp                   ./sample/SQLCLI/demo_ex1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex1.cpp
+sample/SQLCLI
+demo_ex1.cpp
+
+#0644 ../ut/sample/SQLCLI/demo_ex2.cpp                   ../sample/SQLCLI/demo_ex2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex2.cpp
+sample/SQLCLI
+demo_ex2.cpp
+
+#0644 ../ut/sample/SQLCLI/demo_ex3.cpp                   ../sample/SQLCLI/demo_ex3.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex3.cpp  
+sample/SQLCLI
+demo_ex3.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex4.cpp                   ../sample/SQLCLI/demo_ex4.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex4.cpp  
+sample/SQLCLI
+demo_ex4.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex5.cpp                   ../sample/SQLCLI/demo_ex5.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex5.cpp  
+sample/SQLCLI
+demo_ex5.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex6.cpp                   ../sample/SQLCLI/demo_ex6.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex6.cpp  
+sample/SQLCLI
+demo_ex6.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex7.cpp                   ../sample/SQLCLI/demo_ex7.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex7.cpp  
+sample/SQLCLI
+demo_ex7.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex8.cpp                   ../sample/SQLCLI/demo_ex8.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex8.cpp  
+sample/SQLCLI
+demo_ex8.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_plan.cpp                  ../sample/SQLCLI/demo_plan.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_plan.cpp  
+sample/SQLCLI
+demo_plan.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_info1.cpp                 ../sample/SQLCLI/demo_info1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_info1.cpp  
+sample/SQLCLI
+demo_info1.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_info2.cpp                 ../sample/SQLCLI/demo_info2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_info2.cpp  
+sample/SQLCLI
+demo_info2.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta1.cpp                 ../sample/SQLCLI/demo_meta1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta1.cpp  
+sample/SQLCLI
+demo_meta1.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta2.cpp                 ../sample/SQLCLI/demo_meta2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta2.cpp  
+sample/SQLCLI
+demo_meta2.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta3.cpp                 ../sample/SQLCLI/demo_meta3.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta3.cpp  
+sample/SQLCLI
+demo_meta3.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta4.cpp                 ../sample/SQLCLI/demo_meta4.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta4.cpp  
+sample/SQLCLI
+demo_meta4.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta5.cpp                 ../sample/SQLCLI/demo_meta5.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta5.cpp  
+sample/SQLCLI
+demo_meta5.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta6.cpp                 ../sample/SQLCLI/demo_meta6.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta6.cpp  
+sample/SQLCLI
+demo_meta6.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta7.cpp                 ../sample/SQLCLI/demo_meta7.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta7.cpp  
+sample/SQLCLI
+demo_meta7.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta8.cpp                 ../sample/SQLCLI/demo_meta8.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta8.cpp  
+sample/SQLCLI
+demo_meta8.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta9.cpp                 ../sample/SQLCLI/demo_meta9.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta9.cpp  
+sample/SQLCLI
+demo_meta9.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_meta10.cpp                ../sample/SQLCLI/demo_meta10.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta10.cpp  
+sample/SQLCLI
+demo_meta10.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_tran1.cpp                 ../sample/SQLCLI/demo_tran1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_tran1.cpp  
+sample/SQLCLI
+demo_tran1.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_tran2.cpp                 ../sample/SQLCLI/demo_tran2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_tran2.cpp  
+sample/SQLCLI
+demo_tran2.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_dead.cpp                  ../sample/SQLCLI/demo_dead.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_dead.cpp  
+sample/SQLCLI
+demo_dead.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_mt.cpp                    ../sample/SQLCLI/demo_mt.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_mt.cpp  
+sample/SQLCLI
+demo_mt.cpp  
+
+#0644 ../ut/sample/SQLCLI/demo_ex1.sql                   ../sample/SQLCLI/demo_ex1.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex1.sql  
+sample/SQLCLI
+demo_ex1.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex2.sql                   ../sample/SQLCLI/demo_ex2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex2.sql  
+sample/SQLCLI
+demo_ex2.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex3.sql                   ../sample/SQLCLI/demo_ex3.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex3.sql  
+sample/SQLCLI
+demo_ex3.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex4.sql                   ../sample/SQLCLI/demo_ex4.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex4.sql  
+sample/SQLCLI
+demo_ex4.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex5.sql                   ../sample/SQLCLI/demo_ex5.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex5.sql  
+sample/SQLCLI
+demo_ex5.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex6.sql                   ../sample/SQLCLI/demo_ex6.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex6.sql  
+sample/SQLCLI
+demo_ex6.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex7.sql                   ../sample/SQLCLI/demo_ex7.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex7.sql  
+sample/SQLCLI
+demo_ex7.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_ex8.sql                   ../sample/SQLCLI/demo_ex8.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_ex8.sql  
+sample/SQLCLI
+demo_ex8.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_plan.sql                  ../sample/SQLCLI/demo_plan.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_plan.sql  
+sample/SQLCLI
+demo_plan.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta2.sql                 ../sample/SQLCLI/demo_meta2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta2.sql  
+sample/SQLCLI
+demo_meta2.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta3.sql                 ../sample/SQLCLI/demo_meta3.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta3.sql  
+sample/SQLCLI
+demo_meta3.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta4.sql                 ../sample/SQLCLI/demo_meta4.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta4.sql  
+sample/SQLCLI
+demo_meta4.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta5.sql                 ../sample/SQLCLI/demo_meta5.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta5.sql  
+sample/SQLCLI
+demo_meta5.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta6.sql                 ../sample/SQLCLI/demo_meta6.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta6.sql  
+sample/SQLCLI
+demo_meta6.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta7.sql                 ../sample/SQLCLI/demo_meta7.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta7.sql  
+sample/SQLCLI
+demo_meta7.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta8.sql                 ../sample/SQLCLI/demo_meta8.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta8.sql  
+sample/SQLCLI
+demo_meta8.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta9.sql                 ../sample/SQLCLI/demo_meta9.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta9.sql  
+sample/SQLCLI
+demo_meta9.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_meta10.sql                ../sample/SQLCLI/demo_meta10.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_meta10.sql  
+sample/SQLCLI
+demo_meta10.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_tran1.sql                 ../sample/SQLCLI/demo_tran1.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_tran1.sql  
+sample/SQLCLI
+demo_tran1.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_tran2.sql                 ../sample/SQLCLI/demo_tran2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_tran2.sql  
+sample/SQLCLI
+demo_tran2.sql  
+
+#0644 ../ut/sample/SQLCLI/demo_info2.sql                 ../sample/SQLCLI/demo_info2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+demo_info2.sql  
+sample/SQLCLI
+demo_info2.sql  
+
+#0644 ../ut/sample/SQLCLI/Makefile                       ../sample/SQLCLI/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI
+Makefile
+sample/SQLCLI
+Makefile
+
+#0644 ../ut/sample/SQLCLI/BLOB/Makefile                   ../sample/SQLCLI/BLOB/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/BLOB
+Makefile
+sample/SQLCLI/BLOB
+Makefile
+
+#0644 ../ut/sample/SQLCLI/BLOB/MemoryDBMS.txt              ../sample/SQLCLI/BLOB/MemoryDBMS.txt
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/BLOB
+MemoryDBMS.txt
+sample/SQLCLI/BLOB
+MemoryDBMS.txt
+
+#0644 ../ut/sample/SQLCLI/BLOB/blobSample.cpp             ../sample/SQLCLI/BLOB/blobSample.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/BLOB
+blobSample.cpp
+sample/SQLCLI/BLOB
+blobSample.cpp
+
+#0644 ../ut/sample/SQLCLI/BLOB/schema.sql                ../sample/SQLCLI/BLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/BLOB
+schema.sql
+sample/SQLCLI/BLOB
+schema.sql
+
+#0644 ../ut/sample/SQLCLI/CLOB/Makefile                   ../sample/SQLCLI/CLOB/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/CLOB
+Makefile
+sample/SQLCLI/CLOB
+Makefile
+
+#0644 ../ut/sample/SQLCLI/CLOB/MemoryDBMS.txt              ../sample/SQLCLI/CLOB/MemoryDBMS.txt
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/CLOB
+MemoryDBMS.txt
+sample/SQLCLI/CLOB
+MemoryDBMS.txt
+
+#0644 ../ut/sample/SQLCLI/CLOB/clobSample.cpp             ../sample/SQLCLI/CLOB/clobSample.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/CLOB
+clobSample.cpp
+sample/SQLCLI/CLOB
+clobSample.cpp
+
+#0644 ../ut/sample/SQLCLI/CLOB/schema.sql                ../sample/SQLCLI/CLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/CLOB
+schema.sql
+sample/SQLCLI/CLOB
+schema.sql
+
+
+#0644 ../ut/sample/SQLCLI/Fail-Over/FailOverCallbackSample.cpp      ../sample/SQLCLI/Fail-Over/FailOverCallbackSample.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/Fail-Over
+FailOverCallbackSample.cpp
+sample/SQLCLI/Fail-Over
+FailOverCallbackSample.cpp
+
+#0644 ../ut/sample/SQLCLI/Fail-Over/FailOverSample.cpp              ../sample/SQLCLI/Fail-Over/FailOverSample.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/Fail-Over
+FailOverSample.cpp
+sample/SQLCLI/Fail-Over
+FailOverSample.cpp
+
+#0644 ../ut/sample/SQLCLI/Fail-Over/DistributedOLTPSample_ULFailOver.cpp              ../sample/SQLCLI/Fail-Over/DistributedOLTPSample_ULFailOver.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/Fail-Over
+DistributedOLTPSample_ULFailOver.cpp
+sample/SQLCLI/Fail-Over
+DistributedOLTPSample_ULFailOver.cpp
+
+#0644 ../ut/sample/SQLCLI/Fail-Over/Makefile                        ../sample/SQLCLI/Fail-Over/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/Fail-Over
+Makefile
+sample/SQLCLI/Fail-Over
+Makefile
+
+#0644 ../ut/sample/SQLCLI/SSL/Makefile                        ../sample/SQLCLI/SSL/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/SSL
+Makefile
+sample/SQLCLI/SSL
+Makefile
+
+#0644 ../ut/sample/SQLCLI/SSL/schema.sql                       ../sample/SQLCLI/SSL/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/SSL
+schema.sql
+sample/SQLCLI/SSL
+schema.sql
+
+#0644 ../ut/sample/SQLCLI/SSL/sslSample.cpp                       ../sample/SQLCLI/SSL/sslSample.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SQLCLI/SSL
+sslSample.cpp
+sample/SQLCLI/SSL
+sslSample.cpp
+
+
+#0644 ./ut/sample/CAPI/README                         ./sample/CAPI/README
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+README
+sample/CAPI
+README
+
+#0644 ./ut/sample/CAPI/common.h                   ./sample/CAPI/common.h
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+common.h
+sample/CAPI
+common.h
+
+#0644 ./ut/sample/CAPI/demo_ex1.c                   ./sample/CAPI/demo_ex1.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex1.c
+sample/CAPI
+demo_ex1.c
+
+#0644 ../ut/sample/CAPI/demo_ex2.c                   ../sample/CAPI/demo_ex2.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex2.c
+sample/CAPI
+demo_ex2.c
+
+#0644 ../ut/sample/CAPI/demo_ex3.c                   ../sample/CAPI/demo_ex3.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex3.c
+sample/CAPI
+demo_ex3.c
+
+#0644 ../ut/sample/CAPI/demo_ex4.c                   ../sample/CAPI/demo_ex4.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex4.c
+sample/CAPI
+demo_ex4.c
+
+#0644 ../ut/sample/CAPI/demo_ex5.c                   ../sample/CAPI/demo_ex5.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex5.c
+sample/CAPI
+demo_ex5.c
+
+#0644 ../ut/sample/CAPI/demo_ex6.c                   ../sample/CAPI/demo_ex6.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex6.c
+sample/CAPI
+demo_ex6.c
+
+#0644 ../ut/sample/CAPI/demo_ex7.c                   ../sample/CAPI/demo_ex7.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex7.c
+sample/CAPI
+demo_ex7.c
+
+#0644 ../ut/sample/CAPI/demo_meta1.c                 ../sample/CAPI/demo_meta1.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_meta1.c
+sample/CAPI
+demo_meta1.c
+
+#0644 ../ut/sample/CAPI/demo_meta2.c                 ../sample/CAPI/demo_meta2.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_meta2.c
+sample/CAPI
+demo_meta2.c
+
+#0644 ../ut/sample/CAPI/demo_meta8.c                 ../sample/CAPI/demo_meta8.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_meta8.c
+sample/CAPI
+demo_meta8.c
+
+#0644 ../ut/sample/CAPI/demo_tran1.c                 ../sample/CAPI/demo_tran1.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_tran1.c
+sample/CAPI
+demo_tran1.c
+
+#0644 ../ut/sample/CAPI/demo_tran2.c                 ../sample/CAPI/demo_tran2.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_tran2.c
+sample/CAPI
+demo_tran2.c
+
+#0644 ../ut/sample/CAPI/demo_mt.c                    ../sample/CAPI/demo_mt.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_mt.c
+sample/CAPI
+demo_mt.c
+
+#0644 ../ut/sample/CAPI/demo_blob.c                    ../sample/CAPI/demo_blob.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_blob.c
+sample/CAPI
+demo_blob.c
+
+#0644 ../ut/sample/CAPI/demo_clob.c                    ../sample/CAPI/demo_clob.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_clob.c
+sample/CAPI
+demo_clob.c
+
+#0644 ../ut/sample/CAPI/demo_ex1.sql                   ../sample/CAPI/demo_ex1.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex1.sql
+sample/CAPI
+demo_ex1.sql
+
+#0644 ../ut/sample/CAPI/demo_ex2.sql                   ../sample/CAPI/demo_ex2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex2.sql
+sample/CAPI
+demo_ex2.sql
+
+#0644 ../ut/sample/CAPI/demo_ex3.sql                   ../sample/CAPI/demo_ex3.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex3.sql
+sample/CAPI
+demo_ex3.sql
+
+#0644 ../ut/sample/CAPI/demo_ex4.sql                   ../sample/CAPI/demo_ex4.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex4.sql
+sample/CAPI
+demo_ex4.sql
+
+#0644 ../ut/sample/CAPI/demo_ex5.sql                   ../sample/CAPI/demo_ex5.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex5.sql
+sample/CAPI
+demo_ex5.sql
+
+#0644 ../ut/sample/CAPI/demo_ex6.sql                   ../sample/CAPI/demo_ex6.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex6.sql
+sample/CAPI
+demo_ex6.sql
+
+#0644 ../ut/sample/CAPI/demo_ex7.sql                   ../sample/CAPI/demo_ex7.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_ex7.sql
+sample/CAPI
+demo_ex7.sql
+
+#0644 ../ut/sample/CAPI/demo_meta2.sql                 ../sample/CAPI/demo_meta2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_meta2.sql
+sample/CAPI
+demo_meta2.sql
+
+#0644 ../ut/sample/CAPI/demo_meta8.sql                 ../sample/CAPI/demo_meta8.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_meta8.sql
+sample/CAPI
+demo_meta8.sql
+
+#0644 ../ut/sample/CAPI/demo_tran1.sql                 ../sample/CAPI/demo_tran1.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_tran1.sql
+sample/CAPI
+demo_tran1.sql
+
+#0644 ../ut/sample/CAPI/demo_tran2.sql                 ../sample/CAPI/demo_tran2.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_tran2.sql
+sample/CAPI
+demo_tran2.sql
+
+#0644 ../ut/sample/CAPI/demo_tran2_sel.sql                 ../sample/CAPI/demo_tran2_sel.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_tran2_sel.sql
+sample/CAPI
+demo_tran2_sel.sql
+
+#0644 ../ut/sample/CAPI/demo_blob.sql                    ../sample/CAPI/demo_blob.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_blob.sql
+sample/CAPI
+demo_blob.sql
+
+#0644 ../ut/sample/CAPI/demo_clob.sql                    ../sample/CAPI/demo_clob.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+demo_clob.sql
+sample/CAPI
+demo_clob.sql
+
+#0644 ../ut/sample/CAPI/Makefile                       ../sample/CAPI/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI
+Makefile
+sample/CAPI
+Makefile
+
+
+#0644 ../ut/sample/CAPI/Fail-Over/FailOverCallbackSample.c      ../sample/CAPI/Fail-Over/FailOverCallbackSample.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/Fail-Over
+FailOverCallbackSample.c
+sample/CAPI/Fail-Over
+FailOverCallbackSample.c
+
+#0644 ../ut/sample/CAPI/Fail-Over/FailOverSample.c              ../sample/CAPI/Fail-Over/FailOverSample.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/Fail-Over
+FailOverSample.c
+sample/CAPI/Fail-Over
+FailOverSample.c
+
+#0644 ../ut/sample/CAPI/Fail-Over/Makefile                        ../sample/CAPI/Fail-Over/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/Fail-Over
+Makefile
+sample/CAPI/Fail-Over
+Makefile
+
+#0644 ../ut/sample/CAPI/SSL/common.h                       ../sample/CAPI/SSL/common.h
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/SSL
+common.h
+sample/CAPI/SSL
+common.h
+
+#0644 ../ut/sample/CAPI/SSL/Makefile                       ../sample/CAPI/SSL/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/SSL
+Makefile
+sample/CAPI/SSL
+Makefile
+
+#0644 ../ut/sample/CAPI/SSL/schema.sql                       ../sample/CAPI/SSL/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/SSL
+schema.sql
+sample/CAPI/SSL
+schema.sql
+
+#0644 ../ut/sample/CAPI/SSL/sslSample.c                       ../sample/CAPI/SSL/sslSample.c
+[*][*][*][*][*][0644][*]
+ut/sample/CAPI/SSL
+sslSample.c
+sample/CAPI/SSL
+sslSample.c
+
+
+
+#0644 ../ut/sample/APRE/Makefile                         ../sample/APRE/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+Makefile
+sample/APRE
+Makefile
+
+#0644 ../ut/sample/APRE/Makefile_cparse                  ../sample/APRE/Makefile_cparse
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+Makefile_cparse
+sample/APRE
+Makefile_cparse
+
+#0644 ../ut/sample/APRE/argument.sc                      ../sample/APRE/argument.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+argument.sc   
+sample/APRE
+argument.sc   
+
+#0644 ../ut/sample/APRE/arrays1.sc                       ../sample/APRE/arrays1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+arrays1.sc   
+sample/APRE
+arrays1.sc   
+
+#0644 ../ut/sample/APRE/arrays2.sc                       ../sample/APRE/arrays2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+arrays2.sc   
+sample/APRE
+arrays2.sc   
+
+#0644 ../ut/sample/APRE/binary.sc                        ../sample/APRE/binary.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+binary.sc   
+sample/APRE
+binary.sc   
+
+#0644 ../ut/sample/APRE/connect1.sc                      ../sample/APRE/connect1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+connect1.sc   
+sample/APRE
+connect1.sc   
+
+#0644 ../ut/sample/APRE/connect2.sc                      ../sample/APRE/connect2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+connect2.sc   
+sample/APRE
+connect2.sc   
+
+#0644 ../ut/sample/APRE/cursor1.sc                       ../sample/APRE/cursor1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+cursor1.sc   
+sample/APRE
+cursor1.sc   
+
+#0644 ../ut/sample/APRE/cursor2.sc                       ../sample/APRE/cursor2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+cursor2.sc   
+sample/APRE
+cursor2.sc   
+
+#0644 ../ut/sample/APRE/date.sc                          ../sample/APRE/date.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+date.sc   
+sample/APRE
+date.sc   
+
+#0644 ../ut/sample/APRE/delete.sc                        ../sample/APRE/delete.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+delete.sc   
+sample/APRE
+delete.sc   
+
+#0644 ../ut/sample/APRE/dynamic1.sc                      ../sample/APRE/dynamic1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+dynamic1.sc   
+sample/APRE
+dynamic1.sc   
+
+#0644 ../ut/sample/APRE/dynamic2.sc                      ../sample/APRE/dynamic2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+dynamic2.sc   
+sample/APRE
+dynamic2.sc   
+
+#0644 ../ut/sample/APRE/dynamic3.sc                      ../sample/APRE/dynamic3.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+dynamic3.sc   
+sample/APRE
+dynamic3.sc   
+
+#0644 ../ut/sample/APRE/dynamic4.sc                      ../sample/APRE/dynamic4.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+dynamic4.sc   
+sample/APRE
+dynamic4.sc   
+
+#0644 ../ut/sample/APRE/free.sc                          ../sample/APRE/free.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+free.sc   
+sample/APRE
+free.sc   
+
+#0644 ../ut/sample/APRE/indicator.sc                     ../sample/APRE/indicator.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+indicator.sc   
+sample/APRE
+indicator.sc   
+
+#0644 ../ut/sample/APRE/insert.sc                        ../sample/APRE/insert.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+insert.sc   
+sample/APRE
+insert.sc   
+
+#0644 ../ut/sample/APRE/mc1.sc                           ../sample/APRE/mc1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+mc1.sc   
+sample/APRE
+mc1.sc   
+
+#0644 ../ut/sample/APRE/mc2.sc                           ../sample/APRE/mc2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+mc2.sc   
+sample/APRE
+mc2.sc   
+
+#0644 ../ut/sample/APRE/mc3.sc                           ../sample/APRE/mc3.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+mc3.sc   
+sample/APRE
+mc3.sc   
+
+#0644 ../ut/sample/APRE/mt1.sc                           ../sample/APRE/mt1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+mt1.sc   
+sample/APRE
+mt1.sc   
+
+#0644 ../ut/sample/APRE/mt2.sc                           ../sample/APRE/mt2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+mt2.sc   
+sample/APRE
+mt2.sc   
+
+#0644 ../ut/sample/APRE/psm1.sc                          ../sample/APRE/psm1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+psm1.sc   
+sample/APRE
+psm1.sc   
+
+#0644 ../ut/sample/APRE/psm2.sc                          ../sample/APRE/psm2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+psm2.sc   
+sample/APRE
+psm2.sc   
+
+#0644 ../ut/sample/APRE/runtime_error_check.sc           ../sample/APRE/runtime_error_check.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+runtime_error_check.sc   
+sample/APRE
+runtime_error_check.sc   
+
+#0644 ../ut/sample/APRE/select.sc                        ../sample/APRE/select.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+select.sc   
+sample/APRE
+select.sc   
+
+#0644 ../ut/sample/APRE/update.sc                        ../sample/APRE/update.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+update.sc   
+sample/APRE
+update.sc   
+
+#0644 ../ut/sample/APRE/varchar.sc                       ../sample/APRE/varchar.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+varchar.sc   
+sample/APRE
+varchar.sc   
+
+#0644 ../ut/sample/APRE/whenever1.sc                     ../sample/APRE/whenever1.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+whenever1.sc   
+sample/APRE
+whenever1.sc   
+
+#0644 ../ut/sample/APRE/whenever2.sc                     ../sample/APRE/whenever2.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+whenever2.sc   
+sample/APRE
+whenever2.sc   
+
+#0644 ../ut/sample/APRE/pointer.sc                       ../sample/APRE/pointer.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+pointer.sc   
+sample/APRE
+pointer.sc   
+
+#0644 ../ut/sample/APRE/cparsefull.sc                    ../sample/APRE/cparsefull.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+cparsefull.sc   
+sample/APRE
+cparsefull.sc   
+
+#0644 ../ut/sample/APRE/declare_stmt.sc                  ../sample/APRE/declare_stmt.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+declare_stmt.sc   
+sample/APRE
+declare_stmt.sc   
+
+#0644 ../ut/sample/APRE/macro.sc                         ../sample/APRE/macro.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+macro.sc   
+sample/APRE
+macro.sc   
+
+#0644 ../ut/sample/APRE/include/hostvar.h                ../sample/APRE/include/hostvar.h
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+include/hostvar.h    
+sample/APRE/include
+hostvar.h    
+
+#0644 ../ut/sample/APRE/include/hostvar2.h               ../sample/APRE/include/hostvar2.h
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+include/hostvar2.h    
+sample/APRE/include
+hostvar2.h    
+
+#0644 ../ut/sample/APRE/schema/schema.sql                ../sample/APRE/schema/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/APRE
+schema/schema.sql  
+sample/APRE/schema
+schema.sql  
+
+#0644 ../ut/sample/APRE/BLOB/Makefile                   ../sample/APRE/BLOB/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/BLOB
+Makefile
+sample/APRE/BLOB
+Makefile
+
+#0644 ../ut/sample/APRE/BLOB/MemoryDBMS.txt              ../sample/APRE/BLOB/MemoryDBMS.txt
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/BLOB
+MemoryDBMS.txt
+sample/APRE/BLOB
+MemoryDBMS.txt
+
+#0644 ../ut/sample/APRE/BLOB/blobSample.sc             ../sample/APRE/BLOB/blobSample.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/BLOB
+blobSample.sc
+sample/APRE/BLOB
+blobSample.sc
+
+#0644 ../ut/sample/APRE/BLOB/schema.sql                ../sample/APRE/BLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/BLOB
+schema.sql
+sample/APRE/BLOB
+schema.sql
+
+#0644 ../ut/sample/APRE/CLOB/Makefile                   ../sample/APRE/CLOB/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/CLOB
+Makefile
+sample/APRE/CLOB
+Makefile
+
+#0644 ../ut/sample/APRE/CLOB/MemoryDBMS.txt              ../sample/APRE/CLOB/MemoryDBMS.txt
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/CLOB
+MemoryDBMS.txt
+sample/APRE/CLOB
+MemoryDBMS.txt
+
+#0644 ../ut/sample/APRE/CLOB/clobSample.sc             ../sample/APRE/CLOB/clobSample.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/CLOB
+clobSample.sc
+sample/APRE/CLOB
+clobSample.sc
+
+#0644 ../ut/sample/APRE/CLOB/schema.sql                ../sample/APRE/CLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/CLOB
+schema.sql
+sample/APRE/CLOB
+schema.sql
+
+#0644 ../ut/sample/APRE/Fail-Over/FailOverSample.sc      ../sample/APRE/Fail-Over/FailOverSample.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/Fail-Over
+FailOverSample.sc
+sample/APRE/Fail-Over
+FailOverSample.sc
+
+#0644 ../ut/sample/APRE/Fail-Over/Makefile      ../sample/APRE/Fail-Over/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/Fail-Over
+Makefile
+sample/APRE/Fail-Over
+Makefile
+
+#0644 ../ut/sample/APRE/SSL/Makefile                       ../sample/APRE/SSL/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/SSL
+Makefile
+sample/APRE/SSL
+Makefile
+
+#0644 ../ut/sample/APRE/SSL/schema.sql                       ../sample/APRE/SSL/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/SSL
+schema.sql
+sample/APRE/SSL
+schema.sql
+
+#0644 ../ut/sample/APRE/SSL/sslSample.sc                       ../sample/APRE/SSL/sslSample.sc
+[*][*][*][*][*][0644][*]
+ut/sample/APRE/SSL
+sslSample.sc
+sample/APRE/SSL
+sslSample.sc
+
+
+
+#0644 ../ut/sample/JDBC/SimpleSQL/SimpleSQL.java         ../sample/JDBC/SimpleSQL/SimpleSQL.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/SimpleSQL
+SimpleSQL.java
+sample/JDBC/SimpleSQL
+SimpleSQL.java
+
+#0644 ../ut/sample/JDBC/Logging/SimpleSQL.java         ../sample/JDBC/Logging/SimpleSQL.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Logging
+SimpleSQL.java
+sample/JDBC/Logging
+SimpleSQL.java
+
+#0644 ../ut/sample/JDBC/Logging/logging.properties         ../sample/JDBC/Logging/logging.properties
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Logging
+logging.properties
+sample/JDBC/Logging
+logging.properties
+
+#0644 ../ut/sample/JDBC/Logging/run.sh         ../sample/JDBC/Logging/run.sh
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Logging
+run.sh
+sample/JDBC/Logging
+run.sh
+
+#0644 ../ut/sample/JDBC/Logging/drop_schema.sql         ../sample/JDBC/Logging/drop_schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Logging
+drop_schema.sql
+sample/JDBC/Logging
+drop_schema.sql
+
+#0644 ../ut/sample/JDBC/MultipleResultSet/schema.sql      ../sample/JDBC/MultipleResultSet/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/MultipleResultSet
+schema.sql
+sample/JDBC/MultipleResultSet
+schema.sql
+
+#0644 ../ut/sample/JDBC/MultipleResultSet/MultipleResultSet.java  ../sample/JDBC/MultipleResultSet/MultipleResultSet.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/MultipleResultSet
+MultipleResultSet.java
+sample/JDBC/MultipleResultSet
+MultipleResultSet.java
+
+#0644 ../ut/sample/JDBC/BLOB/schema.sql      ../sample/JDBC/BLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/BLOB
+schema.sql
+sample/JDBC/BLOB
+schema.sql
+
+#0644 ../ut/sample/JDBC/BLOB/TestBLOB.java  ../sample/JDBC/BLOB/TestBLOB.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/BLOB
+TestBLOB.java
+sample/JDBC/BLOB
+TestBLOB.java
+
+#0644 ../ut/sample/JDBC/BLOB/altibase.gif  ../sample/JDBC/BLOB/altibase.gif
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/BLOB
+altibase.gif
+sample/JDBC/BLOB
+altibase.gif
+
+#0644 ../ut/sample/JDBC/BLOB/adccenter.gif  ../sample/JDBC/BLOB/adccenter.gif
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/BLOB
+adccenter.gif
+sample/JDBC/BLOB
+adccenter.gif
+
+#0644 ../ut/sample/JDBC/CLOB/schema.sql      ../sample/JDBC/CLOB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/CLOB
+schema.sql
+sample/JDBC/CLOB
+schema.sql
+
+#0644 ../ut/sample/JDBC/CLOB/TestCLOB.java  ../sample/JDBC/CLOB/TestCLOB.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/CLOB
+TestCLOB.java
+sample/JDBC/CLOB
+TestCLOB.java
+
+#0644 ../ut/sample/JDBC/CLOB/Greetings.txt ../sample/JDBC/CLOB/Greetings.txt
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/CLOB
+Greetings.txt
+sample/JDBC/CLOB
+Greetings.txt
+
+#0644 ../ut/sample/JDBC/CLOB/MemoryDBMS.txt  ../sample/JDBC/CLOB/MemoryDBMS.txt
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/CLOB
+MemoryDBMS.txt
+sample/JDBC/CLOB
+MemoryDBMS.txt
+
+
+#0644 ../ut/sample/JDBC/Fail-Over/FailOverCallbackSample.java  ../sample/JDBC/Fail-Over/FailOverCallbackSample.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Fail-Over
+FailOverCallbackSample.java
+sample/JDBC/Fail-Over
+FailOverCallbackSample.java
+
+#0644 ../ut/sample/JDBC/Fail-Over/FailOverSampleSTF.java     ../sample/JDBC/Fail-Over/FailOverSampleSTF.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Fail-Over
+FailOverSampleSTF.java
+sample/JDBC/Fail-Over
+FailOverSampleSTF.java
+
+#0644 ../ut/sample/JDBC/Fail-Over/MyFailOverCallback.java     ../sample/JDBC/Fail-Over/MyFailOverCallback.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/Fail-Over
+MyFailOverCallback.java
+sample/JDBC/Fail-Over
+MyFailOverCallback.java
+
+#0644 ../ut/sample/JDBC/SSL/SslSimpleSQL.java                       ../sample/JDBC/SSL/SslSimpleSQL.java
+[*][*][*][*][*][0644][*]
+ut/sample/JDBC/SSL
+SslSimpleSQL.java
+sample/JDBC/SSL
+SslSimpleSQL.java
+
+
+
+#0644 ../ut/sample/SPATIAL/Makefile         ../sample/SQLCLI/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+Makefile
+sample/SPATIAL
+Makefile
+
+#0644 ../ut/sample/SPATIAL/insertObject.sql      ../sample/SQLCLI/insertObject.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+insertObject.sql
+sample/SPATIAL
+insertObject.sql
+
+#0644 ../ut/sample/SPATIAL/insertObject.cpp      ../sample/SQLCLI/insertObject.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+insertObject.cpp
+sample/SPATIAL
+insertObject.cpp
+
+#0644 ../ut/sample/SPATIAL/selectObject.sql      ../sample/SQLCLI/selectObject.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+selectObject.sql
+sample/SPATIAL
+selectObject.sql
+
+#0644 ../ut/sample/SPATIAL/selectObject.cpp      ../sample/SQLCLI/selectObject.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+selectObject.cpp
+sample/SPATIAL
+selectObject.cpp
+
+#0644 ../ut/sample/SPATIAL/updateObject.sql      ../sample/SQLCLI/updateObject.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+updateObject.sql
+sample/SPATIAL
+updateObject.sql
+
+#0644 ../ut/sample/SPATIAL/updateObject.cpp      ../sample/SQLCLI/updateObject.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+updateObject.cpp
+sample/SPATIAL
+updateObject.cpp
+
+#0644 ../ut/sample/SPATIAL/deleteObject.sql      ../sample/SQLCLI/deleteObject.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+deleteObject.sql
+sample/SPATIAL
+deleteObject.sql
+
+#0644 ../ut/sample/SPATIAL/deleteObject.cpp      ../sample/SQLCLI/deleteObject.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL
+deleteObject.cpp
+sample/SPATIAL
+deleteObject.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+schema.sql
+sample/SPATIAL/GeoODBC/WKB
+schema.sql
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/MakeInsert.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+MakeInsert.mk
+sample/SPATIAL/GeoODBC/WKB
+MakeInsert.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/MakeUpdate.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+MakeUpdate.mk
+sample/SPATIAL/GeoODBC/WKB
+MakeUpdate.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/MakeSelect.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+MakeSelect.mk
+sample/SPATIAL/GeoODBC/WKB
+MakeSelect.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/MakeDelete.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+MakeDelete.mk
+sample/SPATIAL/GeoODBC/WKB
+MakeDelete.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/insertWKB.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+insertWKB.cpp
+sample/SPATIAL/GeoODBC/WKB
+insertWKB.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/updateWKB.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+updateWKB.cpp
+sample/SPATIAL/GeoODBC/WKB
+updateWKB.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/selectWKB.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+selectWKB.cpp
+sample/SPATIAL/GeoODBC/WKB
+selectWKB.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKB/deleteWKB.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKB
+deleteWKB.cpp
+sample/SPATIAL/GeoODBC/WKB
+deleteWKB.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+schema.sql
+sample/SPATIAL/GeoODBC/WKT
+schema.sql
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/MakeInsert.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+MakeInsert.mk
+sample/SPATIAL/GeoODBC/WKT
+MakeInsert.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/MakeUpdate.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+MakeUpdate.mk
+sample/SPATIAL/GeoODBC/WKT
+MakeUpdate.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/MakeSelect.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+MakeSelect.mk
+sample/SPATIAL/GeoODBC/WKT
+MakeSelect.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/MakeDelete.mk 
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+MakeDelete.mk
+sample/SPATIAL/GeoODBC/WKT
+MakeDelete.mk
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/insertWKT.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+insertWKT.cpp
+sample/SPATIAL/GeoODBC/WKT
+insertWKT.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/updateWKT.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+updateWKT.cpp
+sample/SPATIAL/GeoODBC/WKT
+updateWKT.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/selectWKT.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+selectWKT.cpp
+sample/SPATIAL/GeoODBC/WKT
+selectWKT.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoODBC/WKT/deleteWKT.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoODBC/WKT
+deleteWKT.cpp
+sample/SPATIAL/GeoODBC/WKT
+deleteWKT.cpp
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKB/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKB
+schema.sql
+sample/SPATIAL/GeoJDBC/WKB
+schema.sql
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKB/InsertWKB.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKB
+InsertWKB.java
+sample/SPATIAL/GeoJDBC/WKB
+InsertWKB.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKB/UpdateWKB.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKB
+UpdateWKB.java
+sample/SPATIAL/GeoJDBC/WKB
+UpdateWKB.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKB/SelectWKB.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKB
+SelectWKB.java
+sample/SPATIAL/GeoJDBC/WKB
+SelectWKB.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKB/DeleteWKB.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKB
+DeleteWKB.java
+sample/SPATIAL/GeoJDBC/WKB
+DeleteWKB.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKT/schema.sql
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKT
+schema.sql
+sample/SPATIAL/GeoJDBC/WKT
+schema.sql
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKT/InsertWKT.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKT
+InsertWKT.java
+sample/SPATIAL/GeoJDBC/WKT
+InsertWKT.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKT/UpdateWKT.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKT
+UpdateWKT.java
+sample/SPATIAL/GeoJDBC/WKT
+UpdateWKT.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKT/SelectWKT.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKT
+SelectWKT.java
+sample/SPATIAL/GeoJDBC/WKT
+SelectWKT.java
+
+#0644 ../ut/sample/SPATIAL/GeoJDBC/WKT/DeleteWKT.java
+[*][*][*][*][*][0644][*]
+ut/sample/SPATIAL/GeoJDBC/WKT
+DeleteWKT.java
+sample/SPATIAL/GeoJDBC/WKT
+DeleteWKT.java
+
+
+#0644 ../ut/sample/ALA/Altibase/ReplToAltiSample.c  ../sample/ALA/Altibase/ReplToAltiSample.c
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/Altibase
+ReplToAltiSample.c
+sample/ALA/Altibase
+ReplToAltiSample.c
+
+#0644 ../ut/sample/ALA/Altibase/Makefile            ../sample/ALA/Altibase/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/Altibase
+Makefile
+sample/ALA/Altibase
+Makefile
+
+#0644 ../ut/sample/ALA/Oracle/ReplToOraSample.c     ../sample/ALA/Oracle/ReplToOraSample.c
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/Oracle
+ReplToOraSample.c
+sample/ALA/Oracle
+ReplToOraSample.c
+
+#0644 ../ut/sample/ALA/OracleOCI/AlaReceiver.c     ../sample/ALA/OracleOCI/AlaReceiver.c
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+AlaReceiver.c
+sample/ALA/OracleOCI
+AlaReceiver.c
+
+#0644 ../ut/sample/ALA/OracleOCI/AlaReceiver.h     ../sample/ALA/OracleOCI/AlaReceiver.h
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+AlaReceiver.h
+sample/ALA/OracleOCI
+AlaReceiver.h
+
+#0644 ../ut/sample/ALA/OracleOCI/AlaToOciConfig.h     ../sample/ALA/OracleOCI/AlaToOciConfig.h
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+AlaToOciConfig.h
+sample/ALA/OracleOCI
+AlaToOciConfig.h
+
+#0644 ../ut/sample/ALA/OracleOCI/DBLog.h     ../sample/ALA/OracleOCI/DBLog.h
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+DBLog.h
+sample/ALA/OracleOCI
+DBLog.h
+
+#0644 ../ut/sample/ALA/oracleOCI/Exception.h     ../sample/ALA/OracleOCI/Exception.h
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+Exception.h
+sample/ALA/OracleOCI
+Exception.h
+
+#0644 ../ut/sample/ALA/oracleOCI/Main.c     ../sample/ALA/OracleOCI/Main.c
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+Main.c
+sample/ALA/OracleOCI
+Main.c
+
+#0644 ../ut/sample/ALA/oracleOCI/Makefile     ../sample/ALA/OracleOCI/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+Makefile
+sample/ALA/OracleOCI
+Makefile
+
+#0644 ../ut/sample/ALA/oracleOCI/OciApplier.c     ../sample/ALA/OracleOCI/OciApplier.c
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+OciApplier.c
+sample/ALA/OracleOCI
+OciApplier.c
+
+#0644 ../ut/sample/ALA/oracleOCI/OciApplier.h     ../sample/ALA/OracleOCI/OciApplier.h
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+OciApplier.h
+sample/ALA/OracleOCI
+OciApplier.h
+
+#0644 ../ut/sample/ALA/oracleOCI/README     ../sample/ALA/OracleOCI/README
+[*][*][*][*][*][0644][*]
+ut/sample/ALA/OracleOCI
+README
+sample/ALA/OracleOCI
+README
+
+#0644 ../ut/sample/UTIL/altiGrep.java ../sample/UTIL/altiGrep.java
+[*][*][S][*][*][0644][*]
+ut/sample/UTIL
+altiGrep.java
+sample/UTIL
+altiGrep.java
+
+################################################################################################
+#
+#   TOOL 
+#
+################################################################################################
+
+
+# PROCEDURE
+#0644 ../tool/procedure/dumpReplScript.sql               ../admin/dumpReplScript.sql
+[*][*][*][*][*][0644][*]
+tool/procedure/
+dumpReplScript.sql
+admin
+dumpReplScript.sql
+
+#0644 ../tool/procedure/showProcBody.sql                 ../admin/showProcBody.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+showProcBody.sql
+admin
+showProcBody.sql
+
+#0644 ../tool/procedure/showProcedures.sql               ../admin/showProcedures.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+showProcedures.sql
+admin
+showProcedures.sql
+
+#0644 ../tool/procedure/showReplications.sql             ../admin/showReplications.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+showReplications.sql
+admin
+showReplications.sql
+
+#0644 ../tool/procedure/showTables.sql                   ../admin/showTables.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+showTables.sql
+admin
+showTables.sql
+
+#0644 ../tool/procedure/tracelog.sql                     ../admin/tracelog.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+tracelog.sql
+admin
+tracelog.sql
+
+#0644 ../tool/procedure/adminview.sql                     ../admin/adminview.sql
+[*][*][*][*][*][0644][*]
+tool/procedure
+adminview.sql
+admin
+adminview.sql
+
+#0755 ../tool/procedure/install_proc.sh                  ../admin/install_proc.sh
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+tool/procedure
+install_proc.sh
+admin
+install_proc.sh
+
+# INSTALL SCRIPT - check and guide kernel parameters
+#0755 ./tool/pre_install.sh                          .,/install/pre_install.sh
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+tool/install
+pre_install.sh
+install
+pre_install.sh
+
+
+#NSTALL SCRIPT - add Env values into Profile file.(ex).profile)
+#0755 ./tool/post_install.sh                         .,/install/post_install.sh
+[^*-WINDOWS-*-*][*][*][*][*][0755][*]
+tool/install
+post_install.sh
+install
+post_install.sh
+
+# ERROR Relative
+#0755 ./tool/altierr/altierr                            ./bin/altierr
+[*][*][*][*][*][0755][*]
+tool/altierr
+altierr
+bin
+altierr
+
+
+# unix : 0755   ./altibase_home/bin/dumptrc                     ./bin/dumptrc
+[*][*][S][*][*][0755][EXE]
+altibase_home/bin
+dumptrc
+bin
+dumptrc
+
+
+#0644 ../ut/sample/CHECKSERVER/checkServer.cpp           ../sample/CHECKSERVER/checkServer.cpp
+[*][*][S][*][*][0644][*]
+ut/sample/CHECKSERVER
+checkServer.cpp
+sample/CHECKSERVER
+checkServer.cpp
+
+#0644 ../ut/sample/CHECKSERVER/checkServerCancel.cpp           ../sample/CHECKSERVER/checkServerCancel.cpp
+[*][*][S][*][*][0644][*]
+ut/sample/CHECKSERVER
+checkServerCancel.cpp
+sample/CHECKSERVER
+checkServerCancel.cpp
+
+#0644 ../ut/sample/CHECKSERVER/Makefile                       ../sample/CHECKSERVER/Makefile
+[*][*][S][*][*][0644][*]
+ut/sample/CHECKSERVER
+Makefile
+sample/CHECKSERVER
+Makefile
+
+#0644 ../ut/sample/ILOADERAPI/create.sql                       ../sample/ILOADERAPI/create.sql
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+create.sql
+sample/ILOADERAPI
+create.sql
+
+#0644 ../ut/sample/ILOADERAPI/create_mt.sql                       ../sample/ILOADERAPI/create_mt.sql
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+create_mt.sql
+sample/ILOADERAPI
+create_mt.sql
+
+#0644 ../ut/sample/ILOADERAPI/datain.cpp                       ../sample/ILOADERAPI/datain.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+datain.cpp
+sample/ILOADERAPI
+datain.cpp
+
+#0644 ../ut/sample/ILOADERAPI/datain_cb.cpp                       ../sample/ILOADERAPI/datain_cb.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+datain_cb.cpp
+sample/ILOADERAPI
+datain_cb.cpp
+
+#0644 ../ut/sample/ILOADERAPI/datain_cb_1.cpp                       ../sample/ILOADERAPI/datain_cb_1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+datain_cb_1.cpp
+sample/ILOADERAPI
+datain_cb_1.cpp
+
+#0644 ../ut/sample/ILOADERAPI/datain_cb_2.cpp                       ../sample/ILOADERAPI/datain_cb_2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+datain_cb_2.cpp
+sample/ILOADERAPI
+datain_cb_2.cpp
+
+#0644 ../ut/sample/ILOADERAPI/datain_mt.cpp                       ../sample/ILOADERAPI/datain_mt.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+datain_mt.cpp
+sample/ILOADERAPI
+datain_mt.cpp
+
+#0644 ../ut/sample/ILOADERAPI/dataout.cpp                       ../sample/ILOADERAPI/dataout.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+dataout.cpp
+sample/ILOADERAPI
+dataout.cpp
+
+#0644 ../ut/sample/ILOADERAPI/dataout_cb.cpp                       ../sample/ILOADERAPI/dataout_cb.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+dataout_cb.cpp
+sample/ILOADERAPI
+dataout_cb.cpp
+
+#0644 ../ut/sample/ILOADERAPI/dataout_cb_1.cpp                       ../sample/ILOADERAPI/dataout_cb_1.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+dataout_cb_1.cpp
+sample/ILOADERAPI
+dataout_cb_1.cpp
+
+#0644 ../ut/sample/ILOADERAPI/dataout_cb_2.cpp                       ../sample/ILOADERAPI/dataout_cb_2.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+dataout_cb_2.cpp
+sample/ILOADERAPI
+dataout_cb_2.cpp
+
+#0644 ../ut/sample/ILOADERAPI/dataout_mt.cpp                       ../sample/ILOADERAPI/dataout_mt.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+dataout_mt.cpp
+sample/ILOADERAPI
+dataout_mt.cpp
+
+#0644 ../ut/sample/ILOADERAPI/formout.cpp                       ../sample/ILOADERAPI/formout.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+formout.cpp
+sample/ILOADERAPI
+formout.cpp
+
+#0644 ../ut/sample/ILOADERAPI/formout_mt.cpp                       ../sample/ILOADERAPI/formout_mt.cpp
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+formout_mt.cpp
+sample/ILOADERAPI
+formout_mt.cpp
+
+#0644 ../ut/sample/ILOADERAPI/insert.sql                       ../sample/ILOADERAPI/insert.sql
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+insert.sql
+sample/ILOADERAPI
+insert.sql
+
+#0644 ../ut/sample/ILOADERAPI/insert_mt.sql                       ../sample/ILOADERAPI/insert_mt.sql
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+insert_mt.sql
+sample/ILOADERAPI
+insert_mt.sql
+
+#0644 ../ut/sample/ILOADERAPI/Makefile                       ../sample/ILOADERAPI/Makefile
+[*][*][*][*][*][0644][*]
+ut/sample/ILOADERAPI
+Makefile
+sample/ILOADERAPI
+Makefile
+
+################################################################################################
+#
+#  GLOBAL KITs (only server package)
+#
+################################################################################################
+
+#0755 /global/README.global
+[^*-WINDOWS-*-*][*][S][*][*][0755][EXE]
+altibase_home/bin
+genErrMsg
+global
+genErrMsg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/cm/msg/
+E_CM_US7ASCII.msg
+global
+E_CM_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/sm/msg/
+E_SM_US7ASCII.msg
+global
+E_SM_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/rp/msg/
+E_RP_US7ASCII.msg
+global
+E_RP_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/mt/msg/
+E_MT_US7ASCII.msg
+global
+E_MT_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/qp/msg/
+E_QP_US7ASCII.msg
+global
+E_QP_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/sd/msg/
+E_SD_US7ASCII.msg
+global
+E_SD_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/st/msg/
+E_ST_US7ASCII.msg
+global
+E_ST_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/mm/msg/
+E_MM_US7ASCII.msg
+global
+E_MM_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/dk/msg/
+E_DK_US7ASCII.msg
+global
+E_DK_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+src/ul/msg/
+E_UL_US7ASCII.msg
+global
+E_UL_US7ASCII.msg
+
+#0755 /global/messagefile
+[*][*][S][*][*][0755][*]
+ut/msg/
+E_UT_US7ASCII.msg
+global
+E_UT_US7ASCII.msg
+
+################################################################################################
+#
+#  SERVER/CLIENT PART : Platform Dependent Files
+#
+################################################################################################
+#0644 /usr/vacpp/lib                        ./lib/libC.a
+[*-AIX-*-*][*][*][*][*][0644][ARL]
+/usr/vacpp/lib
+C
+lib
+C
+
+#0644 /usr/vacpp/lib                        ./lib/libhm.a
+[*-AIX-*-*][*][*][*][*][0644][ARL]
+/usr/vacpp/lib
+hm
+lib
+hm
+
+#0644 /usr/vacpp/lib                        ./lib/libhu.a
+[*-AIX-*-*][*][*][*][*][0644][ARL]
+/usr/vacpp/lib
+hu
+lib
+hu
+
+#0644 ./altibase_home/lib/libgcc_s.a        ./lib/libgcc_s.a
+[*-AIX-*-*][*][*][32][*][0644][ARL] 
+altibase_home/lib
+gcc_s
+lib
+gcc_s
+
+# ################################################################################################
+# #
+# #   RELINKING 
+# #
+# ################################################################################################
+
+#0644 ./altibase_home/lib/rp_objlist.txt               ./lib/rp_objlist.txt
+[*][N][S][*][*][0644][*]
+altibase_home/lib
+rp_objlist.txt
+lib
+rp_objlist.txt
+
+#0644 ./altibase_home/lib/st_objlist.txt               ./lib/st_objlist.txt
+[*][N][S][*][*][0644][*]
+altibase_home/lib
+st_objlist.txt
+lib
+st_objlist.txt
+
+#0644 ./altibase_home/lib/dk_objlist.txt               ./lib/dk_objlist.txt
+[*][N][S][*][*][0644][*]
+altibase_home/lib
+dk_objlist.txt
+lib
+dk_objlist.txt
+
+
+
+#################################################################################################
+##
+##   thirdparty
+##
+#################################################################################################
+
+#0644 ../thirdparty/ArcGIS/geometry_columns.sql      ../thirdparty/ArcGIS/geometry_columns.sql
+[*][*][S][*][*][0644][*]
+thirdparty/ArcGIS
+geometry_columns.sql
+thirdparty/ArcGIS
+geometry_columns.sql
+
+#0644 ../thirdparty/SmartSSD/libsdm.so ../thirdparty/SmartSSD/libsdm.so
+[*][*][S][*][*][0644][*]
+thirdparty/SmartSSD
+libsdm.so
+thirdparty/SmartSSD
+libsdm.so
+
+
+################################################################################################
+#
+#  packages
+#
+################################################################################################
+
+#0644 ./altibase_home/packages/catproc.sql      ./altibase_home/packages/catproc.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+catproc.sql
+packages
+catproc.sql
+
+#0644 ./altibase_home/packages/dbms_application_info.sql      ./altibase_home/packages/dbms_application_info.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_application_info.sql
+packages
+dbms_application_info.sql
+
+#0644 ./altibase_home/packages/dbms_application_info.plb      ./altibase_home/packages/dbms_application_info.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_application_info.plb
+packages
+dbms_application_info.plb
+
+#0644 ./altibase_home/packages/dbms_lock.sql      ./altibase_home/packages/dbms_lock.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_lock.sql
+packages
+dbms_lock.sql
+
+#0644 ./altibase_home/packages/dbms_lock.plb      ./altibase_home/packages/dbms_lock.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_lock.plb
+packages
+dbms_lock.plb
+
+#0644 ./altibase_home/packages/dbms_output.sql      ./altibase_home/packages/dbms_output.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_output.sql
+packages
+dbms_output.sql
+
+#0644 ./altibase_home/packages/dbms_output.plb      ./altibase_home/packages/dbms_output.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_output.plb
+packages
+dbms_output.plb
+
+#0644 ./altibase_home/packages/dbms_random.sql      ./altibase_home/packages/dbms_random.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_random.sql
+packages
+dbms_random.sql
+
+#0644 ./altibase_home/packages/dbms_random.plb      ./altibase_home/packages/dbms_random.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_random.plb
+packages
+dbms_random.plb
+
+#0644 ./altibase_home/packages/sys_context.sql      ./altibase_home/packages/sys_context.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+sys_context.sql
+packages
+sys_context.sql
+
+#0644 ./altibase_home/packages/sys_context.plb      ./altibase_home/packages/sys_context.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+sys_context.plb
+packages
+sys_context.plb
+
+#0644 ./altibase_home/packages/utl_file.sql      ./altibase_home/packages/utl_file.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_file.sql
+packages
+utl_file.sql
+
+#0644 ./altibase_home/packages/utl_file.plb      ./altibase_home/packages/utl_file.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_file.plb
+packages
+utl_file.plb
+
+#0644 ./altibase_home/packages/utl_raw.sql      ./altibase_home/packages/utl_raw.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_raw.sql
+packages
+utl_raw.sql
+
+#0644 ./altibase_home/packages/utl_raw.plb      ./altibase_home/packages/utl_raw.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_raw.plb
+packages
+utl_raw.plb
+
+#0644 ./altibase_home/packages/utl_tcp.sql      ./altibase_home/packages/utl_tcp.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_tcp.sql
+packages
+utl_tcp.sql
+
+#0644 ./altibase_home/packages/utl_tcp.plb      ./altibase_home/packages/utl_tcp.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_tcp.plb
+packages
+utl_tcp.plb
+
+#0644 ./altibase_home/packages/dbms_sql.sql      ./altibase_home/packages/dbms_sql.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_sql.sql
+packages
+dbms_sql.sql
+
+#0644 ./altibase_home/packages/dbms_sql.plb      ./altibase_home/packages/dbms_sql.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_sql.plb
+packages
+dbms_sql.plb
+
+#0644 ./altibase_home/packages/dbms_alert.sql      ./altibase_home/packages/dbms_alert.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_alert.sql
+packages
+dbms_alert.sql
+
+#0644 ./altibase_home/packages/dbms_alert.plb      ./altibase_home/packages/dbms_alert.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_alert.plb
+packages
+dbms_alert.plb
+
+#0644 ./altibase_home/packages/dbms_concurrent_exec.sql      ./altibase_home/packages/dbms_concurrent_exec.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_concurrent_exec.sql
+packages
+dbms_concurrent_exec.sql
+
+#0644 ./altibase_home/packages/dbms_concurrent_exec.plb      ./altibase_home/packages/dbms_concurrent_exec.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_concurrent_exec.plb
+packages
+dbms_concurrent_exec.plb
+
+#0644 ./altibase_home/packages/dbms_recyclebin.sql      ./altibase_home/packages/dbms_recyclebin.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_recyclebin.sql
+packages
+dbms_recyclebin.sql
+
+#0644 ./altibase_home/packages/dbms_recyclebin.plb      ./altibase_home/packages/dbms_recyclebin.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_recyclebin.plb
+packages
+dbms_recyclebin.plb
+
+#0644 ./altibase_home/packages/dbms_stats.sql      ./altibase_home/packages/dbms_stats.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_stats.sql
+packages
+dbms_stats.sql
+
+#0644 ./altibase_home/packages/dbms_stats.plb      ./altibase_home/packages/dbms_stats.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_stats.plb
+packages
+dbms_stats.plb
+
+#0644 ./altibase_home/packages/dbms_utility.sql      ./altibase_home/packages/dbms_utility.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_utility.sql
+packages
+dbms_utility.sql
+
+#0644 ./altibase_home/packages/dbms_utility.plb      ./altibase_home/packages/dbms_utility.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_utility.plb
+packages
+dbms_utility.plb
+
+#0644 ./altibase_home/packages/standard.sql        ./altibase_home/packages/standard.sql  
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+standard.sql
+packages
+standard.sql
+
+#0644 ./altibase_home/packages/utl_smtp.sql      ./altibase_home/packages/utl_smtp.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_smtp.sql
+packages
+utl_smtp.sql
+
+#0644 ./altibase_home/packages/utl_smtp.plb      ./altibase_home/packages/utl_smtp.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_smtp.plb
+packages
+utl_smtp.plb
+
+#0644 ./altibase_home/packages/utl_copyswap.sql      ./altibase_home/packages/utl_copyswap.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_copyswap.sql
+packages
+utl_copyswap.sql
+
+#0644 ./altibase_home/packages/utl_copyswap.plb      ./altibase_home/packages/utl_copyswap.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+utl_copyswap.plb
+packages
+utl_copyswap.plb
+
+#################################################################################################
+##
+## packages
+##
+#################################################################################################
+
+#0644 ./altibase_home/packages/dbms_shard.sql ./altibase_home/packages/dbms_shard.sql
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_shard.sql
+packages
+dbms_shard.sql
+
+#0644 ./altibase_home/packages/dbms_shard.plb ./altibase_home/packages/dbms_shard.plb
+[*][*][S][*][*][0644][*]
+altibase_home/packages
+dbms_shard.plb
+packages
+dbms_shard.plb
+

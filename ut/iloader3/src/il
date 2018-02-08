@@ -1,0 +1,3 @@
+#!/bin/sh
+
+${ALTIBASE_HOME}/bin/iloader -S localhost -U SYS -P MANAGER $*

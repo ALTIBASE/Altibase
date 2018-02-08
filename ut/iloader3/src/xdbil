@@ -1,0 +1,3 @@
+#!/bin/sh
+
+${ALTIBASE_XDB_HOME}/bin/xdbiloader -S localhost -U SYS -P MANAGER $*

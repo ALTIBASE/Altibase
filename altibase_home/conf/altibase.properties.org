@@ -1,0 +1,1054 @@
+#*****************************************************************************
+# * Copyright 1999-2001, ALTIBASE Corporation or its subsidiaries.
+# * All rights reserved.
+#
+#   Property File for Altibase
+#
+# ****************************************************************************/
+
+#=================================================================
+# Fixed Properties
+# should not be modified after createdb
+#=================================================================
+DB_NAME             =  mydb
+
+MEM_DB_DIR          =  ?/dbs # Memory DB Directory
+DEFAULT_DISK_DB_DIR =  ?/dbs # Disk   DB Directory
+
+LOGANCHOR_DIR =  ?/logs # LOGANCHOR_DIR1
+LOGANCHOR_DIR =  ?/logs # LOGANCHOR_DIR2
+LOGANCHOR_DIR =  ?/logs # LOGANCHOR_DIR3
+
+LOG_DIR       =  ?/logs # LOG_DIR
+
+# The ARCHIVE_DIR property must be specified
+# even though the database is not in archive logging mode.
+# The LOG_DIR has its corresponding ARCHIVE_DIR.
+# The ARCHIVE_DIR and LOG_DIR have different path names.
+
+ARCHIVE_DIR   =  ?/arch_logs # ARCHIVE_DIR
+
+SERVER_MSGLOG_DIR=?/trc
+
+# Directory for query profiling.
+QUERY_PROF_LOG_DIR = ?/trc
+
+
+UNIXDOMAIN_FILEPATH=?/trc/cm-unix
+
+#__HEAP_MEM_MAX_SIZE = 100G
+
+LOG_FILE_SIZE =  10M
+
+TEMP_PAGE_CHUNK_COUNT = 128
+
+#=================================================================
+# Segment Management Type
+# Default - 0 ( Manual )
+#         - 1 ( Auto )
+#=================================================================
+DEFAULT_SEGMENT_MANAGEMENT_TYPE = 1
+
+# system tablespace properpty
+# sys data tbs
+#SYS_DATA_TBS_EXTENT_SIZE = 512K
+#SYS_DATA_FILE_INIT_SIZE  = 100M
+#SYS_DATA_FILE_MAX_SIZE   = 2147483647   # 2147483647 = 0x7FFFFFFF = 2^31 - 1
+#SYS_DATA_FILE_NEXT_SIZE  = 1M
+
+# sys temp tbs
+#SYS_TEMP_TBS_EXTENT_SIZE = 512K
+#SYS_TEMP_FILE_INIT_SIZE  = 100M
+#SYS_TEMP_FILE_MAX_SIZE   = 2147483647
+#SYS_TEMP_FILE_NEXT_SIZE  = 1M
+
+# sys undo tbs
+#SYS_UNDO_TBS_EXTENT_SIZE = 256K
+#SYS_UNDO_FILE_INIT_SIZE  = 256M
+#SYS_UNDO_FILE_MAX_SIZE   = 2147483647
+#SYS_UNDO_FILE_NEXT_SIZE  = 1M
+
+# common tbs
+#USER_DATA_TBS_EXTENT_SIZE = 512K
+#USER_DATA_FILE_INIT_SIZE  = 100M
+#USER_DATA_FILE_MAX_SIZE   = 2147483647
+#USER_DATA_FILE_NEXT_SIZE  = 1M
+
+# common temp tbs
+#USER_TEMP_TBS_EXTENT_SIZE = 512K
+#USER_TEMP_FILE_INIT_SIZE  = 100M
+#USER_TEMP_FILE_MAX_SIZE   = 2147483647
+#USER_TEMP_FILE_NEXT_SIZE  = 1M
+
+# user memory tablespace properpty
+#DEFAULT_MEM_DB_FILE_SIZE = 1G
+
+#CHECKSUM_METHOD      = 0
+
+#=================================================================
+# Buffer Properties
+#=================================================================
+BUFFER_AREA_SIZE                    = 134217728 # BUFFER_AREA_SIZE
+BUFFER_FLUSHER_CNT                  = 2
+
+#=================================================================
+# Double Write Parameter
+#=================================================================
+#USE_DW_BUFFER                = 0
+DOUBLE_WRITE_DIRECTORY_COUNT = 2
+DOUBLE_WRITE_DIRECTORY       = ?/dbs
+DOUBLE_WRITE_DIRECTORY       = ?/dbs
+
+#=================================================================
+# Common Properties
+#=================================================================
+TCP_ENABLE             = 1     # 0: Disable 1: Enable (default)
+PORT_NO                = 20300 # PORT_NO
+IPC_CHANNEL_COUNT      = 0 # IPC_CHANNEL_COUNT
+IPC_FILEPATH           = ?/trc/cm-ipc
+IPCDA_CHANNEL_COUNT    = 0 # IPC_CHANNEL_COUNT
+IPCDA_FILEPATH         = ?/trc/cm-ipcda
+
+#PARALLEL_LOAD_FACTOR   = 1 # Default: CPU Count, Other: 지정된 개수.
+
+TRANSACTION_TABLE_SIZE    = 1024
+TRANSACTION_SEGMENT_COUNT = 256    # ( 1 ~ 512 )
+
+# TRANSACTION_SEGMENT_ALLOC_WAIT_TIME = 80  # usec
+# TSSEG_EXTDESC_COUNT_PER_EXTDIR = 4 
+# UDSEG_EXTDESC_COUNT_PER_EXTDIR = 8
+# TSSEG_SIZE_SHRINK_THRESHOLD    = 6M
+# UDSEG_SIZE_SHRINK_THRESHOLD    = 6M
+
+#=================================================================
+# IP stack configuration
+#=================================================================
+NET_CONN_IP_STACK    = 0 # 0: IPv4 stack only
+                         # 1: Dual stack
+                         # 2: IPv6 stack only
+
+#=================================================================
+# Nls Properties
+#=================================================================
+# hangul collation
+NLS_COMP               = 0    # 0:binary code compare,
+                              # 1:hangul collation(KSC5601, MS949)
+
+# conversion(nchar to char) exception
+NLS_NCHAR_CONV_EXCP    = 0    # 0: false(default)
+                              # 1: true
+
+#=================================================================
+# Currency Properties
+#=================================================================
+NLS_TERRITORY			= KOREA # KOREA (default)
+#NLS_CURRENCY                           # see manual
+#NLS_ISO_CURRENCY                       # see manual
+#NLS_NUMERIC_CHARACTERS                 # see manual
+
+#=================================================================
+# Server Session Properties
+#=================================================================
+MAX_CLIENT                = 1000
+MAX_LISTEN                = 128 # socket listen count
+CM_DISCONN_DETECT_TIME    = 3
+DDL_LOCK_TIMEOUT          = 0
+MAX_STATEMENTS_PER_SESSION = 1024
+  # DDL lock timeout
+  # -1 : Wait to Get the Lock
+  # 0  : Don't Wait
+  # >0 : Wait Until Specified Seconds
+# CM_BUFFER_MAX_PENDING_LIST = 512
+
+#=================================================================
+# Logging Properties
+#=================================================================
+AUTO_COMMIT                        = 1   # 0 => non-autocommit 1=> autocommit
+CHECKPOINT_INTERVAL_IN_SEC        = 6000
+CHECKPOINT_INTERVAL_IN_LOG        = 100
+
+CHECKPOINT_BULK_WRITE_PAGE_COUNT  = 0     # default : 0 page
+CHECKPOINT_BULK_WRITE_SLEEP_SEC   = 0     # default : 0 sec
+CHECKPOINT_BULK_WRITE_SLEEP_USEC  = 0     # default : 0 usec
+CHECKPOINT_BULK_SYNC_PAGE_COUNT   = 3200  # default : 100M (3200 pages)
+
+#BUFFER_CHECKPOINT_INTERVAL_IN_FLUSH = 60  # default : 10 x 60 = 10 min
+
+PREPARE_LOG_FILE_COUNT      = 2
+
+#=========================================================================
+# Log Compression Properties
+# These properties are only for INSERT/UPDATE/DELETE statements
+# on memory tables.
+#=========================================================================
+MIN_LOG_RECORD_SIZE_FOR_COMPRESS = 512   # byte
+                                         # 0: Disable Log Compress
+
+#=================================================================
+# Archive Log Properties
+#=================================================================
+ARCHIVE_FULL_ACTION        = 0 # 0:ERROR 1:WAITING
+#ARCHIVE_THREAD_AUTOSTART  = 1
+
+#=================================================================
+# Replication Properties
+#=================================================================
+REPLICATION_PORT_NO                   = 0 # REPLICATION_PORT_NO
+REPLICATION_MAX_LOGFILE               = 0
+REPLICATION_UPDATE_REPLACE            = 0
+REPLICATION_INSERT_REPLACE            = 0
+REPLICATION_CONNECT_TIMEOUT           = 225
+REPLICATION_RECEIVE_TIMEOUT           = 7200
+REPLICATION_SYNC_LOG                  = 0
+REPLICATION_LOCK_TIMEOUT              = 5
+REPLICATION_HBT_DETECT_HIGHWATER_MARK = 5
+REPLICATION_HBT_DETECT_TIME           = 6
+REPLICATION_PREFETCH_LOGFILE_COUNT    = 3
+REPLICATION_SERVICE_WAIT_MAX_LIMIT    = 50000
+REPLICATION_SENDER_SLEEP_TIME         = 10000
+REPLICATION_KEEP_ALIVE_CNT            = 600
+REPLICATION_ACK_XLOG_COUNT            = 100
+REPLICATION_LOG_BUFFER_SIZE           = 0
+REPLICATION_RECOVERY_MAX_TIME         = 4294967295
+REPLICATION_RECOVERY_MAX_LOGFILE      = 0
+__REPLICATION_RECOVERY_REQUEST_TIMEOUT= 5
+REPLICATION_POOL_ELEMENT_SIZE         = 256
+REPLICATION_POOL_ELEMENT_COUNT        = 10
+__REPLICATION_TX_VICTIM_TIMEOUT       = 10
+REPLICATION_COMMIT_WRITE_WAIT_MODE    = 0
+REPLICATION_SERVER_FAILBACK_MAX_TIME  = 4294967295
+REPLICATION_FAILBACK_INCREMENTAL_SYNC = 1
+REPLICATION_MAX_LISTEN                = 32
+REPLICATION_SENDER_START_AFTER_GIVING_UP = 1
+REPLICATION_BEFORE_IMAGE_LOG_ENABLE   = 0
+REPLICATION_SENDER_COMPRESS_XLOG      = 0
+REPLICATION_ALLOW_DUPLICATE_HOSTS     = 0
+REPLICATION_SENDER_ENCRYPT_XLOG       = 0
+REPLICATION_RECONNECT_MAX_COUNT       = 0
+
+# Replication receiver IP stack configration
+# If you want to use ip stack config. for replication, you need to set this properties.
+# If this property is not set, this value will follows NET_CONN_IP_STACK value.
+# - REPLICATION_NET_CONN_IP_STACK    = 0 # 0: IPv4 setack only
+                                         # 1: Dual stack
+                                         # 2: IPv6 stack only
+
+#=================================================================
+# Fast Unlock Log Alloc Mutex
+#=================================================================
+FAST_UNLOCK_LOG_ALLOC_MUTEX     = 0     # 0:Disable 1:Enable
+
+#=================================================================
+# Query Optimizer Properties
+#=================================================================
+OPTIMIZER_MODE          = 0  # 0: cost, 1: rule
+NORMALFORM_MAXIMUM      = 2048
+QUERY_STACK_SIZE        = 1024  # Min: 8, Max: 65536
+
+# Plan rebuild
+PLAN_REBUILD_ENABLE = 0     # 0: disable, 1: enable
+
+# Transitive Predicate Generation
+__OPTIMIZER_TRANSITIVITY_DISABLE = 0  # 0: enable, 1: disable
+__OPTIMIZER_SEMI_JOIN_TRANSITIVITY_DISABLE = 1  # 0: enable, 1: disable
+
+# Simple View Merging
+__OPTIMIZER_SIMPLE_VIEW_MERGING_DISABLE = 0       # 0: enable, 1: disable
+
+# Optimizer Default Temp Tbs Type
+__OPTIMIZER_DEFAULT_TEMP_TBS_TYPE = 0       # 0:AUTO, 1: MEMORY 2: DISK 
+__OPTIMIZER_FIXED_GROUP_MEMORY_TEMP = 0     # 0:AUTO, 1: MEMORY FIXED
+
+# Disk Index Cost Adjust
+OPTIMIZER_DISK_INDEX_COST_ADJ = 100
+
+# Hash Join Cost Adjust
+OPTIMIZER_HASH_JOIN_COST_ADJ = 100
+
+# In Subquery Key Range Tip
+OPTIMIZER_SUBQUERY_OPTIMIZE_METHOD = 1      # 0: Auto, 1: InSubqueryKeyrange 2: TransformNJ
+
+# Maximum number of consecutive set operators.
+__MAX_SET_OP_RECURSION_DEPTH = 1024     # min:128 max:16384 default:1024
+
+# Whether to forcibly cast value in select list as varchar when binding to host variable
+COERCE_HOST_VAR_IN_SELECT_LIST_TO_VARCHAR = 0  # 0: disable
+                                               # 1~32000: varchar precision
+
+# Join ordering ANSI style query
+OPTIMIZER_ANSI_JOIN_ORDERING = 0        # default 0 = No ANSI join ordering
+                                        # 0: Do not join order ANSI query
+                                        # 1: Do join order ANSI query
+
+# Refine prepare memory
+OPTIMIZER_REFINE_PREPARE_MEMORY = 1     # default 1: Refine prepare memory
+                                        # 0: Skip refining prepare memory
+                                        # 1: Do refine prepare memory
+
+# Like operator use old module
+__LIKE_OP_USE_OLD_MODULE  = 0           # default 0: New Module
+                                        # 0: New Module
+                                        # 1: Old Module
+
+# Normalize partialy
+OPTIMIZER_PARTIAL_NORMALIZE = 0         # default 0: Don't / 1: Do
+
+# Query Rewrite
+QUERY_REWRITE_ENABLE = 0                # 0: disable, 1: enable
+
+# Eliminate common subexpression
+__OPTIMIZER_ELIMINATE_COMMON_SUBEXPRESSION = 1  # default 1: Eliminate common subexpression
+                                                # 0: disable, 1: enable
+
+# Constant filter subsumption
+__OPTIMIZER_CONSTANT_FILTER_SUBSUMPTION = 1     # default 1: Filter subsumption for constant predicate
+                                                # 0: disable, 1: enable
+
+# Constant filter subsumption
+__OPTIMIZER_ORDER_BY_ELIMINATION_ENABLE = 1     # default 1: ORDER BY elimination
+                                                # 0: disable, 1: enable
+
+# Function Return Precision
+SYS_CONNECT_BY_PATH_PRECISION = 4000    # default : 4000
+                                        # 1~32000 : varchar precision
+GROUP_CONCAT_PRECISION = 4000           # default : 4000
+                                        # 1~32000 : varchar precision
+
+# Variable Data Types Use Memory According To The Actual Data Size
+REDUCE_TEMP_MEMORY_ENABLE = 0           # 0: disable, 1: enable
+
+# avg() function transform to sum()/count()
+__OPTIMIZER_AVG_TRANSFORM_ENABLE = 1          # 0: disable, 1: enable 
+
+# Disconjunctive Normal Form (DNF) 
+__OPTIMIZER_DNF_DISABLE = 0             # 0: dnf enable, 1: dnf disable
+
+# LIST transformation
+__OPTIMIZER_LIST_TRANSFORMATION = 1     # 0: disable, 1: enable
+
+# The Type of NULL Value
+TYPE_NULL = 0                           # 0: null type, 1: varchar type
+
+# Outer-join-operator to Ansi-join transform
+OUTER_JOIN_OPERATOR_TRANSFORM_ENABLE = 1   # 0: disable, 1: enable
+
+OPTIMIZER_AUTO_STATS = 0   # 0 : disable
+                           # Min: 1, Max: 10
+
+OPTIMIZER_PERFORMANCE_VIEW = 1  # 0: disable, 1: enable
+
+OPTIMIZER_DELAYED_EXECUTION = 0   # 0: disable, 1: enable
+
+__OPTIMIZER_LIKE_INDEX_SCAN_WITH_OUTER_COLUMN_DISABLE = 0   # enable : 0 , disable : 1
+
+#=================================================================
+# query DDL Properties
+#=================================================================
+EXEC_DDL_DISABLE                   = 0  # 0: DDL can be executed.
+                                        # 1: DDL can NOT be executed.
+MEMORY_VARIABLE_COLUMN_IN_ROW_SIZE = 32 # Min: 0, Max: 4000
+MEMORY_LOB_COLUMN_IN_ROW_SIZE      = 64 # Min: 0, Max: 4000
+
+#=================================================================
+# query logging Properties
+#=================================================================
+QP_MSGLOG_FLAG = 2        # 2: DDL logging
+
+SQL_ERROR_INFO_SIZE = 10240    # default 10K
+                               # Min: 1K, Max: 10M
+
+#=================================================================
+# Network Error Message Log Properties
+#=================================================================
+NETWORK_ERROR_LOG =1      # 0: OFF, 1: ON
+
+#=================================================================
+# SELECT HEADER DISPLAY Properties
+#=================================================================
+SELECT_HEADER_DISPLAY   = 1
+# 0 : A display name includes table name.
+# 1 : A display name does not include table name.
+
+#=================================================================
+# administration mode : Only SYS, SYSTEM user can connect to DB.
+#=================================================================
+ADMIN_MODE              = 0  # 0: OFF, 1: ON
+
+#=================================================================
+# remote access as sysdba: enable/disable
+#=================================================================
+REMOTE_SYSDBA_ENABLE = 1 # 1: ON (default), 0: OFF
+
+#=================================================================
+# Data Type Properties
+#=================================================================
+DEFAULT_DATE_FORMAT = DD-MON-RRRR
+
+#=================================================================
+# mutex leak list properties
+#=================================================================
+SHOW_MUTEX_LEAK_LIST = 1
+
+
+#=================================================================
+# Memory Properties
+#=================================================================
+QP_MEMORY_CHUNK_SIZE             = 65536
+#INSPECTION_LARGE_HEAP_THRESHOLD  = 0      # 0: OFF, > 0: ON
+                                           # MIN: 0
+                                           # MAX: 4294967295 (4G)
+                                           # DEFAULT: 0
+PREPARE_STMT_MEMORY_MAXIMUM = 200M
+EXECUTE_STMT_MEMORY_MAXIMUM = 1G
+
+#=================================================================
+# User Lock Properties
+#=================================================================
+USER_LOCK_POOL_INIT_SIZE         = 128
+USER_LOCK_REQUEST_TIMEOUT        = 10       # seconds
+USER_LOCK_REQUEST_CHECK_INTERVAL = 10000    # microseconds
+USER_LOCK_REQUEST_LIMIT          = 10
+
+#=================================================================
+# Disk Index Default Properties
+#=================================================================
+TOTAL_WA_SIZE                        = 134217728 # default = 134217728
+SORT_AREA_SIZE                       = 1048576   # default = 1048576 
+HASH_AREA_SIZE                       = 4194304   # default = 4194304
+DISK_INDEX_BUILD_MERGE_PAGE_COUNT    = 128       # default = 128
+DISK_INDEX_UNBALANCED_SPLIT_RATE     = 90        # default = 90%
+
+#=================================================================
+# Memory Index Default Properties
+#=================================================================
+#MEMORY_INDEX_BUILD_VALUE_LENGTH_THRESHOLD     = 64     # default = 64
+#MEMORY_INDEX_BUILD_RUN_SIZE                   = 32768  # default = 32768
+
+#=================================================================
+# Disk Table Default Properties
+#=================================================================
+#PCTFREE = 10 # default value for table page
+#PCTUSED = 40
+
+#=================================================================
+# Default Hidden Internal Properties
+# only used when change internal properties
+#=================================================================
+
+# _CORE_GEN_IN_RELEASE = 1
+
+# _STORED_PROC_MODE = 0
+
+# SOURCE_INFO = 0
+
+
+# MINIMUM_MEMORY   = 10M     # if not be satisfied, can't startup
+# RECOMMEND_MEMORY = 500M    # if not be satisfied, issue warning
+
+# LOCK_TIME_OUT    =  50
+
+# ISOLATION_LEVEL  = 0       # 0 = READ COMMITTED 1 = REPEATABLE_READ 2 = SERIALIZABLE
+# LOGGING_MODE     = 1       # 0 : NO LOGGING MODE     1: LOGGING MODE
+
+# DIRTY_PAGE_POOL       = 1024
+  # Dirty Page List Pre Allocated PooL
+
+
+# SCN_SYNC_INTERVAL         = 80000
+
+# OID_COUNT_IN_LIST_        = 8
+
+# TOUCH_PAGE_COUNT_BY_NODE_ = 8
+#
+# THREAD_INVOKE_LOCK_TIME   = 3000000
+
+# SM_INDEX_TTREE_RETRY        = 2
+# SM_INDEX_TTREE_AGER_THREADS = 2
+# SM_PROPERTY_AGER_COUNT      = 25
+
+# Select Restore Method
+# RESTORE_METHOD_          = 1  # 0=> serial, 1=> parallel
+
+# RESTORE_BUFFER_PAGE_COUNT = 1024 # Chunk Pages For Loading Memory DB File
+
+# QUERY_TIMEOUT  = 600   # Query Execution Timeout Limitation
+# DDL_TIMEOUT    = 0     # DDL Query Execution Timeout Limitation
+# FETCH_TIMEOUT  = 60    # Abnormal Fetch protocol Disconnection Timeout
+# UTRANS_TIMEOUT = 3600  # Long run Updated-Transaction Disconnection Timeout
+# IDLE_TIMEOUT   = 0     # Long run Idle Client Disconnection Timeout
+# SHUTDOWN_IMMEDIATE_TIMEOUT = 0
+# MEMORY_COMPACT_TIME = 60 # memory compaction API call automatically
+# every 60 seconds
+
+#__SM_CHECKSUM_DISABLE = 0
+#__SM_AGER_DISABLE = 0
+#
+#__SM_CHECK_DISK_INDEX_INTEGRITY = 0 
+## 1 : all indexes when startup
+## 2 : indexes of undo transaction when startup
+## 3 : selective indexes when startup
+## example) __SM_CHECK_DISK_INDEX_INTEGRITY is 3.
+ #__SM_VERIFY_DISK_INDEX_COUNT    = 0 # default : 0, max : 16
+ #__SM_VERIFY_DISK_INDEX_NAME     = T1_IDX # 1st index-name to verify
+ #__SM_VERIFY_DISK_INDEX_NAME     = T2_IDX # 2nd index-name to verify
+ # .... 
+
+#__DISK_INDEX_BOTTOM_UP_BUILD_THRESHOLD = 0  # Minimum record count to build
+                                             # index with bottom-up fashion
+#__DISK_INDEX_KEY_REDISTRIBUTION_LOW_LIMIT = 1      # default = 1%
+#__MEMORY_INDEX_BUILD_RUN_COUNT_AT_UNION_MERGE = 4      # default = 4
+#__DML_WITHOUT_RETRY_ENABLE = 0
+#=================================================================
+# Transaction locks the table in exclusive mode and updates in place
+# when total size of update logging is bigger than this property.
+#=================================================================
+LOCK_ESCALATION_MEMORY_SIZE = 100M
+
+#=================================================================
+# Altibase aborts the transaction that the size of update is greater
+# than TRX_UPDATE_MAX_LOGSIZE. If TRX_UPDATE_MAX_LOGSIZE is 0,
+# Altibase doesn't abort any transactions because of the size of update.
+#=================================================================
+TRX_UPDATE_MAX_LOGSIZE = 10M
+
+#=================================================================
+# Page List Management
+#=================================================================
+EXPAND_CHUNK_PAGE_COUNT      = 128
+# PAGE_LIST_GROUP_COUNT       = 0  # The number of page lists to parallelize
+                                   # The value of this property can't
+                                   # be changed once the database is created
+                                   # 0: the same value of LFG
+
+# PER_LIST_DIST_PAGE_COUNT    = 0  # The distributed page count of parallelized
+                                   # free page list when expands database
+                                   # 0: automatic calculate
+                                   #  ( EXPAND_CHUNK_PAGE_COUNT
+                                   #    / 2 * PAGE_LIST_GROUP_COUNT )
+
+MIN_PAGES_ON_DB_FREE_LIST    = 16
+MIN_PAGES_ON_TABLE_FREE_LIST = 1
+# TABLE_ALLOC_PAGE_COUNT      = 0  # The allocated page count of table
+                                   # from database
+                                   # 0: the same value of MIN_PAGES_ON_TABLE_FREE_LIST
+
+#=================================================================
+# Group Commit Properties
+#=================================================================
+#
+# You need to tune the LFG_GROUP_COMMIT_XXXXX Properties in order to
+# have your system work at highest performance.
+#
+# You can tune these properties peeking V$LFG.
+#
+# Please refer to Altibase manual for more information.
+#
+
+# < The minimum number of update transactions to enable group commit protocol >
+#
+# Because group commit is executed per LFG basis, any LFG that has update
+# transactions up to this property value start using group commit protocol
+#
+# Default value is 80 ( enable group commit only when the number of
+#                       update transactions greater than or equal to 80 )
+# LFG_GROUP_COMMIT_UPDATE_TX_COUNT = 80
+
+
+# < The interval for transactions to wait for the log to be flushed >
+#
+# Because concurrent flush operation on the log is a heavy job,
+# all transactions waiting for a log flush should wait for enough
+# time to group flush requests to the log into one I/O operation.
+#
+# This property is meaningful only when the group commit feature is used
+# meeting the condition described at LFG_GROUP_COMMIT_UPDATE_TX_COUNT property.
+#
+# Default value is 1000 ( 1ms )
+# LFG_GROUP_COMMIT_INTERVAL_USEC = 1000
+
+
+# < The interval for waiting transactions to check if the log is already flushed >
+#
+# While wating transactions defer flush operation to the log file,
+# they are woken up every LFG_GROUP_COMMIT_RETRY_USEC micro seconds
+# to see if the log is flushed by another transaction.
+#
+# This property is meaningful only when the group commit feature is used
+# meeting condition described at LFG_GROUP_COMMIT_UPDATE_TX_COUNT property.
+#
+# Default value is 100 ( 100 us )
+# LFG_GROUP_COMMIT_RETRY_USEC = 100
+
+#=================================================================
+# INDEX_REBUILD_AT_STARTUP Property
+# Default = 1
+#  = 1: Start시 모든 Index Rebuild
+#  = 0: Start시 Meta Table의 Index만
+#=================================================================
+INDEX_REBUILD_AT_STARTUP = 1
+
+#=================================================================
+# The usage of direct IO in Altibase
+# If you want to use direct io, you have to set this properties.
+#    - LOG_IO_TYPE : decide if read or write on logfile as direct io.
+#      0 : Normal
+#      1 : DirectIO
+#
+#    - DATABASE_IO_TYPE : decide if read or write on database file as direct io.
+#      0 : Normal
+#      1 : DirectIO
+#
+#    - DIRECT_IO_ENABLED : if this is 0, altibase ignores the value of LOG_IO_TYPE and
+#                          DATABASE_IO_TYPE and regards these values as 0.
+#      0 : Normal
+#      1 : DirectIO
+#
+#   ex) if you want to use direct i/o only on Logfile, you can set like this.
+#       DIRECT_IO_ENABLED = 1
+#       LOG_IO_TYPE       = 1
+#       DATABASE_IO_TYPE  = 0
+#
+# Some OS or Filesystem requres a further work to perform I/O requests as direct io. because
+# OS can't support direct io per file or can't support in application level,
+# so you have to mount filesystem with a special option like this.
+#
+# # OS          # File System        # something that you have to do.
+# Solaris         UFS                 none
+# HP-UX           Veritas VxFS        mount with convosync=direct.
+# Solaris         Veritas VxFS        mount with convosync=direct.
+# AIX             Veritas VxFS        mount with convosync=direct.
+# AIX             JFS                 use -o dio when mount.
+# Windows NT/2000 *                   none
+# Tru64 Unix      AdvFS               none
+# Linux(2.4 > k)  *                   none
+#
+# If there aren't OS and filesystem which you are going to use, altibase
+# doesn't support direct io on that environment and automatically
+# uses buffered io.
+#=================================================================
+DIRECT_IO_ENABLED = 1 # 0: Buffered I/O, 1:Direct I/O
+DATABASE_IO_TYPE  = 0 # 0: Buffered I/O, 1:Direct I/O
+LOG_IO_TYPE       = 1 # 0: Buffered I/O, 1:Direct I/O
+
+#=================================================================
+# Bulk IO Properties ( min: 1, max: 128, default: 8 )
+#=================================================================
+DB_FILE_MULTIPAGE_READ_COUNT = 8
+
+# The page size used to align file offset and data size and I/O buffer address
+#  for direct I/O
+# DIRECT_IO_PAGE_SIZE = 512   # In case of AIX
+# DIRECT_IO_PAGE_SIZE = 4096  # Otherwise
+
+#=================================================================
+# Developer Properties
+# only used in debugging mode
+#=================================================================
+# __MSGLOG_FILE    = altibase.log  # debug message output file name:
+# __MSGLOG_FUNC    = 0             # function Trace
+# __MSGLOG_ERROR   = 0             # ErrorCode Trace
+__SHOW_ERROR_STACK = 0
+# TRCLOG_LEVEL     = 7             # for trace log
+
+# INDEX_BUILD_THREAD_COUNT = 1  # Default: CPU Count, Other: Specified Count
+# REFINE_PAGE_COUNT        = 50 # Refine Parallel Factor
+# CHECKPOINT_ENABLED       = 1  # 0: Disable, Other:Enable
+
+# ADD_EXTENT_NUM_FROM_TBS_TO_SEG
+# CHECKSUM_METHOD
+# BUFFER_FLUSH_PAGE_PCT_FOR_VICTIM
+# BUFFER_FLUSH_PAGE_PCT_FOR_FLUSH_THREAD
+# MAX_FIND_FREE_PAGE_SEC
+# FREE_FRAME_FILL_PCT
+# FREE_FRAME_LIMIT_PCT
+
+#=================================================================
+# Segment Storage Parameters
+#=================================================================
+#DEFAULT_SEGMENT_STORAGE_INITEXTENTS = 1
+#DEFAULT_SEGMENT_STORAGE_NEXTEXTENTS = 1
+#DEFAULT_SEGMENT_STORAGE_MINEXTENTS  = 1
+#DEFAULT_SEGMENT_STORAGE_MAXEXTENTS  = 4294967295
+
+# Bitmap Segment (TMS) Hidden Properties
+#TMS_SEARCH_HASH_VALUE_ = 0           # Search Hash Value
+#TMS_MAX_SLOT_COUNT_    = 4294967295  # Max slot count in Bitmap Page
+
+VALIDATE_BUFFER = 1
+#ENABLE_RECOVERY_TEST = 0
+#ART_DECREASE_VAL = 0
+#REPLICATION_PERFORMANCE_TEST = 0
+
+# Gathering Wait-Time Statistics
+TIMED_STATISTICS = 0 # default : 0 Timing Off
+                     # other   : 1 Timing On
+
+#=================================================================
+#  IP access control lists
+# 1. Maximum entry count is 64.
+# 2. IP addresses you specify must be valid addresses.
+# 3. By default, all IPs are permitted to access the server.
+# 4. Localhost addrs (ex) 127.0.0.1 or ::1) are always permitted.
+# 5. If both a permit and a deny entry exist on the same IP, then
+#     permit entry is prior to deny entry.
+# 6. If you want all IPv4-addrs to be denied, add the following entry.
+#     access_list = deny     ,0.0.0.0                 ,0.0.0.0
+# 7. Only on a IPv6-enabled altibase server, IPv6 addrs are meaningful.
+# 8. When you use IPv6 addrs, do not use the IPv4-mapped IPv6 address.
+#
+#  format
+# IPv4 form: <permit|deny>, IPv4 addr, mask(d.d.d.d)
+# IPv6 form: <permit|deny>, IPv6 addr, the length of prefix bits to be compared
+#=================================================================
+# example of IPv4 address.
+#access_list = deny     ,0.0.0.0                 ,0.0.0.0
+#access_list = permit   ,192.168.3.0             ,255.255.255.0
+#access_list = permit   ,192.168.1.0             ,255.255.255.0
+#access_list = permit   ,192.168.1.131           ,255.255.255.255
+#=================================================================
+# example of IPv6 address.
+# deny all IPv6 addrs starting with 0 at bit0
+#access_list = deny     ,::1                     ,1
+# deny all IPv6 addrs starting with 1 at bit0
+#access_list = deny     ,fe80::                  ,1
+#access_list = permit   ,::1                     ,128
+# permit all IPv6 addrs starting with 0xfe80
+#access_list = permit   ,fe80::                  ,16
+
+#=================================================================
+# LOB Object Buffer Size Properties
+#=================================================================
+LOB_OBJECT_BUFFER_SIZE = 32000 # default : 32000
+                               # min     : 32000
+                               # max     : 104857600
+
+__INTERMEDIATE_TUPLE_LOB_OBJECT_LIMIT = 33554432 # default : 33554432
+                                                 # min     : 33554432
+                                                 # max     : 1073741824
+
+#=================================================================
+# ST Object Buffer Size Properties
+#=================================================================
+ST_OBJECT_BUFFER_SIZE = 32000 # default : 32000
+                              # min     : 32000
+                              # max     : 104857600
+
+#=================================================================
+# ST Polygon Clipper Library Properties
+#=================================================================
+ST_USE_CLIPPER_LIBRARY = 0 # default 0: use Polygon Clipper Compat Library
+                           # 1: use New Polygon Clipper Library
+
+#=================================================================
+# ST Tolerance Level Properties
+# tolerance level in spatial functions
+#=================================================================
+ST_CLIP_TOLERANCE = 3 # default
+                      # 0: 1E-4
+                      # 1: 1E-5
+                      # 2: 1E-6
+                      # 3: 1E-7
+                      # 4: 1E-8
+                      # 5: 1E-9
+                      # 6: 1E-10
+                      # 7: 1E-11
+                      # 8: 1E-12
+
+#=================================================================
+# ST Object Validation Properties
+# spatial object validation while insert
+#=================================================================
+ST_GEOMETRY_VALIDATION_ENABLE = 1 # 0: disable, 1: enable
+
+#=================================================================
+# DRDB File Properties
+#=================================================================
+DRDB_FD_MAX_COUNT_PER_DATAFILE = 8 # default: 8
+
+#=================================================================
+# DIRECT Path Insert Properties
+#=================================================================
+BULKIO_PAGE_COUNT_FOR_DIRECT_PATH_INSERT = 128    # default: 128  Page
+DIRECT_PATH_BUFFER_PAGE_COUNT            = 1024   # default: 1024 Page
+
+#=================================================================
+# SQL Plan Cache Properties
+#=================================================================
+SQL_PLAN_CACHE_SIZE                           = 64M # default : 64M
+SQL_PLAN_CACHE_HOT_REGION_LRU_RATIO           = 50  # default : 50
+SQL_PLAN_CACHE_PREPARED_EXECUTION_CONTEXT_CNT = 1   # default : 1
+
+EXECUTION_PLAN_MEMORY_CHECK = 0   # default : 0
+                                  # 0 : disable
+                                  # 1 : enable
+
+#=================================================================
+# XA  Properties
+#=================================================================
+XA_HEURISTIC_COMPLETE = 0                  # default 0: Diable heuristic complete 
+                                           # 1: Heuristic commit  
+                                           # 2: Heuristic rollback 
+XA_INDOUBT_TX_TIMEOUT = 60                 # default : 60 Sec
+
+#=================================================================
+# V$STATEMENT, V$SQLTEXT, V$PLANTEXT Performence Properties
+#=================================================================
+STATEMENT_LIST_PARTIAL_SCAN_COUNT = 0      # default 0: full scan
+
+#=================================================================
+## Memory allocator selection and its property
+## View with prefix X$ as like X$MEMORY_ALLOCATOR_TYPE
+##=================================================================
+MEMORY_ALLOCATOR_TYPE = 1                      # default:1 use altibase memory manager for global data
+MEMORY_ALLOCATOR_USE_PRIVATE = 0               # default:0 use altibase m/m for thread-local data
+MEMORY_ALLOCATOR_POOLSIZE = 16777216           # Default pool size is 16Mbyte
+MEMORY_ALLOCATOR_POOLSIZE_PRIVATE = 262144     # Default pool size for thread-local data is 256Kbyte
+MEMORY_ALLOCATOR_DEFAULT_SPINLOCK_COUNT = 1024 # Busy waiting for synchronization
+MEMORY_ALLOCATOR_AUTO_SHRINK=1
+
+#=================================================================
+# Arithmetic Operation Mode Properties
+#=================================================================
+ARITHMETIC_OPERATION_MODE = 1      # 0: Precision Mode
+                                   # 1: Performance Mode (default)
+
+#=================================================================
+# Dedicated thread mode which uses less CPU
+#=================================================================
+THREAD_CPU_AFFINITY               = 0     # default : 0 = off, 1 = on
+DEDICATED_THREAD_MODE             = 0     # default : 0 = Multiplexing mode, 1 = Dedicated thread mode
+DEDICATED_THREAD_INIT_COUNT       = 4     # default : 4 threads
+DEDICATED_THREAD_MAX_COUNT        = 1000  # default : 1000 threads
+DEDICATED_THREAD_CHECK_INTERVAL   = 3600  # default : 3600 seconds, 0 = do not check
+
+#=================================================================
+# LOB Cache Property
+#=================================================================
+LOB_CACHE_THRESHOLD = 8192             # default : 8192 (0 ~ 8192)
+
+#=================================================================
+# No data found error handling in PSM
+#=================================================================
+PSM_IGNORE_NO_DATA_FOUND_ERROR = 0     # 0: disable, 1: enable
+
+#=================================================================
+# PSM External Procedure
+#=================================================================
+EXTPROC_AGENT_CONNECT_TIMEOUT = 60   # default : 60
+                                     # min     : 1
+                                     # max     : 4294967295
+
+EXTPROC_AGENT_IDLE_TIMEOUT    = 300  # default : 300
+                                     # min     : 1
+                                     # max     : 4294967295
+
+EXTPROC_AGENT_CALL_RETRY_COUNT  = 1  # default : 1
+                                     # min     : 1
+                                     # max     : 10
+
+EXTPROC_AGENT_SOCKET_FILEPATH   = ?/trc
+
+#=================================================================
+# Database Link Properties
+#=================================================================
+DBLINK_ENABLE                        = 0   # 0: Disable, 1: Enable
+DBLINK_GLOBAL_TRANSACTION_LEVEL      = 1   # 0: Remote Statement Execution Level
+                                           #    (Default: AUTO_COMMIT = 1)
+                                           # 1: Simple Transaction Commit Level
+                                           #    (need to set AUTO_COMMIT = 0)
+DBLINK_REMOTE_STATEMENT_AUTOCOMMIT   = 0   # 0: OFF, 1: ON
+DBLINK_DATA_BUFFER_BLOCK_SIZE        = 2   # MB
+DBLINK_DATA_BUFFER_BLOCK_COUNT       = 128 # 128
+DBLINK_DATA_BUFFER_ALLOC_RATIO       = 50  # %
+DBLINK_ALTILINKER_CONNECT_TIMEOUT    = 100 # Second
+DBLINK_REMOTE_TABLE_BUFFER_SIZE      = 50  # MB
+
+#=================================================================
+# Audit
+#=================================================================
+AUDIT_BUFFER_SIZE                    = 1M    # Internal buffer size for auditing
+AUDIT_BUFFER_FLUSH_SIZE              = 32K   # Buffer flush size
+AUDIT_BUFFER_FULL_SKIP               = 1     # 0: retry until audit trails in the buffer are written.
+                                             # 1: skip when facing problems.
+AUDIT_FILE_SIZE                      = 100M  # Maximum size of each audit file.
+AUDIT_LOG_DIR                        = ?/trc
+
+
+# Dictionary table 
+__FORCE_COMPRESSION_COLUMN = 0          # 0: Do not force compress columns
+                                        # 1: Force compress columns
+#=================================================================
+# Bind parameter default precision
+#=================================================================
+__BIND_PARAM_DEFAULT_PRECISION = 32000  # min: 1, max: 32000, default: 32000
+
+#=================================================================
+# Job Scheduler
+#=================================================================
+JOB_SCHEDULER_ENABLE                 = 1     # 0: Disable, 1: Enable
+JOB_THREAD_COUNT                     = 1     # default : 0  (0 ~ 128)
+JOB_THREAD_QUEUE_SIZE                = 64    # default : 64 (64 ~ 1024)
+
+#=================================================================
+# Service Thread Properties
+#=================================================================
+SERVICE_THREAD_INITIAL_LIFESPAN           = 6000  # default : 6000 (30 ~ 2^32 - 1)
+MIN_TASK_COUNT_FOR_THREAD_LIVE            = 1     # default : 1    (1 ~ 1024)
+
+#=================================================================
+# Parallel Query Properties
+#=================================================================
+# Maximum number of threads used in parallel queries
+#PARALLEL_QUERY_THREAD_MAX = 8          # default : Processor number
+                                        # 1~512
+
+# Maximum sleep time in micro seconds during execution of parallel queries
+PARALLEL_QUERY_QUEUE_SLEEP_MAX = 500000 # default : 500000
+                                        # 200~1000000
+
+# Size of queue used in parallel queries
+PARALLEL_QUERY_QUEUE_SIZE = 1024        # default : 1024
+                                        # 4~1048576
+
+# Force change parallel degree to the number when create tables
+__FORCE_PARALLEL_DEGREE = 1             # 1       : Do not force change
+                                        # 2~65535 : Force change parallel degree to the number
+
+#=================================================================
+# Case-sensitive User Password Property
+#=================================================================
+CASE_SENSITIVE_PASSWORD = 0             # 0: disable, 1: enable
+
+#=================================================================
+# Communication Manager Properties
+#=================================================================
+#CM_DISPATCHER_SOCK_POLL_TYPE = 1  # 1: SELECT, 2: POLL, 3: EPOLL
+                                   # default: Linux (EPOLL), The others (SELECT) 
+
+#=================================================================
+# Samsung Smart SSD related Properties
+#=================================================================
+#SMART_SSD_LOG_RUN_GC_ENABLE              = 0         # 0 : Disable, 1 : Enable
+#SMART_SSD_LOG_DEVICE                     = /dev/sdc
+#SMART_SSD_GC_TIME_MILLISEC               = 10        # default : 10 ms
+
+#=================================================================
+# SNMP
+#=================================================================
+SNMP_ENABLE       = 0          # 0 : Disable (default), 1 : Enable
+SNMP_PORT_NO      = 20400      # 1024 ~ 65535
+SNMP_TRAP_PORT_NO = 20500      # 1024 ~ 65535
+SNMP_RECV_TIMEOUT = 1000       # milliseconds
+SNMP_SEND_TIMEOUT = 100        # milliseconds
+SNMP_MSGLOG_FLAG  = 3          # 1 + 2, Level (1|2|4|8)
+
+SNMP_ALARM_QUERY_TIMEOUT         = 1    # 0 : Disable, 1: Enable (default)
+SNMP_ALARM_FETCH_TIMEOUT         = 1    # 0 : Disable, 1: Enable (default)
+SNMP_ALARM_UTRANS_TIMEOUT        = 1    # 0 : Disable, 1: Enable (default)
+SNMP_ALARM_SESSION_FAILURE_COUNT = 3    # 0 : Disable, n: Failure count
+
+#=================================================================
+# Result Caching for DETERMINISTIC Function or Subquery
+#=================================================================
+__QUERY_EXECUTION_CACHE_MAX_COUNT = 65536     # min: 0, max: 65536, default: 65536
+__QUERY_EXECUTION_CACHE_MAX_SIZE  = 65536     # min: 0, max: 10485760, default: 65536
+__QUERY_EXECUTION_CACHE_BUCKET_COUNT = 61     # min: 1, max: 512, default: 61, 0 : hash disable (only test)
+__FORCE_SUBQUERY_CACHE_DISABLE = 0     # 0 : subquery cache enable (default)
+                                       # 1 : subquery cache disable
+
+#=================================================================
+# SSL/TLS
+#=================================================================
+SSL_ENABLE = 0                            # 0: Disable (default)
+                                          # 1: Enable
+#SSL_PORT_NO = 20443                      # SSL port number
+#SSL_MAX_LISTEN = 128                     # The maximum number of secure clients
+#SSL_CLIENT_AUTHENTICATION = 0            # 0: Server authentication only(default)
+                                          # 1: Client authentication
+#SSL_CIPHER_LIST = RC4-MD5:DES-CBC-SHA    # Cipher list. 
+#SSL_CA         = ?/cert/ca-cert.pem      # CA file path
+#SSL_CAPATH     = /etc/ssl/certs          # CA directory path
+#SSL_CERT       = ?/cert/server-cert.pem  # Certificate
+#SSL_KEY        = ?/cert/server-key.pem   # Private key
+#__SSL_VERIFY_PEER_CERTIFICATE = 0        # 0: No peer certificate verification will take place. */
+                                          # 1: The peer certificate will be verified. */
+
+#=================================================================
+# Memory Hash Temp Table for Hash Join
+#=================================================================
+HASH_JOIN_MEM_TEMP_PARTITIONING_DISABLE = 0  # 0 : Array-Partitioned Memory Hash Temp Table (Default)
+                                             # 1 : Bucket-based Memory Hash Temp Table
+
+HASH_JOIN_MEM_TEMP_AUTO_BUCKET_COUNT_DISABLE = 0 # 0 : Calculate bucket count based on actual record count
+                                                 # 1 : Select bucket count from /*+HASH BUCKET COUNT*/ hint,
+                                                 #     or estimated value by QP Optimizer (if the hint is not used)
+
+#=================================================================
+# use old sort ( for memory temp table )
+#=================================================================
+__USE_OLD_SORT = 0 # 0 : new_sort , 1 : old_sort
+
+#=================================================================
+# Result Cache
+#=================================================================
+RESULT_CACHE_ENABLE = 0     # 0 : Disable ( default )
+                            # 1 : Enable
+
+TOP_RESULT_CACHE_MODE = 0   # 0 : Disable ( default )
+                            # 1 : Memory Table
+                            # 2 : Disk Table
+                            # 3 : All Table
+
+RESULT_CACHE_MEMORY_MAXIMUM = 10M # 10M (default)
+
+#=================================================================
+# Recursive with
+#=================================================================
+RECURSION_LEVEL_MAXIMUM = 1000  # default : 1000
+
+#=================================================================
+# Checking Space Usage Threshold For DDL
+#=================================================================
+DDL_MEM_USAGE_THRESHOLD = 80      # min : 50    max : 100 (no checking)  default : 80
+
+DDL_TBS_USAGE_THRESHOLD = 80      # min : 50    max : 100 (no checking)  default : 80
+
+ANALYZE_USAGE_MIN_ROWCOUNT = 1000 # min : 1000  max : 4294967295         default : 1000
+
+#=================================================================
+# Subquery unnest or removal disable for a target clause. 
+#=================================================================
+__OPTIMIZER_TARGET_SUBQUERY_UNNEST_DISABLE  = 0     # 0 : unnest enable  (default), 1 : unnest disable 
+__OPTIMIZER_TARGET_SUBQUERY_REMOVAL_DISABLE = 0     # 0 : removal enable (default), 1 : removal disable
+
+#=================================================================
+# Pragma autonomous_transaction
+#=================================================================
+__FORCE_AUTONOMOUS_TRANSACTION_PRAGMA = 0    # 0 : Don't force change , 1 : Force change
+                                             # default : 0 (Disable)
+
+__AUTONOMOUS_TRANSACTION_PRAGMA_DISABLE = 0  # 0 : Enable , 1 : Disable
+                                             # default : 0
+
+#=================================================================
+# PSM Statement Caching
+#=================================================================
+__PSM_STATEMENT_LIST_COUNT = 128   # min : 0  max : 4096 default : 128
+__PSM_STATEMENT_POOL_COUNT = 128   # min : 32 max : 4096 default : 128
+
+#=================================================================
+# Table Lock Mode Property
+#=================================================================
+TABLE_LOCK_MODE = 0     # 0 : Lock table partitions ( default )
+                        # 1 : Do not lock table partitions
+
+#=================================================================
+# Altibase Sharding
+#=================================================================
+SHARD_META_ENABLE = 0   # 0 : Disable Shard Meta/Analyzer/Coordinator
+                        # 1 : Enable Shard Meta/Analyzer/Coordinator
+
+#=================================================================
+# loadbalancer logging Properties
+#=================================================================
+LB_MSGLOG_FLAG = 1        # 1: Service Thread Event Trace Log

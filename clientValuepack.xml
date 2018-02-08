@@ -1,0 +1,691 @@
+<project>
+    <shortName>altibase</shortName>
+    <fullName>${valuepack_title} ${valuepack_version}</fullName>
+    <version>${valuepack_version}</version>
+    <installerFilename>${valuepack_name}_${valuepack_version}.exe</installerFilename>
+    <debugLevel>4</debugLevel>
+    <askForConfirmationOnUninstall>0</askForConfirmationOnUninstall>
+    <leftImage>ut/Installer/left.png</leftImage>
+    <preBuildActionList>
+        <setInstallerVariableFromRegEx>
+            <name>valuepack_title</name>
+            <pattern>_</pattern>
+            <substitution> </substitution>
+            <text>${valuepack_name}</text>
+        </setInstallerVariableFromRegEx>
+    </preBuildActionList>
+    <initializationActionList>
+        <actionGroup>
+            <explanation>unset 64bit client on 32bit platform</explanation>
+            <actionList>
+                <setInstallerVariable>
+                    <name>project.component(altibase_client_64bit).show</name>
+                    <value>0</value>
+                </setInstallerVariable>
+                <setInstallerVariable>
+                    <name>project.component(altibase_client_64bit).selected</name>
+                    <value>0</value>
+                </setInstallerVariable>
+            </actionList>
+            <ruleList>
+                <platformTest>
+                    <type>windows-x86</type>
+                </platformTest>
+            </ruleList>
+        </actionGroup>
+    </initializationActionList>
+    <postUninstallerCreationActionList>
+        <actionGroup>
+            <explanation>remove tmp_exe files</explanation>
+            <actionList>
+                <deleteFile>
+                    <path>${installdir_tmp}</path>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installdir_tmp}</path>
+                        </fileExists>
+                    </ruleList>
+                </deleteFile>
+            </actionList>
+        </actionGroup>
+    </postUninstallerCreationActionList>
+    <allowComponentSelection>1</allowComponentSelection>
+    <createUninstaller>0</createUninstaller>
+    <deleteLockedFilesOnReboot>0</deleteLockedFilesOnReboot>
+    <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>0</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>500</height>
+    <installationLogFile>${installdir_tmp}/altibase_base_install.log</installationLogFile>
+    <outputDirectory>${build_project_directory}</outputDirectory>
+    <removeLogFile>1</removeLogFile>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <startMenuGroupName></startMenuGroupName>
+    <uninstallationLogFile>${installdir_tmp}/altibase_base_uninstall.log</uninstallationLogFile>
+    <vendor>Altibase Corp.,</vendor>
+    <width>750</width>
+    <windowsExecutableIcon>ut/Installer/exe_logo32x32.ico</windowsExecutableIcon>
+    <componentList>
+        <component>
+            <name>altibase_client_32bit</name>
+            <description>ALTIBASE Client 32bit : 5.5.1.0.5</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>ALTIBASE HDB Client 
+
+ALTIBASE HDB 5.5.1 Client 32bit package.
+
+Please contact us via telephone or email if you encounter any technical issues or have any questions.
+
+Website : http://atc.altibase.com
+FAQ : support@altibase.com
+Tel   : +82-2-2082-1114</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_client32bit}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/AltibaseClient_32bit/client32.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_client32bit</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}\client32</value>
+                    <default>${installdir_tmp}\client32</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>0</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_client32bit}\client32.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>ALTIBASE client 32bit installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_client32bit}</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>altibase_client_64bit</name>
+            <description>ALTIBASE Client 64bit : 5.5.1.0.5</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>ALTIBASE HDB Client 
+
+ALTIBASE HDB 5.5.1 Client 64bit package.
+
+Please contact us via telephone or email if you encounter any technical issues or have any questions.
+
+Website : http://atc.altibase.com
+FAQ : support@altibase.com
+Tel   : +82-2-2082-1114</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_client64bit}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/AltibaseClient_64bit/client64.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_client64bit</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}\client64</value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>0</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_client64bit}\client64.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>ALTIBASE client 64bit installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_client64bit}</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>AdminCenter2</name>
+            <description>ALTIBASE AdminCenter 2 : 2.2.1</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>ALTIBASE AdminCenter 2
+
+ALTIBASE provides a GUI interface that makes it easy for administrators to manage objects such as tables, sequences, replications, and procedures.
+
+Please contact us via telephone or email 
+if you encounter any technical issues or have any questions.
+
+Website : http://atc.altibase.com
+FAQ : support@altibase.com
+Tel   : +82-2-2082-1114</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_admincenter}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/AdminCenter/AdminCenter2_install.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_admincenter</name>
+                    <title>Installation Directory : ALTIBASE AdminCenter2</title>
+                    <description>Installation Directory : ALTIBASE AdminCenter2</description>
+                    <explanation>Please specify the installation directory for ALTIBASE AdminCenter2.</explanation>
+                    <value></value>
+                    <default>${installdir_tmp}\admincenter_tmp</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <cliOptionShow>0</cliOptionShow>
+                    <insertAfter>components</insertAfter>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_admincenter}\AdminCenter2_install.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>ALTIBASE Admincenter installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_admincenter}</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>orange_unicode</name>
+            <description>WareVallley Orange : Orange for ALTIBASE 5.0 DBA UNICODE Trial Edition</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>WareValley Orange : UNICODE
+
+Orange is a database development and performance management tool that simplifies the database management process and increases productivity. 
+(The trial version is a time-limited demo version that can be used for 90 days.)
+
+If the character set of database is UTF8, please install Orange UNICODE version. 
+Otherwise, install ANSI version.
+
+This package is not supported for worldwide use.
+A script error may occur if you attempt to install it on a non-Korean Windows platform.
+
+Please contact WareValley Co., Ltd. at the information shown below if you encounter any technical issues or have any questions.
+
+Website : http://www.warevalley.com
+FAQ : orange@warevalley.com
+Tel   : +82-2-743-4910</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_orange_unicode}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/0x0409.ini</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/autorun.inf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/Data1.cab</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/instmsia.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/instmsiw.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/ISScript11.Msi</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/Orange for ALTIBASE 5.0 DBA Trial Edition (Unicode).msi</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/Orange.ico</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/setup.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/UNICODE/Setup.ini</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_orange_unicode</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}\Orange_unicode</value>
+                    <default>${installdir_tmp}\Orange_unicode</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_orange_unicode}\setup.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>Ware Vallley Orange installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_orange_unicode}</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>orange_ansi</name>
+            <description>WareVallley Orange : Orange for ALTIBASE 5.0 DBA ANSI Trial Edition</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>WareValley Orange : ANSI
+
+Orange is a database development and performance management tool that simplifies the database management process and increases productivity. 
+(The trial version is a time-limited demo version that can be used for 90 days.)
+
+If the character set of database is UTF8, please install Orange UNICODE version. 
+Otherwise, install ANSI version.
+
+This package is not supported for worldwide use.
+A script error may occur if you attempt to install it on a non-Korean Windows platform.
+
+Please contact WareValley Co., Ltd. at the information shown below if you encounter any technical issues or have any questions.
+
+Website : http://www.warevalley.com
+FAQ : orange@warevalley.com
+Tel   : +82-2-743-4910</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_orange_ansi}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/0x0409.ini</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/autorun.inf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/Data1.cab</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/instmsia.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/instmsiw.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/ISScript11.Msi</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/Orange for ALTIBASE 5.0 DBA Trial Edition.msi</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/Orange.ico</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/setup.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/Orange/ANSI/Setup.ini</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_orange_ansi</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}\Orange_ansi</value>
+                    <default>${installdir_tmp}\Orange_ansi</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_orange_ansi}\setup.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>Ware Vallley Orange installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_orange_ansi}</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>da_crosshatch</name>
+            <description>En-core Dataware DA : DA2006V332725_Lite</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>En-core Dataware DA  (DA# Modeler, DA# Designer)
+
+En-core Dataware DA is a data architecture modeling and management tool.
+It comprises two modules (DA# Modeler and DA# Designer) for use with ALTIBASE HDB.
+Dataware DA helps you work more professionally. 
+(This is a trial version which cannot be updated online.
+It can only be used to create 40 entities)
+
+This package is not supported for worldwide use.
+A script error may occur if you attempt to install it on a non-Korean Windows platform.
+
+Please contact En-Core Group at the information shown below if you encounter any technical issues or have any questions.
+
+Website : http://www.encore.co.kr
+FAQ : support@en-core.com
+Tel : +82-2-754-7301</detailedDescription>
+            <selected>0</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir_da_crosshatch}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../pgm_pkg/clientValuepack/En-core_DA/DA_setup.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_da_crosshatch</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}\DA_crosshatch</value>
+                    <default>${installdir_tmp}\DA_crosshatch</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <abortOnError>0</abortOnError>
+                    <program>${installdir_da_crosshatch}\DA_setup.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>En-core Dataware DA# Lite installation step</progressText>
+                    <showMessageOnError>0</showMessageOnError>
+                    <workingDirectory>${installdir_da_crosshatch}\</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>component_vali</name>
+            <description>for validataion components select</description>
+            <canBeEdited>0</canBeEdited>
+            <selected>1</selected>
+            <show>0</show>
+            <componentSelectionValidationActionList>
+                <if>
+                    <explanation>check components selection</explanation>
+                    <show>0</show>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>next_page</name>
+                            <value>components</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>altibase_client_32bit</name>
+                        </componentTest>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>altibase_client_64bit</name>
+                        </componentTest>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>AdminCenter2</name>
+                        </componentTest>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>orange_unicode</name>
+                        </componentTest>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>orange_ansi</name>
+                        </componentTest>
+                        <componentTest>
+                            <logic>not_selected</logic>
+                            <name>da_crosshatch</name>
+                        </componentTest>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <if>
+                            <explanation>check os bit</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>Can not Install ALTIBASE client 64bit package on 32bit platform.</text>
+                                </showWarning>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>components</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <platformTest>
+                                    <type>windows-x86</type>
+                                </platformTest>
+                                <componentTest>
+                                    <logic>selected</logic>
+                                    <name>altibase_client_64bit</name>
+                                </componentTest>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value></value>
+                                </setInstallerVariable>
+                            </elseActionList>
+                        </if>
+                        <if>
+                            <explanation>check orange</explanation>
+                            <actionList>
+                                <showWarning>
+                                    <text>Client value package contains 
+two versions of WareVally Orange ( Orange ANSI and UNICODE )
+
+Only one package must be installed.
+
+If the character set of database is UTF8, please install Orange UNICODE version.
+Otherwise, install ANSI version.
+</text>
+                                </showWarning>
+                                <setInstallerVariable>
+                                    <name>next_page</name>
+                                    <value>components</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <componentTest>
+                                    <logic>selected</logic>
+                                    <name>orange_unicode</name>
+                                </componentTest>
+                                <componentTest>
+                                    <logic>selected</logic>
+                                    <name>orange_ansi</name>
+                                </componentTest>
+                            </conditionRuleList>
+                        </if>
+                    </elseActionList>
+                </if>
+            </componentSelectionValidationActionList>
+            <parameterList>
+                <directoryParameter>
+                    <name>installdir_uninstall</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <value>${installdir_tmp}/uninstall_dir</value>
+                    <default>${installdir_tmp}/uninstall_dir</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <ask>0</ask>
+                    <mustBeWritable>1</mustBeWritable>
+                    <mustExist>0</mustExist>
+                    <width>40</width>
+                </directoryParameter>
+            </parameterList>
+        </component>
+    </componentList>
+    <customLanguageFileList>
+        <language>
+            <code>en</code>
+            <file>altibase_home/APatch/valuepack-custom-en.lng</file>
+        </language>
+    </customLanguageFileList>
+    <finalPageActionList>
+        <showText>
+            <progressText>Do  you want to read the release information now?</progressText>
+            <text>${release_info}</text>
+            <title>Release Info.</title>
+        </showText>
+    </finalPageActionList>
+    <parameterList>
+        <stringParameter>
+            <name>valuepack_title</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>40</width>
+        </stringParameter>
+        <stringParameter>
+            <name>valuepack_name</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>valuepack_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>40</width>
+        </stringParameter>
+        <directoryParameter>
+            <name>installdir_tmp</name>
+            <description>Installation Directory : ALTIBASE HDB Client Value package</description>
+            <explanation>Please specify the installation directory for ALTIBASE HDB Client Value package ${valuepack_version}</explanation>
+            <value></value>
+            <default>${system_temp_directory}\ALTIBASE</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <cliOptionShow>0</cliOptionShow>
+            <insertAfter>components</insertAfter>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>30</width>
+        </directoryParameter>
+        <infoParameter>
+            <name>release_info</name>
+            <title>Release Information</title>
+            <description></description>
+            <explanation></explanation>
+            <value>-------  Release Info.  ------
+
+@ V 1.0 (2011/04/01)
+
+ - ALTIBASE Client : 5.5.1.0.5
+
+   ALTIBASE HDB 5.5.1 Client package.
+
+ - ALTIBASE Admincenter : 2.2.1
+
+   ALTIBASE provides a GUI interface that makes it easy for administrators 
+   to manage objects such as tables, sequences, replications, and procedures.
+
+ - WareValley Orange : Orange for ALTIBASE 5.0 DBA Trial Edition
+
+   Orange is a database development and performance management tool that 
+   simplifies the database management process and increases productivity. 
+   (The trial version is a time-limited demo version that can be used for 90 days.)
+
+   This package is not supported for worldwide use.
+   A script error may occur if you attempt to install it 
+   on a non-Korean Windows platform.
+
+
+ - En-core Dataware DA : DA2006V332725_Lite
+
+   En-core Dataware DA is a data architecture modeling and management tool.
+   It comprises two modules (DA# Modeler and DA# Designer) for use 
+   with ALTIBASE HDB.
+   Dataware DA helps you work more professionally. 
+   (This is a trial version which cannot be updated online.
+    It can only be used to create 40 entities)
+
+   This package is not supported for worldwide use.
+   A script error may occur if you attempt to install it 
+   on a non-Korean Windows platform.</value>
+            <default></default>
+            <ask>0</ask>
+            <insertBefore>components</insertBefore>
+            <trimMarginNumChars>0</trimMarginNumChars>
+        </infoParameter>
+    </parameterList>
+</project>
+

@@ -1,0 +1,9 @@
+Installer.Welcome.Text=Welcome to the %1$s setup wizard.
+Installer.Installation.Finished.Title=Completing the %1$s setup wizard
+Installer.Ready.Text1=Setup is now ready to install the %1$s.
+Installer.Installing.Text=Please wait until the setup wizard finishes installing the %1$s.
+Installer.Installation.Finished.Text=Setup has finished installing the %1$s.
+Installer.Uninstallation.ConfirmationQuestion=Do you want to uninstall ALTIBASE HDB ODBC driver and all of its modules?
+Installer.Uninstallation.Title=Uninstalling ALTIBASE HDB ODBC driver 
+Installer.Uninstallation.Uninstalling=Uninstalling ALTIBASE HDB ODBC driver ...
+

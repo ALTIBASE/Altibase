@@ -1,0 +1,26 @@
+#
+# $Id$
+#
+
+include $(ALTIDEV_HOME)/env.mk
+include $(ALTIDEV_HOME)/alticore.mk
+
+INCLUDES += $(IDROPT)$(ID_DIR)/include $(ALTICORE_INCLUDES)
+LIBS += $(ALTICORE_LIB)
+BINS = oaVersion$(BINEXT)
+SRCS = oaVersion.cpp
+OBJS = $(SRCS:.cpp=.$(OBJEXT))
+
+build: $(BINS) 
+	./oaVersion > oaVersion.ih
+
+oaVersion$(BINEXT): oaVersion.$(OBJEXT)
+	$(LINK.cc) $(LIBDIRS)  $(LDOUT)$@ oaVersion.$(OBJEXT) $(LIBOPT)id$(LIBAFT) $(LIBOPT)pd$(LIBAFT) $(LIBS)
+
+oaVersion.$(OBJEXT): oaVersion.cpp
+	$(COMPILE.cc) $(INCLUDES) $(CFLAGS) oaVersion.cpp -c -o oaVersion.o
+
+clean:
+	$(Q) $(RM) $(BINS) *.$(OBJEXT) *.ih core
+
+-include $(OBJS:.$(OBJEXT)=.d)

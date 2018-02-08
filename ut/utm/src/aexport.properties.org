@@ -1,0 +1,67 @@
+#######################
+# Execute
+#######################
+OPERATION = OUT   # IN 
+EXECUTE   = OFF   # ON
+
+########################
+# Script Option 
+########################
+INVALID_SCRIPT   = OFF # ON
+TWO_PHASE_SCRIPT = OFF # ON
+
+########################
+#  Non-Schema 
+########################
+#CRT_TBS_USER_MODE = ON  # OFF
+
+########################
+#  Schema 
+########################
+INDEX      = ON  # OFF
+DROP       = OFF # ON
+#USER_PASSWORD = altibase
+VIEW_FORCE = OFF # ON
+
+#######################
+# Script File Name
+#######################
+ISQL               = run_is.sh
+ISQL_CON           = run_is_con.sh
+ISQL_INDEX         = run_is_index.sh
+ILOADER_OUT        = run_il_out.sh
+ILOADER_IN         = run_il_in.sh
+ISQL_FOREIGN_KEY   = run_is_fk.sh
+ISQL_REPL          = run_is_repl.sh
+ISQL_REFRESH_MVIEW = run_is_refresh_mview.sh
+ISQL_JOB           = run_is_job.sh
+ISQL_ALT_TBL       = run_is_alt_tbl.sh
+
+#######################
+# iloader option
+#######################
+#ILOADER_FIELD_TERM = ^
+#ILOADER_ROW_TERM = %n
+ILOADER_PARTITION = OFF #ON
+#ILOADER_ERRORS = 0
+#ILOADER_PARALLEL = 4
+#ILOADER_COMMIT = 1000
+#ILOADER_ARRAY = 1000
+#ILOADER_ASYNC_PREFETCH = ON #AUTO
+
+######################
+## DBMS Stats
+########################
+COLLECT_DBMS_STATS = OFF
+
+######################
+## SSL options for Target Server
+########################
+#SSL_ENABLE = ON  # OFF
+#SSL_CA     = ${ALTIBASE_HOME}/cert/ca-cert.pem
+#SSL_CAPATH = ${ALTIBASE_HOME}/cert
+#SSL_CERT   = ${ALTIBASE_HOME}/cert/client-cert.pem
+#SSL_KEY    = ${ALTIBASE_HOME}/cert/client-key.pem
+#SSL_CIPHER = RC4-SHA:RC4-MD5
+#SSL_VERIFY = ON  # OFF
+

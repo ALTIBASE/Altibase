@@ -1,0 +1,155 @@
+#
+# Copyright 2011, Altibase Corporation or its subsidiaries.
+# All rights reserved.
+#
+include $(ALTIDEV_HOME)/env.mk
+include $(ALTIDEV_HOME)/alticore.mk
+include adapter_objs.mk
+
+ifneq ($(ADAPTER_JAVA_HOME),)
+JAVA_VERSION=$(shell echo $(ADAPTER_JAVA_HOME)/bin/java -version 2>&1 | head -1 | sed 's%java version "\(.*\)"%\1%'| cut -f2 -d'.')
+else
+JAVA_VERSION="no ADAPTER_JAVA_HOME environment variable was set"
+endif
+
+# for distribution
+#REVISION = `svn up | cut -d" " -f"2 3"`
+#REVISION = `svn info | head -5 | tail -1 | cut -d" " -f2`
+#RELEASE_ORA_ADAPTER_DIST_NAME=oraAdapter-$(OS_TARGET)$(OS_MAJORVER)$(OS_MINORVER)-$(COMPILER_NAME)-$(BUILD_MODE)-$(REVISION)
+RELEASE_VERSION=$(shell $(ALTI_HOME)/bin/genErrMsg -k|awk -F'-' '{print $$3}')
+PLATFORM_INFO=$(ALTI_CFG_OS)-$(ALTI_CFG_CPU)-$(ALTI_CFG_BITTYPE)bit
+RELEASE_JDBC_ADAPTER_DIST_NAME=altibase-jdbcAdapter-$(RELEASE_VERSION)-$(PLATFORM_INFO)-$(BUILD_MODE)
+JDBC_ADAPTER_INSTALLER_XML=jdbcAdapter.xml
+
+# for Adapter for JDBC
+CFLAGS   += -DJDBCADAPTER
+INCLUDES += $(IDROPT). $(IDROPT)./msg $(IDROPT)./version
+
+# For linking dynamic library
+LIBDIRS += $(LDROPT)$(ALTI_HOME)/lib $(LDROPT).
+# For linking static library
+
+ifeq "$(ALTI_CFG_OS)" "WINDOWS"
+LIBS_DYNAMIC += $(ALTI_HOME)/lib/ala.$(LIBEXT) $(ALTI_HOME)/lib/alticore_debug_static.$(LIBEXT) 
+LIBS_STATIC += $(ALTI_HOME)/lib/ala.$(LIBEXT) $(ALTI_HOME)/lib/alticore_static.$(LIBEXT) 
+else
+LIBS_DYNAMIC += $(ALTI_HOME)/lib/libala.$(LIBEXT) $(ALTI_HOME)/lib/libalticore.$(LIBEXT) 
+LIBS_STATIC += $(ALTI_HOME)/lib/libala.$(LIBEXT) $(ALTI_HOME)/lib/libalticore.$(LIBEXT) 
+endif
+LIBS_DYNAMIC += $(ADAPTER_JAVA_HOME)/jre/lib/amd64/server/libjvm.so
+LIBS_STATIC += $(ADAPTER_JAVA_HOME)/jre/lib/amd64/server/libjvm.so
+
+ifeq "$(ALTI_CFG_OS)" "LINUX"
+CFLAGS += -Werror
+endif
+
+# for ALTICORE
+INCLUDES += $(ALTICORE_INCLUDES)
+# For linking alticore dynamic library
+#LFLAGS += $(ALTICORE_LDFLAGS)
+
+# for ALA
+INCLUDES += $(IDROPT)$(ALTIDEV_HOME)/src/ul/include
+# for jdbc
+INCLUDES += $(IDROPT)$(ADAPTER_JAVA_HOME)/include
+
+OUT = jdbcAdapter$(BINEXT)
+
+SRCS = $(JDBC_ADAPTER_SRCS)
+
+OBJS = $(JDBC_ADAPTER_OBJS)
+
+all: build
+
+ifeq "$(OS_TARGET)" "X86_64_LINUX"
+
+ifeq "$(JAVA_VERSION)" "7"
+
+build: build_msg $(OBJS)
+	    $(LD) $(OBJS) $(INCLUDES) $(LIBDIRS) $(LFLAGS) $(LDOUT)$(OUT) $(LIBS_DYNAMIC) $(LIBS)
+        
+	rm -rf jdbcAdapter_home/
+	mkdir -p jdbcAdapter_home/msg/
+	mkdir -p jdbcAdapter_home/bin/
+	mkdir -p jdbcAdapter_home/conf/
+	mkdir -p jdbcAdapter_home/trc/
+	cp -f $(OUT) jdbcAdapter_home/bin/
+	cp -f bin/jdbcoaUtility jdbcAdapter_home/bin/oaUtility
+	chmod +x jdbcAdapter_home/bin/oaUtility
+	cp -f msg/msgEN82.mdl jdbcAdapter_home/msg/
+	cp -f conf/jdbcAdapter.conf jdbcAdapter_home/conf/jdbcAdapter.conf
+
+else
+
+build:
+	@echo "not supported java version" "$(ADAPTER_JAVA_HOME)"
+	$(error java version: $(JAVA_VERSION))
+endif
+
+else
+
+build:
+	@echo "not supported os"
+endif
+
+
+build_static: build_msg $(OBJS)
+	    $(LD) $(OBJS) $(INCLUDES) $(LIBDIRS) $(LFLAGS) $(LDOUT)$(OUT) $(LIBS_STATIC) $(LIBS)
+	cp -f $(OUT) bin/
+
+$(OBJS): build_version
+
+.c.o:
+	$(COMPILE.c) $(LDOUT)$@ $< $(INCLUDES)
+   
+clean: clean_msg clean_version
+	rm -f $(OUT)
+	rm -f $(OBJS)
+	rm -rf jdbcAdapter_home
+	rm -rf dist
+
+# for version file
+build_version:
+	$(MAKE) -C version -f Makefile.jdbc build
+
+clean_version:
+	$(MAKE) -C version -f Makefile.jdbc clean
+    
+# for message file
+build_msg: msg/oaMsg.msg
+	$(MAKE) -C msg build
+
+clean_msg:
+	$(MAKE) -C msg clean
+
+ifeq "$(OS_TARGET)" "X86_64_LINUX"
+
+ifeq "$(JAVA_VERSION)" "7"
+
+dist:
+	rm -rf dist
+	mkdir -p dist/msg/
+	mkdir -p dist/bin/
+	mkdir -p dist/conf/
+	mkdir -p dist/trc/
+	cp -f jdbcAdapter_home/bin/$(OUT) dist/bin/
+	cp -f jdbcAdapter_home/bin/oaUtility dist/bin/
+	chmod +x dist/bin/oaUtility
+	cp -f msg/msgEN82.mdl dist/msg/
+	cp -f jdbcAdapter_home/conf/jdbcAdapter.conf dist/conf/jdbcAdapter.conf
+else
+
+dist:
+	@echo "not supported java version" "$(ADAPTER_JAVA_HOME)"
+endif
+
+else
+
+dist:
+	@echo "not supported os"
+endif
+
+pkg: dist
+	builder build $(JDBC_ADAPTER_INSTALLER_XML) --setvars jdbcadapter_filename=$(RELEASE_JDBC_ADAPTER_DIST_NAME) jdbcadapter_version=$(RELEASE_VERSION)
+
+-include $(OBJS:.$(OBJEXT)=.d)

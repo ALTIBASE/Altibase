@@ -1,0 +1,1 @@
+/lib/crt0_64.o -ldl -lc -lm -lpthreads -lodm -lbsd_r -lld -lperfstat

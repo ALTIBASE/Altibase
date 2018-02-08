@@ -1,0 +1,9 @@
+POOLNAME  : altibasePool
+DBURL     : jdbc:Altibase://127.0.0.1:20536/mydb
+CLASSNAME : Altibase.jdbc.driver.AltibaseDriver
+DBUSER    : SYS
+DBPASSWD  : MANAGER
+INITPOOLS : 3
+MAXPOOLS  : 5
+#TIMEOUT  : 300
+TIMEOUT   : 5

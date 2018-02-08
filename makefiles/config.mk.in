@@ -1,0 +1,21 @@
+# -*- makefile -*-
+# Copyright 1999-2007, ALTIBASE Corporation or its subsidiaries.
+# All rights reserved.
+
+# $Id: config.mk.in 8488 2009-11-03 04:43:48Z djin $
+#
+
+CONFIG_MK_INCLUDED := 1
+
+#
+# External programs
+#
+GREP=@GREP@
+GAWK=@GAWK@
+GPERF=@GPERF@
+RE2C=@RE2C@
+
+#
+# Path seperator
+#
+PATH_SEP=:

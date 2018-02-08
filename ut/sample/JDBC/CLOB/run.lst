@@ -1,0 +1,13 @@
+  INSERT CLOB by setCharacterStream() 
+  INSERT CLOB by setClob() 
+  SELECT CLOB 
+    FETCH # 1
+      TextID    : 1
+      TextTitle : Altibase Greetings
+      Write Clob to file 1-out.txt
+      TextSize : 1839
+    FETCH # 2
+      TextID    : 2
+      TextTitle : Main Memory DBMS
+      Write Clob to file 2-out.txt
+      TextSize : 4110

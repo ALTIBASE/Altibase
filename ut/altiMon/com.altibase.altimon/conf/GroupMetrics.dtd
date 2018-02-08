@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT GroupMetrics (GroupMetric)+>
+	<!ELEMENT GroupMetric (Target)+>    
+	    <!ATTLIST GroupMetric Name ID #REQUIRED>
+	    <!ATTLIST GroupMetric Interval CDATA #REQUIRED>
+	    <!ELEMENT Target (Column)*>
+	        <!ATTLIST Target MetricName ID #REQUIRED>
+	        <!ELEMENT Column>
+	            <!ATTLIST Column Name CDATA #REQUIRED>

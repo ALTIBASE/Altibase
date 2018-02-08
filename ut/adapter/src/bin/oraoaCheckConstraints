@@ -1,0 +1,332 @@
+#!/bin/bash
+# ALTIBASE_HOME, ORACLE_HOME and ORA_ADAPTER_HOME environment variables are required.
+
+CONSTRAINT_CHECK_RESULT=0
+CONSTRAINT_CONF_FILE=$ORA_ADAPTER_HOME/conf/oraAdapter.conf
+REPLICATION_TABLE_FILE=_ReplicationTable_$PPID
+ALTIBASE_PRIMARY_KEY_FILE=_AltibasePrimaryKey_$PPID
+ORACLE_PRIMARY_KEY_FILE=_OraclePrimaryKey_$PPID
+
+# check environment variable
+if [ -z $ORA_ADAPTER_HOME ]
+then
+    echo "Please set ORA_ADAPTER_HOME environment variable."
+    exit 255
+fi
+if [ -z "$ALTIBASE_HOME" ]
+then
+    echo "Please set ALTIBASE_HOME environment variable."
+    exit 255
+fi
+if [ -z "$ORACLE_HOME" ]
+then
+    echo "Please set ORACLE_HOME environment variable."
+    exit 255
+fi
+
+getConstraintProperty()
+{
+    RETURN_VALUE=0
+
+    REPLICATION_NAME=`grep "ALA_REPLICATION_NAME" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ALA_REPLICATION_NAME[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$REPLICATION_NAME" ]
+    then
+        REPLICATION_NAME="ALA"
+    fi
+
+    ALTIBASE_USER=`grep "ALTIBASE_USER" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ALTIBASE_USER[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ALTIBASE_USER" ]
+    then
+        ALTIBASE_USER="guest"
+    fi
+
+    ALTIBASE_PASSWORD=`grep "ALTIBASE_PASSWORD" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ALTIBASE_PASSWORD[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ALTIBASE_PASSWORD" ]
+    then
+        ALTIBASE_PASSWORD="guest"
+    fi
+
+    ALTIBASE_IP=`grep "ALTIBASE_IP" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ALTIBASE_IP[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ALTIBASE_IP" ]
+    then
+        ALTIBASE_IP="127.0.0.1"
+    fi
+
+    ALTIBASE_PORT=`grep "ALTIBASE_PORT" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ALTIBASE_PORT[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ALTIBASE_PORT" ]
+    then
+        ALTIBASE_PORT="20300"
+    fi
+
+    ORACLE_SERVER_ALIAS=`grep "ORACLE_SERVER_ALIAS" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ORACLE_SERVER_ALIAS[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+
+    ORACLE_USER=`grep "ORACLE_USER" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ORACLE_USER[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ORACLE_USER" ]
+    then
+        ORACLE_USER="scott"
+    fi
+
+    ORACLE_PASSWORD=`grep "ORACLE_PASSWORD" $CONSTRAINT_CONF_FILE | sed -e "s/^[ \t]*ORACLE_PASSWORD[ \t]*=[ \t]*//" -e "s/[ \t]#.*$//" -e "s/[ \t]//"`
+    if [ -z "$ORACLE_PASSWORD" ]
+    then
+        ORACLE_PASSWORD="tiger"
+    fi
+
+    return $RETURN_VALUE
+}
+
+printReplicationTable()
+{
+$ALTIBASE_HOME/bin/isql -silent -u $ALTIBASE_USER -p $ALTIBASE_PASSWORD -s $ALTIBASE_IP -port $ALTIBASE_PORT<<EOF>$REPLICATION_TABLE_FILE.ERR
+    SET HEADING  OFF;
+    SET LINESIZE 550;
+    SET PAGESIZE 0;
+    SET TIMING OFF;
+    SET FEED OFF;
+    SET VERTICAL OFF;
+    SET COLSIZE 45;
+    ALTER SESSION SET EXPLAIN PLAN = OFF;
+
+    SPOOL $REPLICATION_TABLE_FILE.TMP;
+    SELECT A.LOCAL_USER_NAME, A.LOCAL_TABLE_NAME, A.REMOTE_USER_NAME, A.REMOTE_TABLE_NAME
+      FROM SYSTEM_.SYS_REPL_ITEMS_ A
+     WHERE A.REPLICATION_NAME = '$1';
+    SPOOL OFF;
+    EXIT;
+EOF
+
+    RETURN_VALUE=0
+    ERROR_MESSAGE=`grep "^\[ERR-" $REPLICATION_TABLE_FILE.ERR`
+    if [ -z "$ERROR_MESSAGE" ]
+    then
+        sed -e "s/ *$//g" -e "/^$/d" -e "/row[s]* selected/d" -e "1,3 d" $REPLICATION_TABLE_FILE.TMP > $REPLICATION_TABLE_FILE
+
+        RESULT_ROWS=`cat $REPLICATION_TABLE_FILE`
+        if [ -z "$RESULT_ROWS" ]
+        then
+            echo "There are no replications. [$1]"
+            RETURN_VALUE=2
+        fi
+    else
+        echo "$ERROR_MESSAGE"
+        RETURN_VALUE=1
+    fi
+
+    rm -f $REPLICATION_TABLE_FILE.TMP
+    rm -f $REPLICATION_TABLE_FILE.ERR
+    return $RETURN_VALUE
+}
+
+printAltibasePrimaryKey()
+{
+$ALTIBASE_HOME/bin/isql -silent -u $ALTIBASE_USER -p $ALTIBASE_PASSWORD -s $ALTIBASE_IP -port $ALTIBASE_PORT<<EOF>$ALTIBASE_PRIMARY_KEY_FILE.ERR
+    SET HEADING  OFF;
+    SET LINESIZE 150;
+    SET PAGESIZE 0;
+    SET TIMING OFF;
+    SET FEED OFF;
+    SET VERTICAL OFF;
+    SET COLSIZE 45;
+    ALTER SESSION SET EXPLAIN PLAN = OFF;
+
+    SPOOL $ALTIBASE_PRIMARY_KEY_FILE.TMP;
+    SELECT F.COLUMN_NAME
+      FROM ( SELECT A.CONSTRAINT_ID, A.USER_ID, A.TABLE_ID
+               FROM SYSTEM_.SYS_CONSTRAINTS_ A,
+                    SYSTEM_.SYS_USERS_ B,
+                    SYSTEM_.SYS_TABLES_ C
+              WHERE A.USER_ID = B.USER_ID AND
+                    A.USER_ID = C.USER_ID AND
+                    B.USER_NAME = '$1' AND
+                    A.TABLE_ID = C.TABLE_ID AND
+                    C.TABLE_NAME = '$2' AND
+                    A.CONSTRAINT_TYPE = '3' AND
+                    A.VALIDATED = 'T' ) D,
+           SYSTEM_.SYS_CONSTRAINT_COLUMNS_ E,
+           SYSTEM_.SYS_COLUMNS_ F
+     WHERE D.CONSTRAINT_ID = E.CONSTRAINT_ID AND
+           D.USER_ID = F.USER_ID AND
+           D.TABLE_ID = F.TABLE_ID AND
+           E.COLUMN_ID = F.COLUMN_ID
+     ORDER BY F.COLUMN_NAME ASC;
+    SPOOL OFF;
+    EXIT;
+EOF
+
+    RETURN_VALUE=0
+    ERROR_MESSAGE=`grep "^\[ERR-" $ALTIBASE_PRIMARY_KEY_FILE.ERR`
+    if [ -z "$ERROR_MESSAGE" ]
+    then
+        sed -e "s/ *$//g" -e "/^$/d" -e "/row[s]* selected/d" -e "1,19 d" $ALTIBASE_PRIMARY_KEY_FILE.TMP > $ALTIBASE_PRIMARY_KEY_FILE
+
+        RESULT_ROWS=`cat $ALTIBASE_PRIMARY_KEY_FILE`
+        if [ -z "$RESULT_ROWS" ]
+        then
+            echo "There are no replication tables. [$1.$2]"
+            RETURN_VALUE=2
+        fi
+    else
+        echo "$ERROR_MESSAGE"
+        RETURN_VALUE=1
+    fi
+
+    rm -f $ALTIBASE_PRIMARY_KEY_FILE.TMP
+    rm -f $ALTIBASE_PRIMARY_KEY_FILE.ERR
+    return $RETURN_VALUE
+}
+
+printOraclePrimaryKey()
+{
+    if [ -z "$ORACLE_SERVER_ALIAS" ]
+    then
+$ORACLE_HOME/bin/sqlplus -silent $ORACLE_USER/$ORACLE_PASSWORD<<EOF>$ORACLE_PRIMARY_KEY_FILE.TMP
+    SET HEADING  OFF;
+    SET LINESIZE 4000;
+    SET PAGESIZE 0;
+    SET TIMING OFF;
+
+    SELECT B.COLUMN_NAME
+      FROM ALL_CONSTRAINTS A,
+           ALL_CONS_COLUMNS B
+     WHERE A.OWNER = B.OWNER AND
+           A.TABLE_NAME = B.TABLE_NAME AND
+           A.CONSTRAINT_NAME = B.CONSTRAINT_NAME AND
+           A.CONSTRAINT_TYPE = 'P' AND
+           A.STATUS = 'ENABLED' AND
+           A.VALIDATED = 'VALIDATED' AND
+           A.INVALID IS NULL AND
+           A.OWNER = '$1' AND
+           A.TABLE_NAME = '$2'
+     ORDER BY B.COLUMN_NAME ASC;
+    EXIT;
+EOF
+    else
+$ORACLE_HOME/bin/sqlplus -silent $ORACLE_USER/$ORACLE_PASSWORD@$ORACLE_SERVER_ALIAS<<EOF>$ORACLE_PRIMARY_KEY_FILE.TMP
+    SET HEADING  OFF;
+    SET LINESIZE 4000;
+    SET PAGESIZE 0;
+    SET TIMING OFF;
+
+    SELECT B.COLUMN_NAME
+      FROM ALL_CONSTRAINTS A,
+           ALL_CONS_COLUMNS B
+     WHERE A.OWNER = B.OWNER AND
+           A.TABLE_NAME = B.TABLE_NAME AND
+           A.CONSTRAINT_NAME = B.CONSTRAINT_NAME AND
+           A.CONSTRAINT_TYPE = 'P' AND
+           A.STATUS = 'ENABLED' AND
+           A.VALIDATED = 'VALIDATED' AND
+           A.INVALID IS NULL AND
+           A.OWNER = '$1' AND
+           A.TABLE_NAME = '$2'
+     ORDER BY B.COLUMN_NAME ASC;
+    EXIT;
+EOF
+    fi
+
+    RETURN_VALUE=0
+    ERROR_MESSAGE=`grep "^ORA-" $ORACLE_PRIMARY_KEY_FILE.TMP`
+    if [ -z "$ERROR_MESSAGE" ]
+    then
+        sed -e "s/ *$//g" -e "/^$/d" -e "/row[s]* selected/d" $ORACLE_PRIMARY_KEY_FILE.TMP > $ORACLE_PRIMARY_KEY_FILE
+
+        RESULT_ROWS=`cat $ORACLE_PRIMARY_KEY_FILE`
+        if [ -z "$RESULT_ROWS" ]
+        then
+            echo "There are no replication tables. [$1.$2]"
+            RETURN_VALUE=2
+        fi
+    else
+        echo "$ERROR_MESSAGE"
+        RETURN_VALUE=1
+    fi
+
+    rm -f $ORACLE_PRIMARY_KEY_FILE.TMP
+    return $RETURN_VALUE
+}
+
+comparePrimaryKey()
+{
+    DIFF_CHECKED=0
+
+    printAltibasePrimaryKey $1 $2
+    if [ $? -eq 0 ]
+    then
+        printOraclePrimaryKey $3 $4
+        if [ $? -eq 0 ]
+        then
+            diff $ALTIBASE_PRIMARY_KEY_FILE $ORACLE_PRIMARY_KEY_FILE > /dev/null
+            if [ $? -eq 0 ]
+            then
+                echo "    OK   : Altibase \"$1\".\"$2\", Oracle \"$3\".\"$4\""
+            else
+                echo "    DIFF : Altibase \"$1\".\"$2\", Oracle \"$3\".\"$4\""
+                echo "        Altibase :" `cat $ALTIBASE_PRIMARY_KEY_FILE`
+                echo "        Oracle   :" `cat $ORACLE_PRIMARY_KEY_FILE`
+                CONSTRAINT_CHECK_RESULT=4
+            fi
+
+            DIFF_CHECKED=1
+        fi
+    fi
+
+    if [ $DIFF_CHECKED = 0 ]
+    then
+        echo "    FAIL : Altibase \"$1\".\"$2\", Oracle \"$3\".\"$4\""
+        CONSTRAINT_CHECK_RESULT=3
+    fi
+
+    rm -f $ALTIBASE_PRIMARY_KEY_FILE
+    rm -f $ORACLE_PRIMARY_KEY_FILE
+}
+
+checkPrimaryKeyConstraint()
+{
+    echo "Primary key constraint checking..."
+    REPLICATION_TABLE_COUNT=1
+    REPLICATION_TABLE_ROW_OLD=""
+    REPLICATION_TABLE_ROW_NEW=`head -$REPLICATION_TABLE_COUNT $REPLICATION_TABLE_FILE | tail -1`
+    while [ -n "$REPLICATION_TABLE_ROW_NEW" ]
+    do
+        # check all tables without stop
+        comparePrimaryKey $REPLICATION_TABLE_ROW_NEW
+
+        let "REPLICATION_TABLE_COUNT+=1"
+        REPLICATION_TABLE_ROW_OLD=$REPLICATION_TABLE_ROW_NEW
+        REPLICATION_TABLE_ROW_NEW=`head -$REPLICATION_TABLE_COUNT $REPLICATION_TABLE_FILE | tail -1`
+
+        if [ "$REPLICATION_TABLE_ROW_OLD" = "$REPLICATION_TABLE_ROW_NEW" ]
+        then
+            REPLICATION_TABLE_ROW_NEW=""
+        fi
+    done
+}
+
+# main processing routine
+if [ -e $CONSTRAINT_CONF_FILE ]
+then
+    getConstraintProperty
+
+    # check constraints
+    printReplicationTable "$REPLICATION_NAME"
+    if [ $? -eq 0 ]
+    then
+        checkPrimaryKeyConstraint
+    else
+        CONSTRAINT_CHECK_RESULT=2
+    fi
+
+    rm -f $REPLICATION_TABLE_FILE
+else
+    echo "The constraints configuration file does not exist."
+    CONSTRAINT_CHECK_RESULT=1
+fi
+
+if [ $CONSTRAINT_CHECK_RESULT -eq 0 ]
+then
+    echo "The end result of checking constraints : [OK]"
+else
+    echo "The end result of checking constraints : [FAIL]"
+fi
+
+exit $CONSTRAINT_CHECK_RESULT

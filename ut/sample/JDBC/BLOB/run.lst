@@ -1,0 +1,15 @@
+  INSERT BLOB by setBinaryStream() 
+  INSERT BLOB by setBbob() 
+  SELECT BLOB 
+    FETCH # 1
+      SiteID   : 1
+      SiteName : Altibase HomePage
+      SiteURL  : http://www.altibase.com
+      Write Blob to file 1-out.gif
+      Image Size : 4406
+    FETCH # 2
+      SiteID   : 2
+      SiteName : Altibase Download Center
+      SiteURL  : http://adc.altibase.com
+      Write Blob to file 2-out.gif
+      Image Size : 3327

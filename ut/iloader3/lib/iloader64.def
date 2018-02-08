@@ -1,0 +1,12 @@
+LIBRARY "iloader_sl"
+
+EXPORTS
+altibase_iloader_init
+altibase_iloader_final
+altibase_iloader_options_init
+altibase_iloader_formout
+altibase_iloader_dataout                
+altibase_iloader_datain
+?SeparatorCopy@@YAXPEAD0W4iloBool@@@Z
+?IsNullCommand@iloCommandCompiler@@QEAAHPEAD@Z
+??1iloCommandCompiler@@UEAA@XZ

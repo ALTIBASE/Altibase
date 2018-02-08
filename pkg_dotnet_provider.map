@@ -1,0 +1,10 @@
+
+### .NET Data Provider for windows VC >= 8(MSC_VER: 14), bug-24436 ###
+
+#0644 ./altibase_home/lib/Altibase.Data.AltibaseClient.dll
+[*-WINDOWS-*-*][*][*][*][*][0644][SHL]
+altibase_home/lib
+Altibase.Data.AltibaseClient
+lib
+Altibase.Data.AltibaseClient
+

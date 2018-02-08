@@ -1,0 +1,377 @@
+# 
+# This part is for packaging altiMon product.
+#
+
+
+###############################################################################
+#
+#  Directory Creation 
+#
+###############################################################################
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+altiMon
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/conf
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/lib
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/action_scripts
+!
+
+[*][*][*][*][*][0755][DIR] # directory creation
+!
+!
+altiMon/action_logs
+!
+
+#0755 ./ut/altiMon/com.altibase.altimon/altimon.sh                  ./bin/altimon.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+altimon.sh
+bin
+altimon.sh
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/altimon_win64.bat                        ./bin/altimon_win64.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+altimon_win64.bat
+bin
+altimon_win64.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/altimon_win32.bat                        ./bin/altimon_win32.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+altimon_win32.bat
+bin
+altimon_win32.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/procrun-win64.exe                        ./altiMon/procrun-win64.exe
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+procrun-win64.exe
+altiMon
+procrun-win64.exe
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/procrun-win32.exe                        ./altiMon/procrun-win32.exe
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon
+procrun-win32.exe
+altiMon
+procrun-win32.exe
+
+#0644 ./ut/altiMon/com.altibase.altimon/altimon.jar                         ./altiMon/altimon.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon
+altimon.jar
+altiMon
+altimon.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/ReadMe.txt                         ./altiMon/ReadMe.txt
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon
+ReadMe.txt
+altiMon
+ReadMe.txt
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/config.xml                         ./altiMon/conf/config.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+config.xml
+altiMon/conf
+config.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/Metrics.xml                         ./altiMon/conf/Metrics.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+Metrics.xml
+altiMon/conf
+Metrics.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/GroupMetrics.xml                         ./altiMon/conf/GroupMetrics.xml
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+GroupMetrics.xml
+altiMon/conf
+GroupMetrics.xml
+
+#0644 ./ut/altiMon/com.altibase.altimon/conf/log4j.properties                         ./altiMon/conf/log4j.properties
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/conf
+log4j.properties
+altiMon/conf
+log4j.properties
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.sh                  ./altiMon/action_scripts/cpu_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.sh
+altiMon/action_scripts
+cpu_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.sh                  ./altiMon/action_scripts/db_usage.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.sh
+altiMon/action_scripts
+db_usage.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.sh                  ./altiMon/action_scripts/logfile_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.sh
+altiMon/action_scripts
+logfile_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.sh                  ./altiMon/action_scripts/long_query.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.sh
+altiMon/action_scripts
+long_query.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.sh                  ./altiMon/action_scripts/mem_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.sh
+altiMon/action_scripts
+mem_act.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.sh                  ./altiMon/action_scripts/mem_stat.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.sh
+altiMon/action_scripts
+mem_stat.sh
+
+#0755 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.sh                  ./altiMon/action_scripts/rep_act.sh
+[^*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.sh
+altiMon/action_scripts
+rep_act.sh
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.bat                        ./altiMon/action_scripts/cpu_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.bat
+altiMon/action_scripts
+cpu_act.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.bat                        ./altiMon/action_scripts/db_usage.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.bat
+altiMon/action_scripts
+db_usage.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.bat                        ./altiMon/action_scripts/logfile_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.bat
+altiMon/action_scripts
+logfile_act.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.bat                        ./altiMon/action_scripts/long_query.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.bat
+altiMon/action_scripts
+long_query.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.bat                        ./altiMon/action_scripts/mem_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.bat
+altiMon/action_scripts
+mem_act.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.bat                        ./altiMon/action_scripts/mem_stat.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.bat
+altiMon/action_scripts
+mem_stat.bat
+
+# win : 0755 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.bat                        ./altiMon/action_scripts/rep_act.bat
+[*-WINDOWS-*-*][*][S][*][*][0755][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.bat
+altiMon/action_scripts
+rep_act.bat
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/cpu_act.sql                  ./altiMon/action_scripts/cpu_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+cpu_act.sql
+altiMon/action_scripts
+cpu_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/db_usage.sql                  ./altiMon/action_scripts/db_usage.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+db_usage.sql
+altiMon/action_scripts
+db_usage.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/logfile_act.sql                  ./altiMon/action_scripts/logfile_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+logfile_act.sql
+altiMon/action_scripts
+logfile_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/long_query.sql                  ./altiMon/action_scripts/long_query.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+long_query.sql
+altiMon/action_scripts
+long_query.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_act.sql                  ./altiMon/action_scripts/mem_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_act.sql
+altiMon/action_scripts
+mem_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/mem_stat.sql                  ./altiMon/action_scripts/mem_stat.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+mem_stat.sql
+altiMon/action_scripts
+mem_stat.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/action_scripts/rep_act.sql                  ./altiMon/action_scripts/rep_act.sql
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_scripts
+rep_act.sql
+altiMon/action_scripts
+rep_act.sql
+
+#0644 ./ut/altiMon/com.altibase.altimon/actions_logs/readme.txt                 ./altiMon/action_logs/readme.txt
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/action_logs
+readme.txt
+altiMon/action_logs
+readme.txt
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/com.altibase.picl.jar                         ./altiMon/lib/com.altibase.picl.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+com.altibase.picl.jar
+altiMon/lib
+com.altibase.picl.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/commons-collections-3.2.jar                         ./altiMon/lib/commons-collections-3.2.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+commons-collections-3.2.jar
+altiMon/lib
+commons-collections-3.2.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/commons-logging-1.1.jar                         ./altiMon/lib/commons-logging-1.1.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+commons-logging-1.1.jar
+altiMon/lib
+commons-logging-1.1.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/log4j.jar                         ./altiMon/lib/log4j.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+log4j.jar
+altiMon/lib
+log4j.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/quartz-all-1.6.6.jar                         ./altiMon/lib/quartz-all-1.6.6.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+quartz-all-1.6.6.jar
+altiMon/lib
+quartz-all-1.6.6.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/stax-1.2.0.jar                         ./altiMon/lib/stax-1.2.0.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+stax-1.2.0.jar
+altiMon/lib
+stax-1.2.0.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/stax-api-1.0.1.jar                         ./altiMon/lib/stax-api-1.0.1.jar
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+stax-api-1.0.1.jar
+altiMon/lib
+stax-api-1.0.1.jar
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/linux-2.6-x64.so                         ./altiMon/lib/linux-2.6-x64.so
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+linux-2.6-x64.so
+altiMon/lib
+linux-2.6-x64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/linux-2.6-x32.so                         ./altiMon/lib/linux-2.6-x32.so
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+linux-2.6-x32.so
+altiMon/lib
+linux-2.6-x32.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/aix-ppc64-5.so                         ./altiMon/lib/aix-ppc64-5.so
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+aix-ppc64-5.so
+altiMon/lib
+aix-ppc64-5.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/hpux-ia64-11.sl                         ./altiMon/lib/hpux-ia64-11.sl
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+hpux-ia64-11.sl
+altiMon/lib
+hpux-ia64-11.sl
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/solaris-sparcv64.so                         ./altiMon/lib/solaris-sparcv64.so
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+solaris-sparcv64.so
+altiMon/lib
+solaris-sparcv64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/solaris-x64.so                         ./altiMon/lib/solaris-x64.so
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+solaris-x64.so
+altiMon/lib
+solaris-x64.so
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/win-x32-nt.dll                         ./altiMon/lib/win-x32-nt.dll
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+win-x32-nt.dll
+altiMon/lib
+win-x32-nt.dll
+
+#0644 ./ut/altiMon/com.altibase.altimon/lib/win-x64-nt.dll                         ./altiMon/lib/win-x64-nt.dll
+[*][*][S][*][*][0644][*]
+ut/altiMon/com.altibase.altimon/lib
+win-x64-nt.dll
+altiMon/lib
+win-x64-nt.dll
+

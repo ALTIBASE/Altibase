@@ -1,0 +1,35 @@
+1. Uncompress package file. 
+shell> mkdir altibase_home
+shell> cp altibase-SPARC_SOLARIS_2.10-64bit-compat5-5.1.1.13-release-CC.tgz altibase_home 
+shell> cd altibase_home
+shell> gunzip -cd altibase-SPARC_SOLARIS_2.10-64bit-compat5-5.1.1.13-release-CC.tgz | tar xvfp -
+
+2. Configure environment variables.
+sh
+ALTIBASE_HOME=${HOME}/altibase_home; export ALTIBASE_HOME
+PATH=${ALTIBASE_HOME}/bin:${PATH}; export PATH
+LD_LIBRARY_PATH=${ALTIBASE_HOME}/lib:${LD_LIBRARY_PATH}; export LD_LIBRARY_PATH
+
+csh
+setenv ALTIBASE_HOME ${HOME}/altibase_home
+setenv PATH ${ALTIBASE_HOME}/bin:${PATH}
+setenv LD_LIBRARY_PATH ${ALTIBASE_HOME}/lib:${LD_LIBRARY_PATH}
+
+3. Configure properties.
+shell> cd ${ALTIBASE_HOME}/conf
+shell> cd altibase.properties.sample altibase.properties
+Open altibase.properties, and then modify properties to fit its environment.
+
+4. Register a license.  
+Register a license as the name, ${ALTIBASE_HOME}/conf/license 
+License file has no extensions.
+
+5. Install and Create database  
+shell> altibase_install.sh 
+
+6. Startup/Shutdown server 
+shell> server start 
+shell> server stop
+
+7. Connect to database using iSQL  
+shell> isql -s 127.0.0.1 -u SYS -p MANAGER

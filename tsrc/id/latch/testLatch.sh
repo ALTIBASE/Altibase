@@ -1,0 +1,15 @@
+
+
+echo "LATCH POSIX TEST"; 
+date
+ALTIBASE_LATCH_TYPE=0
+export ALTIBASE_LATCH_TYPE
+testLatch
+date
+
+echo "LATCH NATIVE TEST"; 
+date
+ALTIBASE_LATCH_TYPE=2
+export ALTIBASE_LATCH_TYPE
+testLatch
+date

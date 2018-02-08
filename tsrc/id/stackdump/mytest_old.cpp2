@@ -1,0 +1,85 @@
+#include <idl.h>
+#include <ucontext.h>
+
+unsigned long      a;
+unsigned long      b;
+unsigned long      c;
+unsigned long    **t;
+int i;
+
+#define RAW_DUMP
+
+unsigned long testasm()
+{
+    register unsigned long ak2;
+    __asm__ __volatile__( 
+        "mov %%ebp, %0"
+        : "=c" (ak2)
+        : /*input */
+        );
+    ak2 = (unsigned long)( *((unsigned long *)ak2));
+    return ak2;
+}
+
+SInt getFrameAddr(unsigned long  *a_addr)
+{
+//    t = &a_addr;
+//    a = (unsigned long )((unsigned long  *)(&a_addr) - 2);
+    a = testasm();
+    
+    //printf("t = %8lX \n", (unsigned long)t);
+    printf("a = %8lX \n", a);
+#ifdef RAW_DUMP
+    for (i = -16; i < 1024; i++)
+    {
+        printf("%8lX : %8lX\n", 
+               (unsigned long )((unsigned long  *)a + i),
+               (unsigned long )(*((unsigned long  *)a + i)));
+               
+    }
+#endif
+    while(1)
+    {
+        b = (unsigned long )(*   ( (unsigned long  *)a  + 1 ) ) ;
+        printf("%x %x \n", a, b);
+        a = (unsigned long )(*(unsigned long  *)a);
+
+        if (a == 0) break;
+    }
+
+    return IDE_SUCCESS;
+}
+
+unsigned long  *a2;
+void test2()
+{
+    unsigned long  *a1;
+    getFrameAddr(a1);
+//      a2 = a1;
+//      return a2;
+}
+
+void test1()
+{
+    test2();
+}
+
+int main()
+{
+    unsigned long p;
+    unsigned long p2;
+    test1();
+
+//      p2 = testasm(p);
+//      printf("%8lX\n", p2);
+
+
+    
+
+
+    return 0;
+}
+
+
+
+

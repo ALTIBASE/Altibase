@@ -1,0 +1,1309 @@
+<project>
+    <shortName>oraAdapter</shortName>
+    <fullName>ALTIBASE Adapter for Oracle ${oraadapter_version}</fullName>
+    <version></version>
+    <installerFilename>${oraadapter_filename}.${platform_exec_suffix}</installerFilename>
+    <debugLevel>4</debugLevel>
+    <leftImage>../../Installer/images/left_side600.png</leftImage>
+    <logoImage>../../Installer/images/logo.png</logoImage>
+    <postInstallationActionList>
+        <actionGroup>
+            <explanation>check Env variable </explanation>
+            <actionList>
+                <if>
+                    <explanation>csh</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .cshrc</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.cshrc</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.cshrc</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .login</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.login</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.login</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.cshrc</value>
+                                        </setInstallerVariable>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/csh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>bash</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .bash_profile</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.bash_profile</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.bash_profile</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .bash_login</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.bash_login</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.bash_login</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <if>
+                                            <explanation>there is .profile</explanation>
+                                            <actionList>
+                                                <setInstallerVariable>
+                                                    <name>target_env_file</name>
+                                                    <value>.profile</value>
+                                                </setInstallerVariable>
+                                            </actionList>
+                                            <conditionRuleList>
+                                                <fileExists>
+                                                    <path>~/.profile</path>
+                                                </fileExists>
+                                            </conditionRuleList>
+                                            <elseActionList>
+                                                <setInstallerVariable>
+                                                    <name>target_env_file</name>
+                                                    <value>.bash_profile</value>
+                                                </setInstallerVariable>
+                                            </elseActionList>
+                                        </if>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/bash</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>ksh</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .profile</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.profile</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.profile</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .kshrc</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.kshrc</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.kshrc</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.profile</value>
+                                        </setInstallerVariable>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/ksh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>sh</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>target_env_file</name>
+                            <value>.profile</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/sh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+            </actionList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>set properties</explanation>
+            <actionList>
+                <substitute>
+                    <abortOnError>0</abortOnError>
+                    <files>${installdir}/conf/oraAdapter.conf</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>ALA_SENDER_IP = 127.0.0.1</pattern>
+                            <value>ALA_SENDER_IP = ${ala_sender_ip}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_RECEIVER_PORT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_RECEIVER_PORT = ${ala_receiver_port}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_REPLICATION_NAME(\s)*=(\s)*ALA</pattern>
+                            <value>ALA_REPLICATION_NAME = ${ala_replication_name}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_SOCKET_TYPE(\s)*=(\s)*TCP</pattern>
+                            <value>ALA_SOCKET_TYPE = ${ala_socket_type}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_XLOG_POOL_SIZE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_XLOG_POOL_SIZE = ${ala_xlog_pool_size}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_SERVER_ALIAS =</pattern>
+                            <value>ORACLE_SERVER_ALIAS = ${oracle_server_alias}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_USER(\s)*=(\s)*scott</pattern>
+                            <value>ORACLE_USER = ${oracle_user}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_PASSWORD(\s)*=(\s)*tiger</pattern>
+                            <value>ORACLE_PASSWORD = ${oracle_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_LOGGING_ACTIVE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_LOGGING_ACTIVE = ${ala_logging_active}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_SKIP_INSERT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_SKIP_INSERT = ${oracle_skip_insert}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_SKIP_UPDATE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_SKIP_UPDATE = ${oracle_skip_update}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_SKIP_DELETE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_SKIP_DELETE = ${oracle_skip_delete}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_ASYNCHRONOUS_COMMIT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_ASYNCHRONOUS_COMMIT = ${oracle_asynchronous_commit}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_GROUP_COMMIT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_GROUP_COMMIT = ${oracle_group_commit}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_ARRAY_DML_MAX_SIZE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_ARRAY_DML_MAX_SIZE = ${oracle_array_dml_max_size}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ORACLE_UPDATE_STATEMENT_CACHE_SIZE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ORACLE_UPDATE_STATEMENT_CACHE_SIZE = ${oracle_update_statement_cache_size}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_USER(\s)*=(\s)*guest</pattern>
+                            <value>ALTIBASE_USER = ${altibase_user}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_PASSWORD(\s)*=(\s)*guest</pattern>
+                            <value>ALTIBASE_PASSWORD = ${altibase_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_IP(\s)*=(\s)*127.0.0.1</pattern>
+                            <value>ALTIBASE_IP = ${altibase_ip}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_PORT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALTIBASE_PORT = ${altibase_port}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+            </actionList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>add Env variable</explanation>
+            <actionList>
+                <if>
+                    <explanation>add Env code -&gt; target_env_file</explanation>
+                    <actionList>
+                        <addTextToFile>
+                            <file>~/${target_env_file}</file>
+                            <text>
+
+
+# ALTIBASE Adapter for Oracle
+setenv ORA_ADAPTER_HOME ${installdir}
+${'setenv PATH ${ORA_ADAPTER_HOME}/bin:${PATH}'}
+</text>
+                        </addTextToFile>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/csh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <addTextToFile>
+                            <file>~/${target_env_file}</file>
+                            <text>
+
+
+# ALTIBASE Adapter for Oracle
+export ORA_ADAPTER_HOME=${installdir}
+${'export PATH=${ORA_ADAPTER_HOME}/bin:${PATH}'}
+</text>
+                        </addTextToFile>
+                    </elseActionList>
+                </if>
+                <showInfo>
+                    <text>
+
+The following ALTIBASE Adapter for Oracle environment variables were added.
+
+-- ORA_ADAPTER_HOME
+    =${installdir}
+-- PATH
+    =${'${ORA_ADAPTER_HOME}/bin:${PATH}'}
+
+
+=========================
+Please perform [re-login] 
+or [source ${target_env_file}] 
+or [. ${target_env_file}]
+==========================</text>
+                </showInfo>
+            </actionList>
+        </actionGroup>
+    </postInstallationActionList>
+    <createUninstaller>0</createUninstaller>
+    <deleteLockedFilesOnReboot>0</deleteLockedFilesOnReboot>
+    <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>0</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>600</height>
+    <outputDirectory>${build_project_directory}</outputDirectory>
+    <removeLogFile>1</removeLogFile>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>Altibase Corp.,</vendor>
+    <width>700</width>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>linux linux-x64 linux-ia64 osx solaris-sparc solaris-intel linux-ppc linux-s390 freebsd freebsd4 freebsd6 freebsd6-x64 openbsd3 hpux aix irix-n32</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>dist/bin</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/conf</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/msg</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/trc</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                </folder>
+            </folderList>
+        </component>
+    </componentList>
+    <parameterList>
+        <stringParameter>
+            <name>oraadapter_filename</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>oraadapter_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>5.5.1.0.0</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>target_env_file</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>ala_logging_active_tmp</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <directoryParameter>
+            <name>installdir</name>
+            <title>Installation Directory</title>
+            <description>Installation Directory</description>
+            <explanation>Please specify the installation directory for OraAdapter.</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${product_shortname}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>30</width>
+        </directoryParameter>
+        <parameterGroup>
+            <name>Property</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: ALA</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>installdir</insertAfter>
+            <parameterList>
+                <stringParameter>
+                    <name>ala_sender_ip</name>
+                    <description>ALA_SENDER_IP</description>
+                    <explanation>This is the IP address of the server on which ALTIBASE HDB is installed.</explanation>
+                    <value></value>
+                    <default>127.0.0.1</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid ALA_SENDER_IP</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</pattern>
+                                    <text>${ala_sender_ip}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_receiver_port</name>
+                    <description>ALA_RECEIVER_PORT (1024-65535)               </description>
+                    <explanation>This is the reception port number used by ALTIBASE Adapter.</explanation>
+                    <value></value>
+                    <default>25090</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${ala_receiver_port}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${ala_receiver_port}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${ala_receiver_port}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${ala_receiver_port}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_2</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_replication_name</name>
+                    <description>ALA_REPLICATION_NAME</description>
+                    <explanation>This is the name of the replication object used to send XLOGs generated by ALTIBASE HDB.</explanation>
+                    <value></value>
+                    <default>ALA</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_3</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_xlog_pool_size</name>
+                    <description>ALA_XLOG_POOL_SIZE</description>
+                    <explanation>This is the amount of memory to allocate for the storage of XLOGs.</explanation>
+                    <value></value>
+                    <default>10000</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid ALA_XLOG_POOL_SIZE</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${ala_xlog_pool_size}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property2</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: ALA</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <choiceParameter>
+                    <name>ala_socket_type</name>
+                    <description>ALA_SOCKET_TYPE                              </description>
+                    <explanation>This is the communications protocol used by the ALA library. (ALA_SOCKET_TYPE)
+  - If you choose "UNIX", you must install oraAdapter 
+     using the same system account that was used to install ALTIBASE HDB.</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>TCP</text>
+                            <value>TCP</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>UNIX</text>
+                            <value>UNIX</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <labelParameter>
+                    <name>space_p2_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>ala_logging_active</name>
+                    <description>ALA_LOGGING_ACTIVE</description>
+                    <explanation>Would you like the ALA library log messages to be saved to disk?</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                    </optionList>
+                    <postShowPageActionList>
+                        <if>
+                            <explanation>input yes or no</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>ala_logging_active_tmp</name>
+                                    <value>YES</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>1</text>
+                                    <value>${ala_logging_active}</value>
+                                </compareText>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <setInstallerVariable>
+                                    <name>ala_logging_active_tmp</name>
+                                    <value>NO</value>
+                                </setInstallerVariable>
+                            </elseActionList>
+                        </if>
+                    </postShowPageActionList>
+                </choiceParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property3</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: Altibase</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>altibase_user</name>
+                    <description>ALTIBASE_USER</description>
+                    <explanation>This is used to specify the name of a user account with which to connect to ALTIBASE HDB.</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_password</name>
+                    <description>ALTIBASE_PASSWORD</description>
+                    <explanation>This is used to specify the password for the user account through which the connection to ALTIBASE HDB
+will be established.</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_2</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_ip</name>
+                    <description>ALTIBASE_IP</description>
+                    <explanation>This is the IP address of the server on which ALTIBASE HDB is installed.</explanation>
+                    <value></value>
+                    <default>127.0.0.1</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid ALTIBASE_IP</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</pattern>
+                                    <text>${altibase_ip}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_3</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_port</name>
+                    <description>ALTIBASE_PORT (1024-65535)                         </description>
+                    <explanation>This is the number of the port at which ALTIBASE HDB listens.</explanation>
+                    <value></value>
+                    <default>20300</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${altibase_port}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${altibase_port}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${altibase_port}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${altibase_port}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property4</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: Oracle</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>oracle_server_alias</name>
+                    <description>ORACLE_SERVER_ALIAS </description>
+                    <explanation>Oracle server name
+  - If this is left blank, ALTIBASE Adapter will attempt to connect to Oracle on the same machine (localhost).</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <stringParameter>
+                    <name>oracle_user</name>
+                    <description>ORACLE_USER</description>
+                    <explanation>Oracle user name</explanation>
+                    <value></value>
+                    <default>scott</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <stringParameter>
+                    <name>oracle_password</name>
+                    <description>ORACLE_PASSWORD                         </description>
+                    <explanation>Oracle user password</explanation>
+                    <value></value>
+                    <default>tiger</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p4_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <labelParameter>
+                    <name>desc_skip_dml</name>
+                    <description></description>
+                    <explanation>Enabling these properties will prevent DML(INSERT/UPDATE/DELETE) statements that are executed 
+on the Altibase database from also being executed on the Oracle database.</explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>oracle_skip_insert</name>
+                    <description>Do you want to enable the ORACLE_SKIP_INSERT property?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <choiceParameter>
+                    <name>oracle_skip_update</name>
+                    <description>Do you want to enable the ORACLE_SKIP_UPDATE property?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <choiceParameter>
+                    <name>oracle_skip_delete</name>
+                    <description>Do you want to enable the ORACLE_SKIP_DELETE property?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <if>
+                    <explanation>skip insert</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_insert</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_skip_insert}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_insert</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>skip update</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_update</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_skip_update}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_update</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>skip delete</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_delete</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_skip_delete}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_delete</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+            </postShowPageActionList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property5</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: Oracle</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <choiceParameter>
+                    <name>oracle_asynchronous_commit</name>
+                    <description>Do you want to enable the ORACLE_ASYNCHRONOUS_COMMIT property?</description>
+                    <explanation>"Asynchronous Commit" is a way of improving performance at the expense of durability.
+If the ORACLE_ASYNCHRONOUS_COMMIT property is enabled, Oracle will return a message 
+indicating that commit is complete before logs have actually been written to disk, in order to 
+improve performance.
+
+Note, however, that this may cause some data synchronization problems if a fault develops 
+in the Oracle server.</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <labelParameter>
+                    <name>space_p5_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <labelParameter>
+                    <name>space_p5_2</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>oracle_group_commit</name>
+                    <description>Do you want to enable the ORACLE_GROUP_COMMIT property?</description>
+                    <explanation>"Group Commit" improves overall performance, but increases the amount of time it takes to commit
+individual transactions.
+If the ORACLE_GROUP_COMMIT property is enabled, multiple ALTIBASE HDB transactions 
+will be committed in Oracle at the same time, in order to improve performance.
+</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <if>
+                    <explanation>check oracle_asynchronous_commit</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>asynchronous_commit</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_asynchronous_commit}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>asynchronous_commit</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>check oracle_group_commit</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>group_commit</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_group_commit}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>group_commit</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+            </postShowPageActionList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property6</name>
+            <title>ALTIBASE Adapter for Oracle Property Settings: Oracle</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>oracle_array_dml_max_size</name>
+                    <description>ORACLE_ARRAY_DML_MAX_SIZE
+(1~32767; 1=Disable)</description>
+                    <explanation>"Array DML" means grouping multiple DML statements.
+This realizes a performance improvement by reducing network costs.
+
+The ORACLE_ARRAY_DML_MAX_SIZE property sets the maximum number
+of DML statements that are grouped in this way.
+  - It improves performance when the ORACLE_GROUP_COMMIT property is enabled.
+  - At present, this property only affects the INSERT and DELETE statements.
+  - To disable Array DML,
+     set the ORACLE_ARRAY_DML_MAX_SIZE property to 1.
+</explanation>
+                    <value></value>
+                    <default>10</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid ORACLE_ARRAY_DML_MAX_SIZE.</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${oracle_array_dml_max_size}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${oracle_array_dml_max_size}</value1>
+                                    <value2>1</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${oracle_array_dml_max_size}</value1>
+                                    <value2>32767</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${oracle_array_dml_max_size}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p6_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>oracle_update_statement_cache_size</name>
+                    <description>ORACLE_UPDATE_STATEMENT_CACHE_SIZE
+(0~4294967295; 0=Disable)</description>
+                    <explanation>Statement caching improves performance by caching executable statements 
+that are used repeatedly, such as in a loop or in a method that is called repeatedly.
+
+The ORACLE_UPDATE_STATEMENT_CACHE_SIZE property is used to set the size 
+of the cache in which prepared UPDATE statements are stored.
+ - Because the INSERT and DELETE statements already have their own cache,
+   only UPDATE statements are stored in this cache.
+ - If this property is set to 0, oraAdapter does not cache UPDATE statements.
+</explanation>
+                    <value></value>
+                    <default>20</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid ORACLE_UPDATE_STATEMENT_CACHE_SIZE.</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${oracle_update_statement_cache_size}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${oracle_update_statement_cache_size}</value1>
+                                    <value2>0</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${oracle_update_statement_cache_size}</value1>
+                                    <value2>4294967295</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${oracle_update_statement_cache_size}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <if>
+                    <explanation>check oracle_array_dml_max_size</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>array_dml_max_size</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_array_dml_max_size}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>array_dml_max_size</name>
+                            <value>${oracle_array_dml_max_size}</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>check oracle_update_statement_cache_size</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>update_statement_cache_size</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${oracle_update_statement_cache_size}</text>
+                            <value>0</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>update_statement_cache_size</name>
+                            <value>${oracle_update_statement_cache_size}</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+            </postShowPageActionList>
+        </parameterGroup>
+        <infoParameter>
+            <name>property_report</name>
+            <title>Property Review</title>
+            <description></description>
+            <explanation>Please check your property settings.</explanation>
+            <value>
+To change these properties after installation is complete, 
+please modify the following file :
+  ${installdir}/conf/oraAdapter.conf
+
+1. ALTIBASE Adapter for Oracle Property Settings : ALA
+
+    1) ALA_SENDER_IP : 
+         [${ala_sender_ip}]
+
+    2) ALA_RECEIVER_PORT : 
+         [${ala_receiver_port}]
+
+    3) ALA_REPLICATION_NAME :
+         [${ala_replication_name}]
+
+    4) ALA_XLOG_POOL_SIZE :
+         [${ala_xlog_pool_size}]
+
+    5) ALA_SOCKET_TYPE :
+         [${ala_socket_type}]
+
+    6) ALA_LOGGING_ACTIVE :
+         [${ala_logging_active_tmp}]
+
+
+
+2. ALTIBASE Adapter for Oracle Property Settings : Altibase
+
+    1) ALTIBASE_USER : 
+         [${altibase_user}]
+
+    2) ALTIBASE_PASSWORD :
+         [${altibase_password}]
+
+    3) ALTIBASE_IP : 
+         [${altibase_ip}]
+
+    4) ALTIBASE_PORT : 
+         [${altibase_port}]
+
+
+
+3. ALTIBASE Adapter for Oracle Property Settings : Oracle Database
+
+    1) ORACLE_SERVER_ALIAS : 
+         [${oracle_server_alias}]
+
+    2) ORACLE_USER : 
+         [${oracle_user}]
+
+    3) ORACLE_PASSWORD :
+         [${oracle_password}]
+
+    4) ORACLE_SKIP_INSERT :
+         [${skip_insert}]
+
+    5) ORACLE_SKIP_UPDATE :
+         [${skip_update}]
+
+    6) ORACLE_SKIP_DELETE :
+         [${skip_delete}]
+
+    7) ORACLE_ASYNCHRONOUS_COMMIT :
+         [${asynchronous_commit}]
+
+    8) ORACLE_GROUP_COMMIT :
+         [${group_commit}]
+
+    9) ORACLE_ARRAY_DML_MAX_SIZE :
+         [${array_dml_max_size}]
+
+  10) ORACLE_UPDATE_STATEMENT_CACHE_SIZE :
+         [${update_statement_cache_size}]
+</value>
+            <default></default>
+            <trimMarginNumChars>0</trimMarginNumChars>
+        </infoParameter>
+    </parameterList>
+</project>
+

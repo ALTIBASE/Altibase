@@ -1,0 +1,22 @@
+; altiutil_sl.def : Declares the module parameters for the DLL.
+
+LIBRARY      "altiutil_sl"
+
+EXPORTS
+    ; Explicit exports can go here
+
+SECTIONS
+HEAPSIZE 1024
+EXPORTS
+LIBRARY altiutil_sl
+EXPORTS
+uteClearError        @1
+uteSetErrorCode      @2
+uteGetErrorSTATE     @3
+uteGetErrorCODE      @4
+uteGetErrorMSG       @5
+utePrintfErrorCode   @6
+utePrintfErrorState  @7
+uteSprintfErrorCode  @8
+uteSprintfErrorState @9
+

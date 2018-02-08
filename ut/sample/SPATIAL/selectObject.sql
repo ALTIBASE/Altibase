@@ -1,0 +1,23 @@
+DROP TABLE TEST_TBL;
+
+CREATE TABLE TEST_TBL ( ID INTEGER, OBJ GEOMETRY );
+
+INSERT INTO TEST_TBL 
+       VALUES( 1, GEOMETRY'POINT( 1 1 )' );
+INSERT INTO TEST_TBL 
+       VALUES( 2, GEOMETRY'LINESTRING( 1 1, 2 2, 3 1 )' );
+INSERT INTO TEST_TBL 
+       VALUES( 3, GEOMETRY'POLYGON( (1 1, 2 1, 2 2, 1 2, 1 1 ) )' );
+INSERT INTO TEST_TBL 
+       VALUES( 4, GEOMETRY'POLYGON( ( 0 0, 3 0, 3 3, 0 3, 0 0 ), 
+                                    (1 1, 2 1, 2 2, 1 2, 1 1 ) )' );
+INSERT INTO TEST_TBL 
+       VALUES( 5, GEOMETRY'MULTIPOINT( 1 1, 2 2 )' );
+INSERT INTO TEST_TBL 
+       VALUES( 6, GEOMETRY'MULTILINESTRING( (1 1, 2 2, 3 1),(3 3, 4 4)  )' );
+INSERT INTO TEST_TBL 
+       VALUES( 7, GEOMETRY'MULTIPOLYGON( ((1 1, 2 1, 2 2, 1 2, 1 1 )),
+                                         ((4 4, 5 4, 5 5, 4 5, 4 4)) )' );
+INSERT INTO TEST_TBL 
+       VALUES( 8, GEOMETRY'GEOMETRYCOLLECTION( POINT(1 1),
+                                               LINESTRING( 1 1,  2 2 ) )' );

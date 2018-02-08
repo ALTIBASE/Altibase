@@ -1,0 +1,490 @@
+=== CURSOR test start ===
+./tsm_cursor -1 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -2 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -3 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -4 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -1 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -1 -b -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -2 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -2 -b -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -3 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -3 -b -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -4 -f -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+./tsm_cursor -i -4 -b -q
+== TSM CURSOR TEST START ==
+tsmInit Success!
+smiInit Success!
+tsmCreateTable Success!
+tsmCreateIndex Success!
+TABLE "TABLE1" 19 rows inserted.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows inserted.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows inserted.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmInsertTable Success!
+TABLE "TABLE1" 19 rows updated.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows updated.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows updated.
+TABLE "TABLE3" 6859 rows selected.
+TABLE "TABLE1" 19 rows selected.
+TABLE "TABLE2" 361 rows selected.
+TABLE "TABLE3" 6859 rows selected.
+tsmUpdateTable Success!
+TABLE "TABLE1" 19 rows deleted.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 361 rows deleted.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 6859 rows deleted.
+TABLE "TABLE3" 0 rows selected.
+TABLE "TABLE1" 0 rows selected.
+TABLE "TABLE2" 0 rows selected.
+TABLE "TABLE3" 0 rows selected.
+tsmDeleteTable Success!
+tsmDropIndex Success!
+tsmDropTable Success!
+smiFinal Success!
+tsmFinal Success!
+== TSM CURSOR TEST END ==
+=== CURSOR test end ===

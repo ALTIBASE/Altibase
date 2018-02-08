@@ -1,0 +1,54 @@
+SQLCLI 샘플 프로그램은 schema 생성 파일과 테스트 프로그램의 pair 로 구성되어 있다.
+프로그램 실행전에 같은 이름의 schema 생성 파일 (...sql) 을 isql 상에서 실행하면 된다.
+아래의 리스트는 각 프로그램명과 해당 프로그램에서 사용되어지는 API 를 나열하고 있다.
+모든 프로그램에는 환경핸들,연결핸들의 할당(SQLAllocHandle)과 DB 로의 연결 부분
+(SQLDriverConnect), 연걸 해제(SQLDisconnect), 핸들 해제(SQLFreeHandle),
+에러 진단 부분이 포함되어 있다.
+
+< QUERY 수행 >
+1. demo_ex1 : SQLExecDirect, SQLNumResultCols, SQLDescribeCol, SQLBindCol, SQLFetch
+2. demo_ex2 : SQLPrepare, SQLBindParameter, SQLBindCol, SQLExecute, SQLFetch
+3. demo_ex3 : Array-BindCol SELECT (SQLSetStmtAttr, SQLBindCol, ... )
+4. demo_ex4 : Array-BindParam INSERT
+              (SQLSetStmtAttr, SQLPrapare, SQLBindParameter, SQLExecute)
+5. demo_ex5 : update (SQLPrapare, SQLBindParameter, SQLExecute, SQLRowCount)
+6. demo_ex6 : exec procedure : in, out binding (SQLPrapare, SQLBindParameter, SQLExecute)
+
+< Transaction 수행 >
+1. demo_tran1 : SQLSetConnectAttr, SQLEndTran
+
+< Connection 검사 >
+1. demo_dead : SQLGetConnectAttr
+
+< SELECT - UPDATE >
+1. demo_tran2 : SQLSetConnectAttr, ...
+
+< Multi-Thread >
+1. demo_mt
+
+< meta 검색 >
+1. demo_meta1 : SQLAllocHandle, SQLTables, SQLFreeHandle
+2. demo_meta2 : SQLColumns
+3. demo_meta3 : SQLPrimaryKeys
+4. demo_meta4 : SQLStatistics
+5. demo_meta5 : SQLProcedures
+6. demo_meta6 : SQLProcedureColumns
+7. demo_meta7 : SQLSpecialColumns
+8. demo_meta8 : SQLColAttribute
+9. demo_meta9 : SQLForeignKeys
+10. demo_meta10 : SQLTablePrivileges
+
+< Information 검색 >
+1. demo_info1 : SQLGetTypeInfo, SQLGetData
+
+< Explain Plan 검색 >
+1. demo_plan : SQLGetStmtAttr
+
+< shared library 사용 >
+1. demo_sl : demo_ex2 를 shared library를 사용해 빌드
+
+< SQLCPool API >
+1. demo_cpool : SQLCPool API 
+                (SQLCPoolAllocHandle, SQLCPoolFreeHandle, SQLCPoolSetAttr, SQLCPoolGetAttr, 
+                SQLCPoolInitialize, SQLCPoolFinalize, SQLCPoolGetConnection, SQLCPoolReturnConnection)
+

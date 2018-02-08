@@ -1,0 +1,2 @@
+DROP TABLE DEMO_SSL;
+

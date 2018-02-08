@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration>
+	<Altimon Name="rnd1" monitorOsMetric="true">
+        <!--<LogDir>logs</LogDir> -->
+        <DateFormat>yyyy-MM-dd HH:mm:ss</DateFormat>
+        <MaintenancePeriod>3<!-- days --></MaintenancePeriod>
+        <Interval>60<!-- seconds --></Interval>
+        <DBConnectionWatchdogCycle>60<!-- seconds --></DBConnectionWatchdogCycle>
+    </Altimon>
+    <Target Name="Altibase1">
+        <!--<HomeDirectory>/home/altibase/altibase_home</HomeDirectory> -->
+        <!--<User>sys</User> -->
+        <Password Encrypted="No">manager</Password>
+        <Port>20300</Port>
+        <DbName>mydb</DbName>
+        <NLS>KSC5601</NLS>
+        <IPv6>FALSE</IPv6>
+    </Target>
+</configuration>

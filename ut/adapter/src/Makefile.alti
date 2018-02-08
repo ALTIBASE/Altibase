@@ -1,0 +1,134 @@
+#
+# Copyright 2011, Altibase Corporation or its subsidiaries.
+# All rights reserved.
+#
+include $(ALTIDEV_HOME)/env.mk
+include $(ALTIDEV_HOME)/alticore.mk
+include ../../utEnv.mk
+include adapter_objs.mk
+
+# for distribution
+#REVISION = `svn up | cut -d" " -f"2 3"`
+#REVISION = `svn info | head -5 | tail -1 | cut -d" " -f2`
+#RELEASE_ORA_ADAPTER_DIST_NAME=oraAdapter-$(OS_TARGET)$(OS_MAJORVER)$(OS_MINORVER)-$(COMPILER_NAME)-$(BUILD_MODE)-$(REVISION)
+RELEASE_VERSION=$(shell $(ALTI_HOME)/bin/genErrMsg -k|awk -F'-' '{print $$3}')
+PLATFORM_INFO=$(ALTI_CFG_OS)-$(ALTI_CFG_CPU)-$(ALTI_CFG_BITTYPE)bit
+RELEASE_ALTI_ADAPTER_DIST_NAME=altibase-altiAdapter-$(RELEASE_VERSION)-$(PLATFORM_INFO)-$(BUILD_MODE)
+ALTI_ADAPTER_INSTALLER_XML=altiAdapter.xml
+
+# for Adapter for Altibase
+CFLAGS   += -DALTIADAPTER
+INCLUDES += $(IDROPT). $(IDROPT)./msg $(IDROPT)./version  $(IDROPT)$(ALTIBASE_HOME)/include
+
+# For linking dynamic library
+LIBDIRS += $(LDROPT)$(ALTI_HOME)/lib $(LDROPT). $(LDROPT)$(ALTIBASE_HOME)/lib
+LIBS += $(LIBOPT)ala$(LIBAFT) $(LIBOPT)odbccli_sl
+#LIBS += $(LIBOPT)ala$(LIBAFT) $(ALTICORE_LIB) $(LIBOPT)odbccli_sl
+# For linking static library
+
+ifeq "$(ALTI_CFG_OS)" "WINDOWS"
+LIBS_DYNAMIC += $(ALTI_HOME)/lib/ala.$(LIBEXT) $(ALTI_HOME)/lib/alticore_debug_static.$(LIBEXT) 
+LIBS_STATIC += $(ALTI_HOME)/lib/ala.$(LIBEXT) $(ALTI_HOME)/lib/alticore_static.$(LIBEXT) 
+else
+LIBS_DYNAMIC += $(ALTI_HOME)/lib/libala.$(LIBEXT) $(ALTI_HOME)/lib/libalticore.$(LIBEXT) 
+LIBS_STATIC += $(ALTI_HOME)/lib/libala.$(LIBEXT) $(ALTI_HOME)/lib/libalticore.$(LIBEXT) 
+endif
+
+ifeq "$(ALTI_CFG_OS)" "LINUX"
+CFLAGS += -Werror
+endif
+
+# for ALTICORE
+INCLUDES += $(ALTICORE_INCLUDES)
+# For linking alticore dynamic library
+#LFLAGS += $(ALTICORE_LDFLAGS)
+
+# for ALA
+INCLUDES += $(IDROPT)$(ALTIDEV_HOME)/src/ul/include
+# for odbc
+INCLUDES += $(IDROPT)$(ALTIDEV_HOME)/src/ul/include/unix-odbc
+
+OUT = altiAdapter$(BINEXT)
+
+SRCS = $(ALTIBASE_ADAPTER_SRCS)
+
+OBJS = $(ALTIBASE_ADAPTER_OBJS)
+
+all: build
+
+ifeq "$(OS_TARGET)" "X86_64_LINUX"
+
+build: build_msg $(OBJS)
+	    $(LD) $(OBJS) $(INCLUDES) $(LIBDIRS) $(LFLAGS) $(LDOUT)$(OUT) $(LIBS_DYNAMIC) $(LIBS) 
+	rm -rf altiAdapter_home/
+	mkdir -p altiAdapter_home/msg/
+	mkdir -p altiAdapter_home/bin/
+	mkdir -p altiAdapter_home/conf/
+	mkdir -p altiAdapter_home/trc/
+	cp -f $(OUT) altiAdapter_home/bin/
+	cp -f bin/altioaUtility altiAdapter_home/bin/oaUtility
+	cp -f bin/altioaCheckConstraints altiAdapter_home/bin/oaCheckConstraints
+	chmod +x altiAdapter_home/bin/oaUtility
+	chmod +x altiAdapter_home/bin/oaCheckConstraints
+	cp -f msg/msgEN82.mdl altiAdapter_home/msg/
+	cp -f conf/altiAdapter.conf altiAdapter_home/conf/altiAdapter.conf
+else
+
+build:
+	@echo "not supported os"
+endif
+
+build_static: build_msg $(OBJS)
+	    $(LD) $(OBJS) $(INCLUDES) $(LIBDIRS) $(LFLAGS) $(LDOUT)$(OUT) $(LIBS_STATIC) $(LIBS)
+	cp -f $(OUT) bin/
+
+$(OBJS): build_version
+
+.c.o:
+	$(COMPILE.c) $(LDOUT)$@ $< $(INCLUDES) $(CFLAGS)
+
+clean: clean_msg clean_version 
+	rm -f $(OUT)
+	rm -f $(OBJS)
+	rm -rf altiAdapter_home
+	rm -rf dist
+
+# for version file
+build_version:
+	$(MAKE) -C version -f Makefile.alti build
+
+clean_version:
+	$(MAKE) -C version -f Makefile.alti clean
+
+# for message file
+build_msg: msg/oaMsg.msg
+	$(MAKE) -C msg build
+
+clean_msg:
+	$(MAKE) -C msg clean
+
+ifeq "$(OS_TARGET)" "X86_64_LINUX"
+
+dist:
+	rm -rf dist
+	mkdir -p dist/msg/
+	mkdir -p dist/bin/
+	mkdir -p dist/conf/
+	mkdir -p dist/trc/
+	cp -f altiAdapter_home/bin/$(OUT) dist/bin/
+	cp -f altiAdapter_home/bin/oaUtility dist/bin/
+	cp -f altiAdapter_home/bin/oaCheckConstraints dist/bin/
+	chmod +x dist/bin/oaUtility
+	chmod +x dist/bin/oaCheckConstraints
+	cp -f msg/msgEN82.mdl dist/msg/
+	cp -f altiAdapter_home/conf/altiAdapter.conf dist/conf/altiAdapter.conf
+else
+
+dist: 
+	@echo "not supported os"
+endif
+
+pkg: dist
+	builder build $(ALTI_ADAPTER_INSTALLER_XML) --setvars altiadapter_filename=$(RELEASE_ALTI_ADAPTER_DIST_NAME) altiadapter_version=$(RELEASE_VERSION)
+
+-include $(OBJS:.$(OBJEXT)=.d)

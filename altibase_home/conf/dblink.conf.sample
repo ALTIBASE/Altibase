@@ -1,0 +1,48 @@
+ALTILINKER_ENABLE                       = 0
+ALTILINKER_PORT_NO                      = 4110
+
+ALTILINKER_RECEIVE_TIMEOUT              = 5
+ALTILINKER_REMOTE_NODE_RECEIVE_TIMEOUT  = 30
+
+ALTILINKER_QUERY_TIMEOUT                = 60
+ALTILINKER_NON_QUERY_TIMEOUT            = 60
+
+ALTILINKER_THREAD_COUNT                 = 16
+ALTILINKER_THREAD_SLEEP_TIME            = 200                
+ALTILINKER_REMOTE_NODE_SESSION_COUNT    = 64        
+
+ALTILINKER_TRACE_LOG_DIR                = "?/trc"
+ALTILINKER_TRACE_LOG_FILE_SIZE          = 10
+ALTILINKER_TRACE_LOG_FILE_COUNT         = 10
+ALTILINKER_TRACE_LOGGING_LEVEL          = 4
+
+ALTILINKER_JVM_MEMORY_POOL_INIT_SIZE    = 512 
+ALTILINKER_JVM_MEMORY_POOL_MAX_SIZE     = 2048 
+
+ALTILINKER_JVM_BIT_DATA_MODEL_VALUE     = 1
+
+TARGETS = (
+        (
+            NAME           = "target1"
+            JDBC_DRIVER    = "/home/app/work/altibase/altibase_home/lib/Altibase.jar"
+            CONNECTION_URL = "jdbc:Altibase://127.0.0.1:4111/mydb"
+            USER           = "sys"
+            PASSWORD       = "manager"
+        ),
+        (
+            NAME           = "target2"
+    JDBC_DRIVER_CLASS_NAME = "Altibase.jdbc.driver.AltibaseDriver"
+            JDBC_DRIVER    = "/home/app/work/altibase/altibase_home/lib/Altibase.jar"
+            CONNECTION_URL = "jdbc:Altibase://127.0.0.1:4112/mydb"
+            USER           = "user1"
+            PASSWORD       = "pwd1"
+        ),
+        (
+            NAME           = "ora1"
+            JDBC_DRIVER    = "/home/app/work/oracle/lib/ojdbc14.jar"
+            CONNECTION_URL = "jdbc:oracle:thin:@127.0.0.1:4113:ORCL"
+            USER           = "user2"
+            PASSWORD       = "pwd2"
+        )
+)
+

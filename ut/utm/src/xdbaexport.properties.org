@@ -1,0 +1,37 @@
+#######################
+# Execute
+#######################
+OPERATION = OUT   # IN 
+EXECUTE   = OFF   # ON
+
+########################
+# Script Option 
+########################
+INVALID_SCRIPT   = OFF # ON
+TWO_PHASE_SCRIPT = OFF # ON
+
+########################
+#  Schema 
+########################
+INDEX      = ON  # OFF
+DROP       = OFF # ON
+#USER_PASSWORD = altibase
+VIEW_FORCE = OFF # ON
+
+#######################
+# Script File Name
+#######################
+ISQL             = run_is.sh
+ISQL_CON         = run_is_con.sh
+ISQL_INDEX       = run_is_index.sh
+ILOADER_OUT      = run_il_out.sh
+ILOADER_IN       = run_il_in.sh
+ISQL_FOREIGN_KEY = run_is_fk.sh
+ISQL_REPL        = run_is_repl.sh
+
+#######################
+# xdbiloader option
+#######################
+#ILOADER_FIELD_TERM = ^
+#ILOADER_ROW_TERM = %n
+ILOADER_PARTITION = OFF #ON

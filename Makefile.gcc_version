@@ -1,0 +1,9 @@
+# $Id: Makefile.gcc_version 41910 2010-10-08 01:33:54Z gurugio $
+#
+
+PD_DIR=./src/pd
+include ./src/pd/makefiles/platform_macros.GNU
+
+compiler_name:
+	echo $(CXX)
+

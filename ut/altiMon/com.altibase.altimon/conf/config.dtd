@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT configuration (Altimon, Target, Repository?)>
+    <!ELEMENT Altimon (LogDir?, DateFormat, Interval?, MaintenancePeriod)>
+        <!ATTLIST Altimon Name ID #REQUIRED>
+        <!ATTLIST Altimon monitorOsMetric (true|false) #REQUIRED>
+        <!ELEMENT LogDir (#PCDATA)>
+        <!ELEMENT DateFormat (#PCDATA)>
+        <!ELEMENT Interval (#PCDATA)>
+        <!ELEMENT MaintenancePeriod (#PCDATA)>
+    <!ELEMENT Target (HomeDirectory, User?, Password, Port, DbName, NLS, IPv6?)>
+        <!ATTLIST Target Name ID #REQUIRED>
+        <!ELEMENT HomeDirectory (#PCDATA)>
+        <!ELEMENT User (#PCDATA)>
+        <!ELEMENT Password (#PCDATA)>
+        <!ELEMENT Port (#PCDATA)>
+        <!ELEMENT DbName (#PCDATA)>
+        <!ELEMENT NLS (#PCDATA)>
+        <!ELEMENT IPv6 (#PCDATA)>
+    <!ELEMENT Repository (Host, User, Password, Port, DbName, NLS, IPv6?)>
+        <!ELEMENT Host (#PCDATA)>
+        <!ELEMENT User (#PCDATA)>
+        <!ELEMENT Password (#PCDATA)>
+        <!ELEMENT Port (#PCDATA)>
+        <!ELEMENT DbName (#PCDATA)>
+        <!ELEMENT NLS (#PCDATA)>
+        <!ELEMENT IPv6 (#PCDATA)>		

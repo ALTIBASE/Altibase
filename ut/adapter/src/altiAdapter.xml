@@ -1,0 +1,1044 @@
+<project>
+    <shortName>altiAdapter</shortName>
+    <fullName>ALTIBASE Adapter for Altibase ${altiadapter_version}</fullName>
+    <version></version>
+    <installerFilename>${altiadapter_filename}.${platform_exec_suffix}</installerFilename>
+    <debugLevel>4</debugLevel>
+    <leftImage>../../Installer/images/left_side600.png</leftImage>
+    <logoImage>../../Installer/images/logo.png</logoImage>
+    <postInstallationActionList>
+        <actionGroup>
+            <explanation>check Env variable </explanation>
+            <actionList>
+                <if>
+                    <explanation>csh</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .cshrc</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.cshrc</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.cshrc</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .login</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.login</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.login</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.cshrc</value>
+                                        </setInstallerVariable>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/csh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>bash</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .bash_profile</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.bash_profile</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.bash_profile</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .bash_login</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.bash_login</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.bash_login</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <if>
+                                            <explanation>there is .profile</explanation>
+                                            <actionList>
+                                                <setInstallerVariable>
+                                                    <name>target_env_file</name>
+                                                    <value>.profile</value>
+                                                </setInstallerVariable>
+                                            </actionList>
+                                            <conditionRuleList>
+                                                <fileExists>
+                                                    <path>~/.profile</path>
+                                                </fileExists>
+                                            </conditionRuleList>
+                                            <elseActionList>
+                                                <setInstallerVariable>
+                                                    <name>target_env_file</name>
+                                                    <value>.bash_profile</value>
+                                                </setInstallerVariable>
+                                            </elseActionList>
+                                        </if>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/bash</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>ksh</explanation>
+                    <actionList>
+                        <if>
+                            <explanation>there is .profile</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>target_env_file</name>
+                                    <value>.profile</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <fileExists>
+                                    <path>~/.profile</path>
+                                </fileExists>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <if>
+                                    <explanation>there is .kshrc</explanation>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.kshrc</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
+                                        <fileExists>
+                                            <path>~/.kshrc</path>
+                                        </fileExists>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <setInstallerVariable>
+                                            <name>target_env_file</name>
+                                            <value>.profile</value>
+                                        </setInstallerVariable>
+                                    </elseActionList>
+                                </if>
+                            </elseActionList>
+                        </if>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/ksh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+                <if>
+                    <explanation>sh</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>target_env_file</name>
+                            <value>.profile</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/sh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                </if>
+            </actionList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>set properties</explanation>
+            <actionList>
+                <substitute>
+                    <abortOnError>0</abortOnError>
+                    <files>${installdir}/conf/altiAdapter.conf</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>ALA_SENDER_IP = 127.0.0.1</pattern>
+                            <value>ALA_SENDER_IP = ${ala_sender_ip}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_RECEIVER_PORT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_RECEIVER_PORT = ${ala_receiver_port}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_REPLICATION_NAME(\s)*=(\s)*ALA</pattern>
+                            <value>ALA_REPLICATION_NAME = ${ala_replication_name}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_SOCKET_TYPE(\s)*=(\s)*TCP</pattern>
+                            <value>ALA_SOCKET_TYPE = ${ala_socket_type}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_XLOG_POOL_SIZE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_XLOG_POOL_SIZE = ${ala_xlog_pool_size}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_HOST = localhost</pattern>
+                            <value>OTHER_ALTIBASE_HOST = ${other_altibase_host}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_PORT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>OTHER_ALTIBASE_PORT = ${other_altibase_port}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_USER(\s)*=(\s)*guest</pattern>
+                            <value>OTHER_ALTIBASE_USER = ${other_altibase_user}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_PASSWORD(\s)*=(\s)*guest</pattern>
+                            <value>OTHER_ALTIBASE_PASSWORD = ${other_altibase_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALA_LOGGING_ACTIVE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALA_LOGGING_ACTIVE = ${ala_logging_active}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_SKIP_INSERT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>OTHER_ALTIBASE_SKIP_INSERT = ${other_altibase_skip_insert}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_SKIP_UPDATE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>OTHER_ALTIBASE_SKIP_UPDATE = ${other_altibase_skip_update}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>OTHER_ALTIBASE_SKIP_DELETE(\s)*=(\s)*[0-9]*</pattern>
+                            <value>OTHER_ALTIBASE_SKIP_DELETE = ${other_altibase_skip_delete}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_USER(\s)*=(\s)*guest</pattern>
+                            <value>ALTIBASE_USER = ${altibase_user}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_PASSWORD(\s)*=(\s)*guest</pattern>
+                            <value>ALTIBASE_PASSWORD = ${altibase_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_IP(\s)*=(\s)*127.0.0.1</pattern>
+                            <value>ALTIBASE_IP = ${altibase_ip}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>ALTIBASE_PORT(\s)*=(\s)*[0-9]*</pattern>
+                            <value>ALTIBASE_PORT = ${altibase_port}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+            </actionList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>add Env variable</explanation>
+            <actionList>
+                <if>
+                    <explanation>add Env code -&gt; target_env_file</explanation>
+                    <actionList>
+                        <addTextToFile>
+                            <file>~/${target_env_file}</file>
+                            <text>
+
+
+# ALTIBASE Adapter for Altibase
+setenv ALTIBASE_ADAPTER_HOME ${installdir}
+${'setenv PATH ${ALTIBASE_ADAPTER_HOME}/bin:${PATH}'}
+</text>
+                        </addTextToFile>
+                    </actionList>
+                    <conditionRuleList>
+                        <regExMatch>
+                            <logic>matches</logic>
+                            <pattern>/csh</pattern>
+                            <text>${env(SHELL)}</text>
+                        </regExMatch>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <addTextToFile>
+                            <file>~/${target_env_file}</file>
+                            <text>
+
+
+# ALTIBASE Adapter for Altibase
+export ALTIBASE_ADAPTER_HOME=${installdir}
+${'export PATH=${ALTIBASE_ADAPTER_HOME}/bin:${PATH}'}
+
+</text>
+                        </addTextToFile>
+                    </elseActionList>
+                </if>
+                <showInfo>
+                    <text>
+
+The following ALTIBASE Adapter for Altibase environment variables were added.
+
+-- ALTIBASE_ADAPTER_HOME
+    =${installdir}
+-- PATH
+    =${'${ALTI_ADAPTER_HOME}/bin:${PATH}'}
+
+
+=========================
+Please perform [re-login] 
+or [source ${target_env_file}] 
+or [. ${target_env_file}]
+==========================</text>
+                </showInfo>
+            </actionList>
+        </actionGroup>
+    </postInstallationActionList>
+    <createUninstaller>0</createUninstaller>
+    <deleteLockedFilesOnReboot>0</deleteLockedFilesOnReboot>
+    <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>0</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>600</height>
+    <outputDirectory>${build_project_directory}</outputDirectory>
+    <removeLogFile>1</removeLogFile>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>Altibase Corp.,</vendor>
+    <width>700</width>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>linux linux-x64 linux-ia64 osx solaris-sparc solaris-intel linux-ppc linux-s390 freebsd freebsd4 freebsd6 freebsd6-x64 openbsd3 hpux aix irix-n32</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>dist/bin</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/conf</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/msg</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>dist/trc</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                </folder>
+            </folderList>
+        </component>
+    </componentList>
+    <parameterList>
+        <stringParameter>
+            <name>altiadapter_filename</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>altiadapter_version</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default>5.5.1.0.0</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>target_env_file</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <stringParameter>
+            <name>ala_logging_active_tmp</name>
+            <description></description>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <allowEmptyValue>1</allowEmptyValue>
+            <ask>0</ask>
+            <width>30</width>
+        </stringParameter>
+        <directoryParameter>
+            <name>installdir</name>
+            <title>Installation Directory</title>
+            <description>Installation Directory</description>
+            <explanation>Please specify the installation directory for altiAdapter.</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${product_shortname}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>30</width>
+        </directoryParameter>
+        <parameterGroup>
+            <name>Property</name>
+            <title>ALTIBASE Adapter for Altibase Property Settings: ALA</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>installdir</insertAfter>
+            <parameterList>
+                <stringParameter>
+                    <name>ala_sender_ip</name>
+                    <description>ALA_SENDER_IP</description>
+                    <explanation>This is the IP address of the server on which ALTIBASE HDB is installed.</explanation>
+                    <value></value>
+                    <default>127.0.0.1</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid ALA_SENDER_IP</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</pattern>
+                                    <text>${ala_sender_ip}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_receiver_port</name>
+                    <description>ALA_RECEIVER_PORT (1024-65535)               </description>
+                    <explanation>This is the reception port number used by ALTIBASE Adapter.</explanation>
+                    <value></value>
+                    <default>25090</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${ala_receiver_port}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${ala_receiver_port}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${ala_receiver_port}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${ala_receiver_port}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_2</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_replication_name</name>
+                    <description>ALA_REPLICATION_NAME</description>
+                    <explanation>This is the name of the replication object used to send XLOGs generated by ALTIBASE HDB.</explanation>
+                    <value></value>
+                    <default>ALA</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p_3</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>ala_xlog_pool_size</name>
+                    <description>ALA_XLOG_POOL_SIZE</description>
+                    <explanation>This is the amount of memory to allocate for the storage of XLOGs.</explanation>
+                    <value></value>
+                    <default>10000</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <text>Invalid ALA_XLOG_POOL_SIZE</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${ala_xlog_pool_size}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property2</name>
+            <title>ALTIBASE Adapter for Altibase Property Settings: ALA</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <choiceParameter>
+                    <name>ala_socket_type</name>
+                    <description>ALA_SOCKET_TYPE                              </description>
+                    <explanation>This is the communications protocol used by the ALA library. (ALA_SOCKET_TYPE)
+                    </explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>TCP</text>
+                            <value>TCP</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>UNIX</text>
+                            <value>UNIX</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <labelParameter>
+                    <name>space_p2_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <choiceParameter>
+                    <name>ala_logging_active</name>
+                    <description>ALA_LOGGING_ACTIVE</description>
+                    <explanation>Would you like the ALA library log messages to be saved to disk?</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                    </optionList>
+                    <postShowPageActionList>
+                        <if>
+                            <explanation>input yes or no</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>ala_logging_active_tmp</name>
+                                    <value>YES</value>
+                                </setInstallerVariable>
+                            </actionList>
+                            <conditionRuleList>
+                                <compareText>
+                                    <logic>equals</logic>
+                                    <text>1</text>
+                                    <value>${ala_logging_active}</value>
+                                </compareText>
+                            </conditionRuleList>
+                            <elseActionList>
+                                <setInstallerVariable>
+                                    <name>ala_logging_active_tmp</name>
+                                    <value>NO</value>
+                                </setInstallerVariable>
+                            </elseActionList>
+                        </if>
+                    </postShowPageActionList>
+                </choiceParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property3</name>
+            <title>ALTIBASE Adapter for Altibase Property Settings: Altibase</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>altibase_user</name>
+                    <description>ALTIBASE_USER</description>
+                    <explanation>This is used to specify the name of a user account with which to connect to ALTIBASE HDB.</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_1</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_password</name>
+                    <description>ALTIBASE_PASSWORD</description>
+                    <explanation>This is used to specify the password for the user account through which the connection to ALTIBASE HDB will be established.</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_2</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_ip</name>
+                    <description>ALTIBASE_IP</description>
+                    <explanation>This is the IP address of the server on which ALTIBASE HDB is installed.</explanation>
+                    <value></value>
+                    <default>127.0.0.1</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid ALTIBASE_IP</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</pattern>
+                                    <text>${altibase_ip}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <labelParameter>
+                    <name>space_p3_3</name>
+                    <description></description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
+                <stringParameter>
+                    <name>altibase_port</name>
+                    <description>ALTIBASE_PORT (1024-65535)                         </description>
+                    <explanation>This is the number of the port at which ALTIBASE HDB listens.</explanation>
+                    <value></value>
+                    <default>20300</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${altibase_port}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${altibase_port}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${altibase_port}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${altibase_port}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>Property4</name>
+            <title>ALTIBASE Adapter for Altibase Property Settings: Other Altibase</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <parameterList>
+                <stringParameter>
+                    <name>other_altibase_host</name>
+                    <description>OTHER_ALTIBASE_HOST</description>
+                    <explanation>Other altibase host</explanation>
+                    <value></value>
+                    <default>127.0.0.1</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid ALTIBASE_IP</text>
+                            <ruleList>
+                                <regExMatch>
+                                    <logic>does_not_match</logic>
+                                    <pattern>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</pattern>
+                                    <text>${altibase_ip}</text>
+                                </regExMatch>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <stringParameter>
+                    <name>other_altibase_port</name>
+                    <description>OTHER_ALTIBASE_PORT (1024-65535)</description>
+                    <explanation>Other altibase port</explanation>
+                    <value></value>
+                    <default>20900</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                    <validationActionList>
+                        <throwError>
+                            <ruleEvaluationLogic>or</ruleEvaluationLogic>
+                            <text>Invalid port number</text>
+                            <ruleList>
+                                <stringTest>
+                                    <negate>1</negate>
+                                    <text>${other_altibase_port}</text>
+                                    <type>digit</type>
+                                </stringTest>
+                                <compareValues>
+                                    <logic>less</logic>
+                                    <value1>${other_altibase_port}</value1>
+                                    <value2>1024</value2>
+                                </compareValues>
+                                <compareValues>
+                                    <logic>greater</logic>
+                                    <value1>${other_altibase_port}</value1>
+                                    <value2>65535</value2>
+                                </compareValues>
+                                <stringTest>
+                                    <text>${other_altibase_port_port}</text>
+                                    <type>empty</type>
+                                </stringTest>
+                            </ruleList>
+                        </throwError>
+                    </validationActionList>
+                </stringParameter>
+                <stringParameter>
+                    <name>other_altibase_user</name>
+                    <description>OTHER_ALTIBASE_USER</description>
+                    <explanation>Other altibase user name</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <stringParameter>
+                    <name>other_altibase_password</name>
+                    <description>OTHER_ALTIBASE_PASSWORD</description>
+                    <explanation>Ohter altibase user password</explanation>
+                    <value></value>
+                    <default>guest</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>15</width>
+                </stringParameter>
+                <choiceParameter>
+                    <name>other_altibase_skip_insert</name>
+                    <description>Do you want to enable the OTHER_ALTIBASE_SKIP_INSERT property?</description>
+                    <explanation>Enabling these properties will prevent DML(INSERT/UPDATE/DELETE) statements that are executed 
+on the Altibase database from also being executed on the Other Altibase database.</explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <choiceParameter>
+                    <name>other_altibase_skip_update</name>
+                    <description>Do you want to enable the OTHER_ALTIBASE_SKIP_UPDATE property?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+                <choiceParameter>
+                    <name>other_altibase_skip_delete</name>
+                    <description>Do you want to enable the OTHER_ALTIBASE_SKIP_DELETE property?</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default></default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <displayType>combobox</displayType>
+                    <ordering>default</ordering>
+                    <width>15</width>
+                    <optionList>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>NO</text>
+                            <value>0</value>
+                        </option>
+                        <option>
+                            <description></description>
+                            <image></image>
+                            <text>YES</text>
+                            <value>1</value>
+                        </option>
+                    </optionList>
+                </choiceParameter>
+            </parameterList>
+            <postShowPageActionList>
+                <if>
+                    <explanation>skip insert</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_insert</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${other_altibase_skip_insert}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_insert</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>skip update</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_update</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${other_altibase_skip_update}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_update</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+                <if>
+                    <explanation>skip delete</explanation>
+                    <actionList>
+                        <setInstallerVariable>
+                            <name>skip_delete</name>
+                            <value>Enabled</value>
+                        </setInstallerVariable>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText>
+                            <logic>equals</logic>
+                            <text>${other_altibase_skip_delete}</text>
+                            <value>1</value>
+                        </compareText>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <setInstallerVariable>
+                            <name>skip_delete</name>
+                            <value>Disabled</value>
+                        </setInstallerVariable>
+                    </elseActionList>
+                </if>
+            </postShowPageActionList>
+        </parameterGroup>
+        <infoParameter>
+            <name>property_report</name>
+            <title>Property Review</title>
+            <description></description>
+            <explanation>Please check your property settings.</explanation>
+            <value>
+To change these properties after installation is complete, 
+please modify the following file :
+  ${installdir}/conf/altiAdapter.conf
+
+1. ALTIBASE Adapter for Altibase Property Settings : ALA
+
+    1) ALA_SENDER_IP : 
+         [${ala_sender_ip}]
+
+    2) ALA_RECEIVER_PORT : 
+         [${ala_receiver_port}]
+
+    3) ALA_REPLICATION_NAME :
+         [${ala_replication_name}]
+
+    4) ALA_XLOG_POOL_SIZE :
+         [${ala_xlog_pool_size}]
+
+    5) ALA_SOCKET_TYPE :
+         [${ala_socket_type}]
+
+    6) ALA_LOGGING_ACTIVE :
+         [${ala_logging_active_tmp}]
+
+
+
+2. ALTIBASE Adapter for Altibase Property Settings : Altibase
+
+    1) ALTIBASE_USER : 
+         [${altibase_user}]
+
+    2) ALTIBASE_PASSWORD :
+         [${altibase_password}]
+
+    3) ALTIBASE_IP : 
+         [${altibase_ip}]
+
+    4) ALTIBASE_PORT : 
+         [${altibase_port}]
+
+
+
+3. ALTIBASE Adapter for Altibase Property Settings : Other Altibase Database
+
+    1) OTHER_ALTIBASE_HOST : 
+         [${other_altibase_host}]
+
+    2) OTHER_ALTIBASE_PORT : 
+         [${other_altibase_port}]
+
+    3) OTHER_ALTIBASE_USER : 
+         [${other_altibase_user}]
+
+    4) OTHER_ALTIBASE_PASSWORD :
+         [${other_altibase_password}]
+
+    5) OTHER_ALTIBASE_SKIP_INSERT :
+         [${other_altibase_skip_insert}]
+
+    6) OTHER_ALTIBASE_SKIP_UPDATE :
+         [${other_altibase_skip_update}]
+
+    7) OTHER_ALTIBASE_SKIP_DELETE :
+         [${other_altibase_skip_delete}]
+</value>
+            <default></default>
+            <trimMarginNumChars>0</trimMarginNumChars>
+        </infoParameter>
+    </parameterList>
+</project>
+
