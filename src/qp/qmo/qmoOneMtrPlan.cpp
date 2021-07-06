@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: qmoOneMtrPlan.cpp 89835 2021-01-22 10:10:02Z andrew.shin $
+ * $Id: qmoOneMtrPlan.cpp 91133 2021-07-05 01:24:06Z donovan.seo $
  *
  * Description :
  *     Plan Generator
@@ -3304,6 +3304,7 @@ qmoOneMtrPlan::initVMTR( qcStatement  * aStatement ,
 
     qmncVMTR          * sVMTR;
     UInt                sDataNodeOffset;
+    qmcAttrDesc       * sItrAttr;
 
     IDU_FIT_POINT_FATAL( "qmoOneMtrPlan::initVMTR::__FT__" );
 
@@ -3333,6 +3334,15 @@ qmoOneMtrPlan::initVMTR( qcStatement  * aStatement ,
                                              aQuerySet,
                                              & sVMTR->plan.resultDesc )
               != IDE_SUCCESS );
+
+    /* BUG-49095 */
+    for ( sItrAttr  = sVMTR->plan.resultDesc;
+          sItrAttr != NULL;
+          sItrAttr  = sItrAttr->next )
+    {
+        IDE_TEST_RAISE( ( sItrAttr->expr->lflag & QTC_NODE_COLUMN_RID_MASK ) == QTC_NODE_COLUMN_RID_EXIST,
+                        ERR_PROWID_NOT_SUPPORTED );
+    }
 
     if ( aParent != NULL )
     {
@@ -3372,6 +3382,10 @@ qmoOneMtrPlan::initVMTR( qcStatement  * aStatement ,
 
     return IDE_SUCCESS;
 
+    IDE_EXCEPTION(ERR_PROWID_NOT_SUPPORTED)
+    {
+        IDE_SET(ideSetErrorCode(qpERR_ABORT_QMV_PROWID_NOT_SUPPORTED));
+    }
     IDE_EXCEPTION_END;
 
     return IDE_FAILURE;

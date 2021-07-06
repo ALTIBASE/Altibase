@@ -15,7 +15,7 @@
  */
  
 /***********************************************************************
- * $Id: smcReq.h 89495 2020-12-14 05:19:22Z emlee $
+ * $Id: smcReq.h 91121 2021-07-02 04:46:19Z jiwon.kim $
  **********************************************************************/
 
 #ifndef _O_SMC_REQ_H_
@@ -247,6 +247,33 @@ class smcReqFunc
             return smxTrans::abortToImpSavepoint4LayerCall( aTrans,
                                                             aSavepoint );
         };
+
+        //BUG-49062
+        static IDE_RC beginTx( void   * aTrans,
+                               UInt     aFlag,
+                               idvSQL * aStatistics )
+        {
+            return smxTrans::begin4LayerCall( aTrans,
+                                              aFlag,
+                                              aStatistics );
+        };
+        static IDE_RC commitTx( void * aTrans )
+        {
+            return smxTrans::commit4LayerCall( aTrans );
+        };
+        static IDE_RC abortTx( void * aTrans )
+        {
+            return smxTrans::abort4LayerCall( aTrans );
+        };
+        static IDE_RC allocTx( void ** aTrans )
+        {
+            return smxTransMgr::alloc4LayerCall( aTrans );
+        };
+        static IDE_RC freeTx( void * aTrans )
+        {
+            return smxTransMgr::freeTrans4LayerCall( aTrans );
+        };
+
 
         /* sml api Function */
         static IDE_RC allocLockItem( void ** aLockItem )

@@ -1100,8 +1100,8 @@ IDE_RC sdm::insertNode( qcStatement * aStatement,
                         SChar       * aNodeName,
                         UInt          aPortNo,
                         SChar       * aHostIP,
-                        UInt          aAlternatePortNo,
-                        SChar       * aAlternateHostIP,
+                        UInt          aInternalPortNo,
+                        SChar       * aInternalHostIP,
                         UInt          aConnType,
                         UInt        * aRowCnt )
 {
@@ -1145,7 +1145,7 @@ IDE_RC sdm::insertNode( qcStatement * aStatement,
         sNodeID = *aNodeID;
     }
 
-    if ( ( aAlternatePortNo == 0 ) || ( aAlternateHostIP[0] == '\0' ) )
+    if ( ( aInternalPortNo == 0 ) || ( aInternalHostIP[0] == '\0' ) )
     {
         idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
                          "INSERT INTO SYS_SHARD.NODES_ "
@@ -1173,33 +1173,62 @@ IDE_RC sdm::insertNode( qcStatement * aStatement,
     }
     else
     {
-        idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
-                         "INSERT INTO SYS_SHARD.NODES_ "
-                         "VALUES ( "
-                         QCM_SQL_INT32_FMT", "     /* NODE_ID                    */
-                         QCM_SQL_VARCHAR_FMT", "   /* NODE_NAME                  */
-                         QCM_SQL_VARCHAR_FMT", "   /* HOST_IP                    */
-                         QCM_SQL_INT32_FMT", "     /* PORT_NO                    */
-                         QCM_SQL_VARCHAR_FMT", "   /* ALTERNATE_HOST_IP          */
-                         QCM_SQL_INT32_FMT", "     /* ALTERNATE_PORT_NO          */
-                         QCM_SQL_VARCHAR_FMT", "   /* INTERNAL_HOST_IP           */
-                         QCM_SQL_INT32_FMT", "     /* INTERNAL_PORT_NO           */
-                         QCM_SQL_VARCHAR_FMT", "   /* INTERNAL_ALTERNATE_HOST_IP */
-                         QCM_SQL_INT32_FMT", "     /* INTERNAL_ALTERNATE_PORT_NO */
-                         QCM_SQL_INT32_FMT", "     /* INTERNAL_CONN_TYPE         */
-                         QCM_SQL_BIGINT_FMT" ) ",  /* SMN */
-                         sNodeID,
-                         aNodeName,
-                         aHostIP,
-                         aPortNo,
-                         aAlternateHostIP,
-                         aAlternatePortNo,
-                         aHostIP,
-                         aPortNo,
-                         aAlternateHostIP,
-                         aAlternatePortNo,
-                         aConnType,
-                         sMetaNodeInfo.mShardMetaNumber );
+        if( SDU_SHARD_ZOOKEEPER_TEST == 0 )
+        {
+            idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
+                             "INSERT INTO SYS_SHARD.NODES_ "
+                             "VALUES ( "
+                             QCM_SQL_INT32_FMT", "     /* NODE_ID                    */
+                             QCM_SQL_VARCHAR_FMT", "   /* NODE_NAME                  */
+                             QCM_SQL_VARCHAR_FMT", "   /* HOST_IP                    */
+                             QCM_SQL_INT32_FMT", "     /* PORT_NO                    */
+                             QCM_SQL_VARCHAR_FMT", "   /* ALTERNATE_HOST_IP          */
+                             QCM_SQL_INT32_FMT", "     /* ALTERNATE_PORT_NO          */
+                             QCM_SQL_VARCHAR_FMT", "   /* INTERNAL_HOST_IP           */
+                             QCM_SQL_INT32_FMT", "     /* INTERNAL_PORT_NO           */
+                             QCM_SQL_VARCHAR_FMT", "   /* INTERNAL_ALTERNATE_HOST_IP */
+                             QCM_SQL_INT32_FMT", "     /* INTERNAL_ALTERNATE_PORT_NO */
+                             QCM_SQL_INT32_FMT", "     /* INTERNAL_CONN_TYPE         */
+                             QCM_SQL_BIGINT_FMT" ) ",  /* SMN */
+                             sNodeID,
+                             aNodeName,
+                             aHostIP,
+                             aPortNo,
+                             aInternalHostIP,
+                             aInternalPortNo,
+                             aHostIP,
+                             aPortNo,
+                             aInternalHostIP,
+                             aInternalPortNo,
+                             aConnType,
+                             sMetaNodeInfo.mShardMetaNumber );
+        }
+        else
+        {
+            idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
+                             "INSERT INTO SYS_SHARD.NODES_ "
+                             "VALUES ( "
+                             QCM_SQL_INT32_FMT", "     /* NODE_ID                    */
+                             QCM_SQL_VARCHAR_FMT", "   /* NODE_NAME                  */
+                             QCM_SQL_VARCHAR_FMT", "   /* HOST_IP                    */
+                             QCM_SQL_INT32_FMT", "     /* PORT_NO                    */
+                             "NULL, "                  /* ALTERNATE_HOST_IP          */
+                             "NULL, "                  /* ALTERNATE_PORT_NO          */
+                             QCM_SQL_VARCHAR_FMT", "   /* INTERNAL_HOST_IP           */
+                             QCM_SQL_INT32_FMT", "     /* INTERNAL_PORT_NO           */
+                             "NULL, "                  /* INTERNAL_ALTERNATE_HOST_IP */
+                             "NULL, "                  /* INTERNAL_ALTERNATE_PORT_NO */
+                             QCM_SQL_INT32_FMT", "     /* INTERNAL_CONN_TYPE         */
+                             QCM_SQL_BIGINT_FMT" ) ",  /* SMN */
+                             sNodeID,
+                             aNodeName,
+                             aHostIP,
+                             aPortNo,
+                             aInternalHostIP, // INTERNAL_HOST_IP
+                             aInternalPortNo, // INTERNAL_PORT_NO
+                             aConnType,
+                             sMetaNodeInfo.mShardMetaNumber );
+        }
     }
 
     IDE_TEST( qciMisc::runDMLforDDL( QC_SMI_STMT( aStatement ),
@@ -2045,7 +2074,7 @@ IDE_RC sdm::insertProcedure( qcStatement * aStatement,
                              SChar       * aDefaultNodeName,
                              UInt        * aRowCnt,
                              qsOID         aProcOID,
-                             UInt          aUserID )
+                             UInt          /*aUserID*/ )
 {
     SChar         * sSqlStr;
     vSLong          sRowCnt;

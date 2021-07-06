@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: qcgPlan.cpp 90785 2021-05-06 07:26:22Z hykim $
+ * $Id: qcgPlan.cpp 91102 2021-06-30 04:35:30Z jayce.park $
  **********************************************************************/
 
 #include <qc.h>
@@ -832,6 +832,12 @@ void qcgPlan::registerPlanProperty( qcStatement        * aStatement,
                 QCG_REGISTER_PLAN_PROPERTY( mLeftOuterSkipRightEnableRef,
                                             mLeftOuterSkipRightEnable,
                                             QCU_LEFT_OUTER_SKIP_RIGHT_ENABLE );
+                break;
+            /* BUG-49093 */
+            case PLAN_PROPERTY_GLOBAL_TRANSACTION_LEVEL:
+                QCG_REGISTER_PLAN_PROPERTY( mGlobalTransactionLevelRef,
+                                            mGlobalTransactionLevel,
+                                            QCG_GET_SESSION_GTX_LEVEL( aStatement ) );
                 break;
             default:
                 IDE_DASSERT( 0 );
@@ -2096,6 +2102,11 @@ IDE_RC qcgPlan::isMatchedPlanProperty( qcStatement    * aStatement,
                                mLeftOuterSkipRightEnable,
                                QCU_LEFT_OUTER_SKIP_RIGHT_ENABLE );
 
+    /* BUG-49093 */
+    QCG_MATCHED_PLAN_PROPERTY( mGlobalTransactionLevelRef,
+                               mGlobalTransactionLevel,
+                               QCG_GET_SESSION_GTX_LEVEL( aStatement ) );
+
     ////////////////////////////////////////////////////////////////////
     // QCG_MATCHED_PLAN_PROPERTY 매크로로 체크할수 없는 경우
     ////////////////////////////////////////////////////////////////////
@@ -2667,6 +2678,11 @@ IDE_RC qcgPlan::rebuildPlanProperty( qcStatement    * aStatement,
     QCG_REBUILD_PLAN_PROPERTY( mLeftOuterSkipRightEnableRef,
                                mLeftOuterSkipRightEnable,
                                QCU_LEFT_OUTER_SKIP_RIGHT_ENABLE );
+
+    /* BUG-49093 */
+    QCG_REBUILD_PLAN_PROPERTY( mGlobalTransactionLevelRef,
+                               mGlobalTransactionLevel,
+                               QCG_GET_SESSION_GTX_LEVEL( aStatement ) );    
 
     ////////////////////////////////////////////////////////////////////
     // QCG_REBUILD_PLAN_PROPERTY 매크로로 체크할수 없는 경우

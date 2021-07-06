@@ -359,6 +359,7 @@ UInt    smuProperty::mVerifyDiskIndexCount;
 SChar * smuProperty::mVerifyDiskIndexName[SMU_MAX_VERIFY_DISK_INDEX_COUNT];
 UInt    smuProperty::mDiskIndexNameCntToVerify;
 UInt    smuProperty::mIgnoreMemTbsMaxSize;
+UInt    smuProperty::mSeqCacheUptTxEnable;
 
 /* BUG-39679 */
 UInt    smuProperty::mEnableRowTemplate;
@@ -1699,6 +1700,11 @@ void smuProperty::loadForSMC()
 
     IDE_ASSERT(idp::read("__ENABLE_ROW_TEMPLATE",
                          &mEnableRowTemplate )
+               == IDE_SUCCESS);
+
+    //BUG-49062
+    IDE_ASSERT(idp::read("__SEQ_CACHE_UPT_TX_ENABLE",
+                         &mSeqCacheUptTxEnable)
                == IDE_SUCCESS);
 }
 
@@ -4711,6 +4717,7 @@ IDE_RC smuProperty::callbackCrashTolerance( idvSQL * /*aStatistics*/,
     mCrashTolerance = *((UInt *)aNewValue);
     return IDE_SUCCESS;
 }
+
 #if 0
 IDE_RC smuProperty::callbackTransWaitTime4TTS( idvSQL * /*aStatistics*/,
                                                SChar  * /*aName*/,

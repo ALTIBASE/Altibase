@@ -4,7 +4,7 @@
  **********************************************************************/
 
 /***********************************************************************
- * $Id: idpDescResource.cpp 90787 2021-05-07 00:50:48Z ahra.cho $
+ * $Id: idpDescResource.cpp 91121 2021-07-02 04:46:19Z jiwon.kim $
  *
  * Description:
  *
@@ -6342,6 +6342,19 @@ IDE_RC registProperties()
             0, 1, 0);
 
     // For Calculation
+
+    // BUG-49062: 시퀀스 캐싱 중 업데이트가 발생 할 때, 따로 트랜잭션을 사용한다.
+    // 0: 따로 트랜잭션 사용하지 않음
+    // 1: 트랜잭션 사용
+    IDP_DEF(UInt, "__SEQ_CACHE_UPT_TX_ENABLE",
+            IDP_ATTR_SL_ALL |
+            IDP_ATTR_IU_ANY |
+            IDP_ATTR_MS_ANY |
+            IDP_ATTR_LC_INTERNAL |
+            IDP_ATTR_RD_READONLY |
+            IDP_ATTR_ML_JUSTONE  |
+            IDP_ATTR_CK_CHECK,
+            0, 1, 1);
 
     // ==================================================================
     // MM Multiplexing Properties

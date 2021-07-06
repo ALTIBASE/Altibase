@@ -1576,6 +1576,10 @@ IDE_RC qci::hardPrepare( qciStatement           * aStatement,
         qcgPlan::registerPlanProperty( sStatement,
                                        PLAN_PROPERTY_SHARD_INTERNAL_LOCAL_OPERATION);
 
+        /* BUG-49093 */
+        qcgPlan::registerPlanProperty( sStatement,
+                                       PLAN_PROPERTY_GLOBAL_TRANSACTION_LEVEL );
+
         //-----------------------------------------
         // VALIDATE
         //-----------------------------------------

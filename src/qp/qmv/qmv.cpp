@@ -15,7 +15,7 @@
  */
 
 /***********************************************************************
- * $Id: qmv.cpp 90270 2021-03-21 23:20:18Z bethy $
+ * $Id: qmv.cpp 91140 2021-07-05 02:08:29Z donovan.seo $
  **********************************************************************/
 
 #include <idl.h>
@@ -4431,19 +4431,19 @@ IDE_RC qmv::validateDelete(qcStatement * aStatement)
                               sViewParseTree->querySet->SFWGH,
                               & sDeleteTableRef )
                           != IDE_SUCCESS );
+
+                /* BUG-46124 */
+                IDE_TEST( qmsPreservedTable::searchQmsTargetForPreservedTable( sViewParseTree,
+                                                                               sViewSFWGH,
+                                                                               sViewSFWGH->from,
+                                                                               sTarget,
+                                                                               & sReturnTarget )
+                          != IDE_SUCCESS );
             }
             else
             {
                 // Nothing to do.
             }
-
-            /* BUG-46124 */
-            IDE_TEST( qmsPreservedTable::searchQmsTargetForPreservedTable( sViewParseTree,
-                                                                           sViewSFWGH,
-                                                                           sViewSFWGH->from,
-                                                                           sTarget,
-                                                                           & sReturnTarget )
-                      != IDE_SUCCESS );
 
             // error delete할 테이블이 없음
             IDE_TEST_RAISE( sDeleteTableRef == NULL,

@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: qc.h 90861 2021-05-18 07:41:58Z jake.jang $
+ * $Id: qc.h 91102 2021-06-30 04:35:30Z jayce.park $
  **********************************************************************/
 
 #ifndef _O_QC_H_
@@ -1802,6 +1802,7 @@ enum qcPlanPropertyKind
     PLAN_PROPERTY_SHARD_STATUS,    
     PLAN_PROPERTY_SHARD_INTERNAL_LOCAL_OPERATION,
     PLAN_PROPERTY_LEFT_OUTER_SKIP_RIGHT_ENABLE, /* PROJ-2750 */
+    PLAN_PROPERTY_GLOBAL_TRANSACTION_LEVEL, /* BUG-49093 */
     PLAN_PROPERTY_MAX
 };
 
@@ -2102,6 +2103,11 @@ typedef struct qcPlanProperty
     /* PROJ-2750 */
     idBool mLeftOuterSkipRightEnableRef;
     UInt   mLeftOuterSkipRightEnable;
+
+    /* BUG-49093 */
+    idBool mGlobalTransactionLevelRef;
+    UInt   mGlobalTransactionLevel;
+    
 } qcPlanProperty;
 
 typedef struct qcTemplate

@@ -26,8 +26,8 @@
  *    SHARD_SET_NODE( node_name             VARCHAR,
  *                    remote_host           VARCHAR,
  *                    remote_port           integer,
- *                    alternate_remote_host VARCHAR,
- *                    alternate_remote_port integer,
+ *                    internal_remote_host  VARCHAR,
+ *                    internal_remote_port  integer,
  *                    conn_type             integer,
  *                    node_id               integer )
  *    RETURN 0
@@ -165,9 +165,9 @@ IDE_RC sdfCalculate_SetNode( mtcNode*     aNode,
     mtdCharType             * sRemoteHost;
     SChar                     sRemoteHostStr[IDL_IP_ADDR_MAX_LEN + 1];
     mtdIntegerType            sPort;
-    mtdCharType             * sAlternateRemoteHost;
-    SChar                     sAlternateRemoteHostStr[IDL_IP_ADDR_MAX_LEN + 1];
-    mtdIntegerType            sAlternatePort;
+    mtdCharType             * sInternalRemoteHost;
+    SChar                     sInternalRemoteHostStr[IDL_IP_ADDR_MAX_LEN + 1];
+    mtdIntegerType            sInternalPort;
     mtdIntegerType            sConnType = SDI_NODE_CONNECT_TYPE_DEFAULT;
     UInt                      sRowCnt = 0;
     smiStatement            * sOldStmt;
@@ -248,35 +248,35 @@ IDE_RC sdfCalculate_SetNode( mtcNode*     aNode,
                         ( sPort <= 0 ),
                         ERR_PORT );
 
-        // alternate remote host
+        // internal remote host
         if ( aStack[4].column->module->isNull( aStack[4].column,
                                                aStack[4].value ) == ID_TRUE )
         {
-            sAlternateRemoteHostStr[0] = '\0';
+            sInternalRemoteHostStr[0] = '\0';
         }
         else
         {
-            sAlternateRemoteHost = (mtdCharType*)aStack[4].value;
+            sInternalRemoteHost = (mtdCharType*)aStack[4].value;
 
-            IDE_TEST_RAISE( sAlternateRemoteHost->length > IDL_IP_ADDR_MAX_LEN,
+            IDE_TEST_RAISE( sInternalRemoteHost->length > IDL_IP_ADDR_MAX_LEN,
                             ERR_IPADDRESS );
-            idlOS::strncpy( sAlternateRemoteHostStr,
-                            (SChar*)sAlternateRemoteHost->value,
-                            sAlternateRemoteHost->length );
-            sAlternateRemoteHostStr[sAlternateRemoteHost->length] = '\0';
+            idlOS::strncpy( sInternalRemoteHostStr,
+                            (SChar*)sInternalRemoteHost->value,
+                            sInternalRemoteHost->length );
+            sInternalRemoteHostStr[sInternalRemoteHost->length] = '\0';
         }
 
-        // alternate port no
+        // internal port no
         if ( aStack[5].column->module->isNull( aStack[5].column,
                                                aStack[5].value ) == ID_TRUE )
         {
-            sAlternatePort = 0;
+            sInternalPort = 0;
         }
         else
         {
-            sAlternatePort = *(mtdIntegerType*)aStack[5].value;
-            IDE_TEST_RAISE( ( sAlternatePort > ID_USHORT_MAX ) ||
-                            ( sAlternatePort <= 0 ),
+            sInternalPort = *(mtdIntegerType*)aStack[5].value;
+            IDE_TEST_RAISE( ( sInternalPort > ID_USHORT_MAX ) ||
+                            ( sInternalPort <= 0 ),
                             ERR_PORT );
         }
 
@@ -344,8 +344,8 @@ IDE_RC sdfCalculate_SetNode( mtcNode*     aNode,
                                    (SChar*)sNodeNameStr,
                                    (UInt)sPort,
                                    (SChar*)sRemoteHostStr,
-                                   (UInt)sAlternatePort,
-                                   (SChar*)sAlternateRemoteHostStr,
+                                   (UInt)sInternalPort,
+                                   (SChar*)sInternalRemoteHostStr,
                                    (UInt)sConnType,
                                    &sRowCnt )
                   != IDE_SUCCESS );

@@ -3811,6 +3811,7 @@ IDE_RC sdiZookeeper::updateSMN( ULong aSMN )
     SChar           sPath[SDI_ZKC_PATH_LENGTH] = {0,};
     SChar           sBuffer[SDI_ZKC_BUFFER_SIZE] = {0,};
 
+    IDE_TEST_RAISE( mIsConnect == ID_FALSE, err_not_connect );
     /* 1. path를 세팅한다. */
     idlOS::strncpy( sPath,
                     SDI_ZKC_PATH_SMN,
@@ -3829,6 +3830,10 @@ IDE_RC sdiZookeeper::updateSMN( ULong aSMN )
 
     return IDE_SUCCESS;
 
+    IDE_EXCEPTION( err_not_connect )
+    {
+        logAndSetErrMsg( ZKC_CONNECTION_FAIL );
+    }
     IDE_EXCEPTION( err_ZKC )
     {
         logAndSetErrMsg( sResult );
@@ -3850,11 +3855,7 @@ IDE_RC sdiZookeeper::prepareForUpdateSMN( ULong aSMN )
     SChar           sPath[SDI_ZKC_PATH_LENGTH] = {0,};
     SChar           sBuffer[SDI_ZKC_BUFFER_SIZE] = {0,};
 
-    if ( mIsConnect == ID_FALSE )
-    {
-        sResult = ZKC_CONNECTION_FAIL;
-        IDE_RAISE(err_ZKC);
-    }
+    IDE_TEST_RAISE( mIsConnect == ID_FALSE, err_not_connect );
     IDE_TEST_RAISE(mMyNodeName[0] == '\0', ERR_NOT_EXIST_MYNODENAME);
     
     /* 1. path를 세팅한다. */
@@ -3874,7 +3875,11 @@ IDE_RC sdiZookeeper::prepareForUpdateSMN( ULong aSMN )
     IDE_TEST_RAISE( sResult != ZKC_SUCCESS ,err_ZKC );
     
     return IDE_SUCCESS;
-    
+
+    IDE_EXCEPTION( err_not_connect )
+    {
+        logAndSetErrMsg( ZKC_CONNECTION_FAIL );
+    }
     IDE_EXCEPTION( err_ZKC )
     {
         logAndSetErrMsg( sResult );

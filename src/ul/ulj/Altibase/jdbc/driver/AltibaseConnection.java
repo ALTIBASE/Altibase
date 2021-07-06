@@ -1053,29 +1053,35 @@ public final class AltibaseConnection extends AbstractConnection
             return;
         }
 
-        // BUGBUG 이거 꼭 이래야 되나? synchronized 제거할 수 없나?
-        // BUGBUG (1013-02-04) 비용이 좀 들긴 하지만, rollbkack 할 때 stmt 남은걸 확인하므로 모두 close 해주어야 안전하다.
-        synchronized (mStatementList)
+        try
         {
-            while (!mStatementList.isEmpty())
+            // BUGBUG 이거 꼭 이래야 되나? synchronized 제거할 수 없나?
+            // BUGBUG (1013-02-04) 비용이 좀 들긴 하지만, rollbkack 할 때 stmt 남은걸 확인하므로 모두 close 해주어야 안전하다.
+            synchronized (mStatementList)
             {
-                AltibaseStatement sStmt = (AltibaseStatement)mStatementList.getFirst();
-                sStmt.close();
+                while (!mStatementList.isEmpty())
+                {
+                    AltibaseStatement sStmt = (AltibaseStatement)mStatementList.getFirst();
+                    sStmt.close();
+                }
+            }
+
+            // PROJ-2625 Semi-async Prefetch, Prefetch Auto-tuning
+            clearAsyncPrefetchStatement();
+
+            if (!isServerSideAutoCommit())
+            {
+                // autocommit이 아닌 경우 그냥 disconnect를 해서
+                // rollback/commit 여부를 서버에 맡기는게 옳은 정책이지만,
+                // 하위 버전과의 호환성을 위해 rollback을 호출한다.
+                rollback();
             }
         }
-
-        // PROJ-2625 Semi-async Prefetch, Prefetch Auto-tuning
-        clearAsyncPrefetchStatement();
-
-        if (!isServerSideAutoCommit())
+        finally
         {
-            // autocommit이 아닌 경우 그냥 disconnect를 해서
-            // rollback/commit 여부를 서버에 맡기는게 옳은 정책이지만,
-            // 하위 버전과의 호환성을 위해 rollback을 호출한다.
-            rollback();
+            // BUG-49087 close 도중 예외가 발생하더라도 socket을 정리할 수 있도록 finally 절 안에서 disconnect()를 처리한다.
+            disconnect();
         }
-
-        disconnect();
     }
 
     public int getSessionId()
@@ -1093,22 +1099,28 @@ public final class AltibaseConnection extends AbstractConnection
         // RESPONSE_TIMEOUT 등으로 channel이 닫혔다면 조용히 넘어간다.
         if (!mContext.channel().isClosed())
         {
-            if (!mIsClosed)
-            {
-                CmProtocol.disconnect(mContext);
-            }
-            if (mContext.getError() != null)
-            {
-                mWarning = Error.processServerError(mWarning, mContext.getError());
-            }
-
             try
             {
-                mChannel.close();
+                if (!mIsClosed)
+                {
+                    CmProtocol.disconnect(mContext);
+                }
+                if (mContext.getError() != null)
+                {
+                    mWarning = Error.processServerError(mWarning, mContext.getError());
+                }
             }
-            catch (IOException sIOEx)
+            finally
             {
-                logExceptionToLogWriter(sIOEx);
+                try
+                {
+                    // BUG-49087 diconnect 프로토콜 처리시 에러가 발생한 경우에도 socket을 정리해야 한다.
+                    mChannel.close();
+                }
+                catch (IOException sIOEx)
+                {
+                    logExceptionToLogWriter(sIOEx);
+                }
             }
         }
 
@@ -2475,7 +2487,7 @@ public final class AltibaseConnection extends AbstractConnection
                 Map<String, ClientInfoStatus> sFailures = new HashMap<>();
                 sFailures.put(aName, ClientInfoStatus.REASON_UNKNOWN);
                 throw new SQLClientInfoException("Failed to set ClientInfo property: " + aName, sFailures);
-            }
+             }
             mClientInfo.put(aName, aValue);
             mProp.setAppInfo(aValue);
         }

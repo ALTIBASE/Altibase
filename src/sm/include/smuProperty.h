@@ -476,6 +476,7 @@ public:
     static SChar *mVerifyDiskIndexName[SMU_MAX_VERIFY_DISK_INDEX_COUNT];
     static UInt   mIgnoreMemTbsMaxSize;
     static UInt   mEnableRowTemplate;
+    static UInt   mSeqCacheUptTxEnable; //BUG-49062
 
 // sma
     static UInt mDeleteAgerCount;
@@ -2694,6 +2695,12 @@ public:
     static idBool getEnableRowTemplate( )
     {
         return ( mEnableRowTemplate == 0 ) ? ID_FALSE : ID_TRUE;
+    }
+
+    //BUG-49062
+    static idBool getSeqCacheUptTxEnable( )
+    {
+        return ( mSeqCacheUptTxEnable == 0 ) ? ID_FALSE : ID_TRUE;
     }
 
     // sma
