@@ -26,8 +26,8 @@ procedure SET_REPLICATION( k_safety    	    in  integer,
 procedure SET_NODE( node_name         in varchar(12),
                     host_ip           in varchar(16),
                     port_no           in integer,
-                    alternate_host_ip in varchar(16) default NULL,
-                    alternate_port_no in integer default NULL,
+                    internal_host_ip  in varchar(16) default NULL,
+                    internal_port_no  in integer default NULL,
                     conn_type         in integer default NULL,
                     node_id           in integer default NULL );
 

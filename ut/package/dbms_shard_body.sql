@@ -69,8 +69,8 @@ end SET_REPLICATION;
 procedure SET_NODE( node_name         in varchar(12),
                     host_ip           in varchar(16),
                     port_no           in integer,
-                    alternate_host_ip in varchar(16) default NULL,
-                    alternate_port_no in integer default NULL,
+                    internal_host_ip  in varchar(16) default NULL,
+                    internal_port_no  in integer default NULL,
                     conn_type         in integer default NULL,
                     node_id           in integer default NULL )
 as
@@ -83,7 +83,7 @@ begin
         up_node_name := replace2( node_name, chr(34) );
     end if;
 
-    dummy := shard_set_node(up_node_name, host_ip, port_no, alternate_host_ip, alternate_port_no, conn_type, node_id);
+    dummy := shard_set_node(up_node_name, host_ip, port_no, internal_host_ip, internal_port_no, conn_type, node_id);
 end SET_NODE;
 
 -- RESET DATA NODE (INTERNAL)
