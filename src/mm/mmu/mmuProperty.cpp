@@ -766,6 +766,8 @@ void mmuProperty::load()
     SChar                sIPACLAddrStr[MM_IP_ACL_MAX_ADDR_STR];
     UInt                 sIPACLAddrFamily = 0;
     UInt                 sIPACLMask = 0;
+    /* BUG-48515 */
+    UInt                 sIPACLLimitSize = 0;
 
     IDE_ASSERT(idp::readPtr("DB_NAME", (void **)&mDbName) == IDE_SUCCESS);
 
@@ -1132,12 +1134,25 @@ void mmuProperty::load()
                 }
             }
 
+            sTk = idlOS::strtok(NULL, " \t,");
+            if ( sTk != NULL && sIPACLPermit == ID_TRUE )
+            {
+                /* ip 최대 허용 size */
+                sIPACLLimitSize = idlOS::atoi(sTk);
+            }
+            else
+            {
+                /* ip 최대 허용 size가 셋팅하지 않았으므로 0(무한대) */
+                sIPACLLimitSize = 0;
+            }
+
             /* access list에 추가 */
             if ( mmuAccessList::add( sIPACLPermit,
                                      &sIPACLAddr,
                                      sIPACLAddrStr,
                                      sIPACLAddrFamily,
-                                     sIPACLMask ) != IDE_SUCCESS )
+                                     sIPACLMask,
+                                     sIPACLLimitSize ) != IDE_SUCCESS )
             {
                 ideLog::log( IDE_SERVER_0, "[ACCESS LIST] fail to loading" );
                 IDE_ASSERT( 0 );

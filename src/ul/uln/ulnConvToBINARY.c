@@ -18,6 +18,7 @@
 #include <ulnPrivate.h>
 #include <ulnConv.h>
 #include <ulnConvToBINARY.h>
+#include <ulnConvToNUMERIC.h>
 
 static ACI_RC ulnConvBinCheckTruncation(ulnFnContext *aFnContext,
                                         ulnAppBuffer *aAppBuffer,
@@ -380,7 +381,7 @@ ACI_RC ulncNUMERIC_BINARY(ulnFnContext  *aFnContext,
          * 이때 ulnColumn.mGDPosition을 활용하여 position 이동을 저장한다. 
          * 매번 변환을 수행하기 때문에 SQLGetData로 데이터를 잘라서 가져올 경우 
          * 변환이 SQLGetData 호출 개수 만큼 실행될 순 있지만 사용 빈도가 적을것으로 보이므로 일단은 무시한다. (BUGBUG 추후 개선여지 있음) */
-        sTmpAppBuffer.mBuffer = &sNumericStruct;
+        sTmpAppBuffer.mBuffer = (acp_uint8_t*)&sNumericStruct;
         sTmpAppBuffer.mBufferSize = sizeof(SQL_NUMERIC_STRUCT);
         sTmpAppBuffer.mCTYPE = aAppBuffer->mCTYPE;
 

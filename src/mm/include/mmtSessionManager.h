@@ -108,6 +108,9 @@ public:
     static IDE_RC allocTask(mmcTask **aTask);
     static IDE_RC freeTask(mmcTask *aTask);
 
+    /* BUG-48515 */
+    static iduList* getTaskList();
+
     static IDE_RC allocInternalTask( mmcTask ** aTask,
                                      cmiLink  * aLink );
 
@@ -126,6 +129,8 @@ public:
                              SInt       *aResultCount );
 
     static void   run();
+    /* BUG-48515 */
+    static idBool isRun();
     static void   stop();
 
     static void   logSessionOverview(ideLogEntry &aLog);

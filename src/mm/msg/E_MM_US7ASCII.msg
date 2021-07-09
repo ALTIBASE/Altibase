@@ -23,7 +23,7 @@
 # 반드시 main trunk에서 번호를 할당받은 후 브랜치에서 사용하셔야 합니다.
 # 의문 사항이 있으시면 AK팀 혹은 QP(품질본부)팀에 문의 부탁드립니다.
 
-# Last Number = 262
+# Last Number = 265
 
 SECTION = 4
 
@@ -870,6 +870,9 @@ SECTION = 4
 # *Cause: This is an internal error.
 # *Action: Please contact Altibase's Support Center (http://support.altibase.com).
 
+265, mmERR_ABORT_IP_ACL_CONNECT_OVER = New connection try exceeds ACL limit: ( IP : <0%s>, ACL: <1%s>, Limit : <2%d>, Connected : <3%d> )
+# *Cause: New connection try aborted because it exceeds access control list (ACL) limit.
+# *Action: Change the limit value of the ACCESS_LIST.
 
 INTERNAL_TRACE_MESSAGE_BEGIN
 

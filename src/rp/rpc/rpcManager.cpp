@@ -17,7 +17,7 @@
 
 /***********************************************************************
 
-* $Id: rpcManager.cpp 90932 2021-06-02 02:22:02Z yoonhee.kim $
+* $Id: rpcManager.cpp 91161 2021-07-07 07:12:16Z seulki $
 
 ***********************************************************************/
 
@@ -5030,8 +5030,8 @@ IDE_RC rpcManager::alterReplicationFlushWithXLogfiles( smiStatement  * aSmiStmt,
      * ProcessMeta 부분에서 필요한 checkMeta() 만 호출합니다.
      * 내부에서 rpdMeta::equal()를 호출하며 Column 정보(특히 MapCID)를 포함한 여러 정보를 채워줍니다.
      */
-    sReceiver->checkMeta( aSmiStmt->getTrans(),
-                          sReceiver->mRemoteMeta );
+    IDE_TEST( sReceiver->checkMeta( aSmiStmt->getTrans(),
+                                    sReceiver->mRemoteMeta ) != IDE_SUCCESS );
     sReceiver->decideEndianConversion( sReceiver->mRemoteMeta );
 
     IDE_TEST( sReceiver->start() != IDE_SUCCESS );
@@ -21109,7 +21109,8 @@ IDE_RC rpcManager::attemptHandshakeForTempSync( void              ** aHBT,
     }
     else if ( sConnType == RP_SOCKET_TYPE_IB )
     {
-        IDE_RAISE( ERR_NOT_SUPPORT_IB ); 
+        // BUG-48997
+        //IDE_RAISE( ERR_NOT_SUPPORT_IB ); 
     }
     else
     {
@@ -22208,6 +22209,8 @@ IDE_RC rpcManager::startReceiverThread( cmiProtocolContext      * aProtocolConte
         if ( sIsReceiverLock == ID_FALSE )
         {
             mMyself->mReceiverList.lock();
+
+            sIsReceiverLock = ID_TRUE;
         }
 
         sReceiverList->unsetReceiver( sReceiverIdx );

@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: smpFixedPageList.cpp 88917 2020-10-15 04:54:02Z et16 $
+ * $Id: smpFixedPageList.cpp 91157 2021-07-07 06:02:43Z jiwon.kim $
  **********************************************************************/
 
 #include <idl.h>
@@ -1648,12 +1648,23 @@ IDE_RC smpFixedPageList::setFreeSlot( void         * aTrans,
 
     }
 
-    IDE_ERROR( SM_SCN_IS_DELETED( sCurSlotHeader->mCreateSCN ) &&
-               SM_SCN_IS_FREE_ROW( sCurSlotHeader->mLimitSCN ) &&
-               SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ) );
+    // BUG-49109: ERROR 발생 할 경우 SCN 출력
+    IDE_ERROR_RAISE( SM_SCN_IS_DELETED( sCurSlotHeader->mCreateSCN ) &&
+                     SM_SCN_IS_FREE_ROW( sCurSlotHeader->mLimitSCN ) &&
+                     SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ), ERR_SLOT_SCN );
 
     return IDE_SUCCESS;
 
+    IDE_EXCEPTION( ERR_SLOT_SCN )
+    {
+        ideLog::log(IDE_ERR_0, "smpFixedPageList::setFreeSlot\n"
+                               "CreateSCN     : %"ID_UINT64_FMT"\n"
+                               "LimitSCN      : %"ID_UINT64_FMT"\n"
+                               "NextOIDIsNULL : %u\n", 
+                                sCurSlotHeader->mCreateSCN, 
+                                sCurSlotHeader->mLimitSCN, 
+                                SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ));
+    }
     IDE_EXCEPTION_END;
 
     IDE_PUSH();

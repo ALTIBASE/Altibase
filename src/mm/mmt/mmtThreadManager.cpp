@@ -2194,7 +2194,6 @@ IDE_RC mmtThreadManager::dispatchCallback(cmiLink *aLink, cmiDispatcherImpl aDis
     cmiLink *sLinkPeer = NULL;
     mmcTask *sTask     = NULL;
     idBool   sIsRemoteIP = ID_FALSE;
-    SChar   *sIPACL    = NULL;
     idBool   sLocked   = ID_FALSE;
     /* BUG-46787 */
     SChar    sAddrStr[IDL_IP_ADDR_MAX_LEN] = {'\0', };
@@ -2217,37 +2216,38 @@ IDE_RC mmtThreadManager::dispatchCallback(cmiLink *aLink, cmiDispatcherImpl aDis
 
     if (sLinkPeer != NULL)
     {
-        /* proj-1538 ipv6
-         * if tcp used and ipacl entries exist, then check */
-        mmuAccessList::lockRead();
-        sLocked = ID_TRUE;
-
         /* BUG-44530 SSL에서 ALTIBASE_SOCK_BIND_ADDR 지원 */
-        if (((sLinkPeer->mImpl == CMI_LINK_IMPL_TCP) ||
+        if ( (sLinkPeer->mImpl == CMI_LINK_IMPL_TCP) ||
              (sLinkPeer->mImpl == CMI_LINK_IMPL_SSL) ||
-             (sLinkPeer->mImpl == CMI_LINK_IMPL_IB)) &&
-            (mmuAccessList::getIPACLCount() > 0))
+             (sLinkPeer->mImpl == CMI_LINK_IMPL_IB) )
         {
-            (void) cmiCheckRemoteAccess(sLinkPeer, &sIsRemoteIP);
-            if (sIsRemoteIP == ID_TRUE)
+             /* proj-1538 ipv6
+              * if tcp used and ipacl entries exist, then check */
+            mmuAccessList::lock();
+            sLocked = ID_TRUE;
+            if ( mmuAccessList::getIPACLCount() > 0 )
             {
-                idlOS::memset(&sAddr, 0x00, ID_SIZEOF(sAddr));
-                IDE_TEST(cmiGetLinkInfo(sLinkPeer, (SChar *)&sAddr, ID_SIZEOF(sAddr),
-                                        CMI_LINK_INFO_REMOTE_SOCKADDR)
-                         != IDE_SUCCESS);
+                (void) cmiCheckRemoteAccess(sLinkPeer, &sIsRemoteIP);
+                if (sIsRemoteIP == ID_TRUE)
+                {
+                    idlOS::memset(&sAddr, 0x00, ID_SIZEOF(sAddr));
+                    IDE_TEST(cmiGetLinkInfo(sLinkPeer, (SChar *)&sAddr, ID_SIZEOF(sAddr),
+                                            CMI_LINK_INFO_REMOTE_SOCKADDR)
+                            != IDE_SUCCESS);
 
-                /* BUG-46787 get ip address */
-                IDE_TEST(cmiGetLinkInfo(sLinkPeer, (SChar *)sAddrStr, ID_SIZEOF(sAddrStr),
-                                        CMI_LINK_INFO_REMOTE_IP_ADDRESS)
-                         != IDE_SUCCESS);
+                    /* BUG-46787 get ip address */
+                    IDE_TEST(cmiGetLinkInfo(sLinkPeer, (SChar *)sAddrStr, ID_SIZEOF(sAddrStr),
+                                            CMI_LINK_INFO_REMOTE_IP_ADDRESS)
+                            != IDE_SUCCESS);
 
-                (void) mmuAccessList::checkIPACL(&sAddr, &sIPAllowed, &sIPACL);
-                IDE_TEST_RAISE(sIPAllowed == ID_FALSE, connection_denied);
+                    (void) mmuAccessList::checkIPACL(&sAddr, sAddrStr, &sIPAllowed);
+
+                    IDE_TEST(sIPAllowed == ID_FALSE);
+                }
             }
+            sLocked = ID_FALSE;
+            mmuAccessList::unlock();
         }
-
-        sLocked = ID_FALSE;
-        mmuAccessList::unlock();
 
         IDE_TEST(cmiSetLinkBlockingMode(sLinkPeer, ID_FALSE) != IDE_SUCCESS);
 
@@ -2285,11 +2285,6 @@ IDE_RC mmtThreadManager::dispatchCallback(cmiLink *aLink, cmiDispatcherImpl aDis
 
     return IDE_SUCCESS;
 
-    IDE_EXCEPTION(connection_denied);
-    {
-        /* BUG-46787 */
-        IDE_SET(ideSetErrorCode(mmERR_ABORT_IP_ACL_DENIED, sIPACL, sAddrStr));
-    }
     IDE_EXCEPTION_END;
     {
         if (sLocked == ID_TRUE)

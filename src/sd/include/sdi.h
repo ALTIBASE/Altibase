@@ -405,6 +405,9 @@ typedef struct sdiAnalyzeInfo
     // PROJ-2685 online rebuild
     sdiTableInfoList * mTableInfoList;
 
+    // BUG-49088
+    idBool             mTopQueryFlag [ SDI_ANALYSIS_TOP_QUERY_FLAG_MAX ];
+
     /* BUG-45899 */
     UShort             mNonShardQueryReason;
 } sdiAnalyzeInfo;
@@ -426,6 +429,7 @@ typedef struct sdiAnalyzeInfo
     (info)->mRangeInfo.mRanges = NULL;           \
     (info)->mNodeNames         = NULL;           \
     (info)->mTableInfoList     = NULL;           \
+    SDI_INIT_ANALYSIS_TOP_QUERY_FLAG( (info)->mTopQueryFlag );  \
     (info)->mNonShardQueryReason = SDI_NON_SHARD_QUERY_REASON_MAX;   \
 }
 
@@ -1567,6 +1571,10 @@ public:
                                   SShort   * aResult );
 
     static idBool hasShardCoordPlan( qcStatement * aStatement );
+
+    // BUG-49088
+    static idBool isShardDML( qcStatement * aStatement );
+
     static idBool isShardDDL( qcStatement * aStatement );
 
     // BUG-48616

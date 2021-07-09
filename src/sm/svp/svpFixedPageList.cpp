@@ -1292,13 +1292,24 @@ IDE_RC svpFixedPageList::setFreeSlot( void*          aTrans,
     }
 
     // BUG-37593
-    IDE_ERROR( SM_SCN_IS_DELETED( sCurSlotHeader->mCreateSCN ) &&
-               SM_SCN_IS_FREE_ROW( sCurSlotHeader->mLimitSCN ) &&
-               SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ) );
-
+    // BUG-49109: ERROR 발생 할 경우 SCN 출력 
+    IDE_ERROR_RAISE( SM_SCN_IS_DELETED( sCurSlotHeader->mCreateSCN ) &&
+                     SM_SCN_IS_FREE_ROW( sCurSlotHeader->mLimitSCN ) &&
+                     SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ), ERR_SLOT_SCN );
+  
     return IDE_SUCCESS;
 
-    IDE_EXCEPTION_END;
+    IDE_EXCEPTION( ERR_SLOT_SCN )
+    {
+        ideLog::log(IDE_ERR_0, "svpFixedPageList::setFreeSlot\n"
+                               "CreateSCN     : %"ID_UINT64_FMT"\n"
+                               "LimitSCN      : %"ID_UINT64_FMT"\n"
+                               "NextOIDIsNULL : %u\n", 
+                                sCurSlotHeader->mCreateSCN, 
+                                sCurSlotHeader->mLimitSCN, 
+                                SMP_SLOT_HAS_NULL_NEXT_OID( sCurSlotHeader ));
+    }
+    IDE_EXCEPTION_END; 
 
     IDE_PUSH();
 

@@ -22,13 +22,13 @@
 iduLatch  mmuAccessList::mLatch;
 idBool    mmuAccessList::mInitialized = ID_FALSE;
 
-/* PROJ-2624 [기능성] MM - 유연한 access_list 관리방법 제공 : 1024로 늘림 */
-idBool    mmuAccessList::mIPACLPermit[MM_IP_ACL_MAX_COUNT]; /* ID_TRUE: Permit, ID_FALSE: Deny */
-struct in6_addr mmuAccessList::mIPACLAddr[MM_IP_ACL_MAX_COUNT];
-SChar     mmuAccessList::mIPACLAddrStr[MM_IP_ACL_MAX_COUNT][MM_IP_ACL_MAX_ADDR_STR];
-UInt      mmuAccessList::mIPACLAddrFamily[MM_IP_ACL_MAX_COUNT];
-UInt      mmuAccessList::mIPACLMask[MM_IP_ACL_MAX_COUNT];
-UInt      mmuAccessList::mIPACLCount;
+/* BUG-48515 
+ * 기존 access_list와 limit size가 설정된 access_list를 분리. */
+mmuIPACLInfo mmuAccessList::mIPACLInfo[MM_IP_ACL_MAX_COUNT];
+mmuIPACLInfo mmuAccessList::mIPACLInfoWithLimit[MM_IP_ACL_MAX_COUNT];
+
+UInt   mmuAccessList::mIPACLCount;
+UInt   mmuAccessList::mIPACLCountWithLimit;
 
 IDE_RC mmuAccessList::initialize()
 {
@@ -38,8 +38,6 @@ IDE_RC mmuAccessList::initialize()
               != IDE_SUCCESS );
 
     mInitialized = ID_TRUE;
-
-    clear();
 
     return IDE_SUCCESS;
 
@@ -65,14 +63,9 @@ void mmuAccessList::clear()
 {
     lock();
 
-    if ( mIPACLCount > 0 )
-    {
-        /* Nothing To Do */
-    }
-    else
-    {
-        mIPACLCount = 0;
-    }
+    mIPACLCount = 0;
+
+    mIPACLCountWithLimit = 0;
 
     unlock();
 }
@@ -81,27 +74,39 @@ IDE_RC mmuAccessList::add( idBool            aIPACLPermit,
                            struct in6_addr * aIPACLAddr,
                            SChar           * aIPACLAddrStr,
                            UInt              aIPACLAddrFamily,
-                           UInt              aIPACLMask )
+                           UInt              aIPACLMask,
+                           UInt              aIPACLLimitSize )
 {
     idBool  sLocked = ID_FALSE;
 
     lock();
     sLocked = ID_TRUE;
 
-    IDE_TEST_RAISE( mIPACLCount >= MM_IP_ACL_MAX_COUNT,
+    IDE_TEST_RAISE( (mIPACLCount + mIPACLCountWithLimit) >= MM_IP_ACL_MAX_COUNT,
                     ERR_ABORT_EXCEEDED_ACCESS_LIST_COUNT_LIMIT );
 
-    mIPACLPermit[mIPACLCount]     = aIPACLPermit;
-    mIPACLAddr[mIPACLCount]       = *aIPACLAddr;
-    mIPACLAddrFamily[mIPACLCount] = aIPACLAddrFamily;
-    mIPACLMask[mIPACLCount]       = aIPACLMask;
-    idlOS::snprintf( mIPACLAddrStr[mIPACLCount],
-                     MM_IP_ACL_MAX_ADDR_STR,
-                     "%s",
-                     aIPACLAddrStr);
-
-    mIPACLCount++;
-
+    if ( aIPACLLimitSize > 0 )
+    {
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mPermit = aIPACLPermit;
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mAddr = *aIPACLAddr;
+        idlOS::snprintf( mIPACLInfoWithLimit[mIPACLCountWithLimit].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", aIPACLAddrStr);
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mAddrFamily = aIPACLAddrFamily;
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mMask = aIPACLMask;
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mLimitCount = aIPACLLimitSize;
+        mIPACLInfoWithLimit[mIPACLCountWithLimit].mCurConnCount = 0;
+        mIPACLCountWithLimit++;
+    }
+    else
+    {
+        mIPACLInfo[mIPACLCount].mPermit = aIPACLPermit;
+        mIPACLInfo[mIPACLCount].mAddr   = *aIPACLAddr;
+        idlOS::snprintf( mIPACLInfo[mIPACLCount].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", aIPACLAddrStr);
+        mIPACLInfo[mIPACLCount].mAddrFamily = aIPACLAddrFamily;
+        mIPACLInfo[mIPACLCount].mMask = aIPACLMask;
+        mIPACLInfo[mIPACLCount].mLimitCount = aIPACLLimitSize;
+        mIPACLInfo[mIPACLCount].mCurConnCount = 0;
+        mIPACLCount++;
+    }
     sLocked = ID_FALSE;
     unlock();
 
@@ -115,7 +120,7 @@ IDE_RC mmuAccessList::add( idBool            aIPACLPermit,
 
     if (sLocked == ID_TRUE)
     {
-        mmuAccessList::unlock();
+        unlock();
     }
     
     return IDE_FAILURE;
@@ -181,8 +186,8 @@ LABEL_BIT_DIFF:
  */
 /* latch는 밖에서 잡았다. */
 IDE_RC mmuAccessList::checkIPACL( struct sockaddr_storage  * aAddr,
-                                  idBool                   * aAllowed,
-                                  SChar                   ** aIPACL )
+                                  SChar                    * aAddrStr,
+                                  idBool                   * aAllowed )
 {
     struct sockaddr*         sAddrCommon = NULL ;
     struct sockaddr_in*      sAddr4 = NULL;
@@ -192,12 +197,12 @@ IDE_RC mmuAccessList::checkIPACL( struct sockaddr_storage  * aAddr,
     UInt*                    sUIntPtr    = NULL;
     UInt                     i = 0;
     idBool                   sIsIPv6Client = ID_FALSE;
+    SChar                   *sIPACL = NULL;
 
     *aAllowed = ID_TRUE; /* default: all clients are allowed */
-    *aIPACL = NULL;
 
     /* if no real-entry exist, then the 1st entry is dummy */
-    IDE_TEST_CONT(mIPACLCount == 0, LABEL_EMPTY_LIST);
+    IDE_TEST_CONT( (mIPACLCount + mIPACLCountWithLimit) == 0, LABEL_EMPTY_LIST);
 
     /* bug-30541: ipv6 code review bug.
      * use sockaddr.sa_family instead of sockaddr_storage.ss_family.
@@ -235,31 +240,200 @@ IDE_RC mmuAccessList::checkIPACL( struct sockaddr_storage  * aAddr,
     /* if ipv4 or v4mapped-ipv6, then sIsIPv6Client is false */
     if (sIsIPv6Client == ID_FALSE)
     {
+        /* BUG-48515 일반 access_list와 limit size 설정된 list를 따로 chcek한다. */
         for ( i = 0; i < mIPACLCount; i++ )
         {
-            if (mIPACLAddrFamily[i] == AF_INET)
+            if (mIPACLInfo[i].mAddrFamily == AF_INET)
             {
-                sAddr4Entry = *((UInt*)&mIPACLAddr[i]);
+                sAddr4Entry = *((UInt*)&mIPACLInfo[i].mAddr);
 
-                if ( ((sAddr4Dst & mIPACLMask[i])
-                     ^ (sAddr4Entry & mIPACLMask[i])) == 0 )
+                if ( ((sAddr4Dst & mIPACLInfo[i].mMask) ^ (sAddr4Entry & mIPACLInfo[i].mMask)) == 0 )
                 {
-                    if ( mIPACLPermit[i] == ID_TRUE)
+                    if ( mIPACLInfo[i].mPermit == ID_TRUE)
                     {
                         *aAllowed = ID_TRUE;
-                        *aIPACL = NULL;
+                        sIPACL = NULL;
                         break;
                     }
                     else
                     {
                         *aAllowed = ID_FALSE;
                         /* 별도로 기록된 address string을 반환 */
-                        *aIPACL = mIPACLAddrStr[i];
+                         sIPACL = mIPACLInfo[i].mAddrStr;
                     }
                 }
-                else
+            }
+        }
+
+        /* BUG-48515 limit size list 체크 */
+        for ( i = 0; i < mIPACLCountWithLimit; i++ )
+        {
+            if (mIPACLInfoWithLimit[i].mAddrFamily == AF_INET)
+            {
+                sAddr4Entry = *((UInt*)&mIPACLInfoWithLimit[i].mAddr);
+
+                if ( ((sAddr4Dst & mIPACLInfoWithLimit[i].mMask) ^ (sAddr4Entry & mIPACLInfoWithLimit[i].mMask)) == 0 )
                 {
-                    /* Nothing To Do */
+                    if ( mIPACLInfoWithLimit[i].mPermit == ID_TRUE)
+                    {
+                        if ( mIPACLInfoWithLimit[i].mLimitCount > 0 && ((mIPACLInfoWithLimit[i].mCurConnCount + 1) > mIPACLInfoWithLimit[i].mLimitCount) )
+                        {
+                            *aAllowed = ID_FALSE;
+                            sIPACL = mIPACLInfoWithLimit[i].mAddrStr;
+                            IDE_CONT(ConnectionLimitError);
+                        }
+
+                        mIPACLInfoWithLimit[i].mCurConnCount++;
+                        *aAllowed = ID_TRUE;
+                        sIPACL = NULL;
+                    }
+                }
+            }
+        }
+
+
+    }
+    /* client: ipv6 addr. it is compared to only ipv6 addrs of list */
+    else
+    {
+        for (i = 0; i < mIPACLCount; i++ )
+        {
+            if (mIPACLInfo[i].mAddrFamily == AF_INET6)
+            {
+                if (bitsIsSame(&sAddr6->sin6_addr,
+                               &(mIPACLInfo[i].mAddr),
+                               mIPACLInfo[i].mMask) == ID_TRUE)
+                {
+                    if ( mIPACLInfo[i].mPermit == ID_TRUE)
+                    {
+                        *aAllowed = ID_TRUE;
+                        sIPACL = NULL;
+                        break;
+                    }
+                    else
+                    {
+                        *aAllowed = ID_FALSE;
+                        /* 별도로 기록된 address string을 반환 */
+                         sIPACL = mIPACLInfo[i].mAddrStr;
+                    }
+                }
+            }
+        }
+
+        /* BUG-48515 limit size list 체크 */
+        for (i = 0; i < mIPACLCountWithLimit; i++ )
+        {
+            if (mIPACLInfoWithLimit[i].mAddrFamily == AF_INET6)
+            {
+                if (bitsIsSame(&sAddr6->sin6_addr,
+                               &(mIPACLInfoWithLimit[i].mAddr),
+                               mIPACLInfoWithLimit[i].mMask) == ID_TRUE)
+                {
+                    if ( mIPACLInfoWithLimit[i].mPermit == ID_TRUE)
+                    {
+                        IDE_TEST_RAISE( mIPACLInfoWithLimit[i].mLimitCount > 0 && ((mIPACLInfoWithLimit[i].mCurConnCount + 1) > mIPACLInfoWithLimit[i].mLimitCount), 
+                                        ConnectionLimitError );
+
+                       *aAllowed = ID_FALSE;
+                        sIPACL = mIPACLInfoWithLimit[i].mAddrStr;
+                        IDE_CONT(ConnectionLimitError);
+                    }
+                    else
+                    {
+                        mIPACLInfoWithLimit[i].mCurConnCount++;
+                        *aAllowed = ID_TRUE;
+                        sIPACL = NULL;
+                    }
+                }
+            }
+        }
+    }
+
+    IDE_TEST_RAISE(*aAllowed == ID_FALSE, ConnectionDenied);
+
+    IDE_EXCEPTION_CONT(LABEL_EMPTY_LIST);
+
+    return IDE_SUCCESS;
+
+    IDE_EXCEPTION(ConnectionDenied)
+    {
+        /* BUG-46787 */
+        IDE_SET(ideSetErrorCode(mmERR_ABORT_IP_ACL_DENIED, sIPACL, aAddrStr));
+    }
+    /* BUG-48515 */
+    IDE_EXCEPTION(ConnectionLimitError)
+    {
+        IDE_SET(ideSetErrorCode(mmERR_ABORT_IP_ACL_CONNECT_OVER, aAddrStr, 
+                                                                 mIPACLInfoWithLimit[i].mAddrStr, 
+                                                                 mIPACLInfoWithLimit[i].mLimitCount, 
+                                                                 mIPACLInfoWithLimit[i].mCurConnCount));
+    }
+    IDE_EXCEPTION_END;
+
+    return IDE_FAILURE;
+}
+
+/* BUG-48515 
+ * access_list limit size가 설정되었을 경우 현재 접속된 session count를 차감 */
+IDE_RC mmuAccessList::checkIPACLWithSessDecre( struct sockaddr_storage  * aAddr )
+{
+    struct sockaddr*         sAddrCommon = NULL ;
+    struct sockaddr_in*      sAddr4 = NULL;
+    struct sockaddr_in6*     sAddr6 = NULL;
+    UInt                     sAddr4Dst   = 0;
+    UInt                     sAddr4Entry = 0;
+    UInt*                    sUIntPtr    = NULL;
+    UInt                     i = 0;
+    idBool                   sIsIPv6Client = ID_FALSE;
+
+    /* bug-30541: ipv6 code review bug.
+     * use sockaddr.sa_family instead of sockaddr_storage.ss_family.
+     * because the name is different on AIX 5.3 tl1 as __ss_family
+     */
+    sAddrCommon = (struct sockaddr*)aAddr;
+    /* client is ipv4. it means that server mode is ipv4 only */
+    if (sAddrCommon->sa_family == AF_INET)
+    {
+        sAddr4 = (struct sockaddr_in*)aAddr;
+        sAddr4Dst = *((UInt*)&sAddr4->sin_addr);
+        sIsIPv6Client = ID_FALSE;
+    }
+    /* client addr is ipv6 or v4mapped-ipv6 */
+    else
+    {
+        sAddr6 = (struct sockaddr_in6*)aAddr;
+        /* if v4mapped-ipv6, we compare it with ipv4s in acl list */
+        if (idlOS::in6_is_addr_v4mapped(&(sAddr6->sin6_addr)))
+        {
+            /* sin6_addr: 16bytes => 4 UInts.
+             * ex) ::ffff:127.0.0.1 => extract 127.0.0.1 */
+            sUIntPtr = (UInt*)&(sAddr6->sin6_addr);
+            sAddr4Dst = *(sUIntPtr + 3);
+            sIsIPv6Client = ID_FALSE;
+        }
+        else
+        {
+            sIsIPv6Client = ID_TRUE;
+        }
+    }
+
+    /* fix BUG-28834 IP Access Control List 잘못되었습니다 */
+    /* IF BITXOR (BITAND(IP_Packet, mask) , BITAND(address,mask)) */
+    /* if ipv4 or v4mapped-ipv6, then sIsIPv6Client is false */
+    if (sIsIPv6Client == ID_FALSE)
+    {
+        for ( i = 0; i < mIPACLCountWithLimit; i++ )
+        {
+            if (mIPACLInfoWithLimit[i].mAddrFamily == AF_INET)
+            {
+                sAddr4Entry = *((UInt*)&mIPACLInfoWithLimit[i].mAddr);
+
+                if ( ((sAddr4Dst & mIPACLInfoWithLimit[i].mMask) ^ (sAddr4Entry & mIPACLInfoWithLimit[i].mMask)) == 0 )
+                {
+                    if ( mIPACLInfoWithLimit[i].mPermit == ID_TRUE)
+                    {
+                        mIPACLInfoWithLimit[i].mCurConnCount--;
+                    }
                 }
             }
         }
@@ -267,42 +441,122 @@ IDE_RC mmuAccessList::checkIPACL( struct sockaddr_storage  * aAddr,
     /* client: ipv6 addr. it is compared to only ipv6 addrs of list */
     else
     {
-        for (i = 0; i < mIPACLCount; i++ )
+        for (i = 0; i < mIPACLCountWithLimit; i++ )
         {
-            if (mIPACLAddrFamily[i] == AF_INET6)
+            if (mIPACLInfoWithLimit[i].mAddrFamily == AF_INET6)
             {
                 if (bitsIsSame(&sAddr6->sin6_addr,
-                               &(mIPACLAddr[i]),
-                               mIPACLMask[i]) == ID_TRUE)
+                               &(mIPACLInfoWithLimit[i].mAddr),
+                               mIPACLInfoWithLimit[i].mMask) == ID_TRUE)
                 {
-                    if ( mIPACLPermit[i] == ID_TRUE)
+                    if ( mIPACLInfoWithLimit[i].mPermit == ID_TRUE)
                     {
-                        *aAllowed = ID_TRUE;
-                        *aIPACL = NULL;
-                        break;
-                    }
-                    else
-                    {
-                        *aAllowed = ID_FALSE;
-                        /* 별도로 기록된 address string을 반환 */
-                        *aIPACL = mIPACLAddrStr[i];
+                        mIPACLInfoWithLimit[i].mCurConnCount--;
                     }
                 }
-                else
-                {
-                    /* Nothing To Do */
-                }
-            }
-            else
-            {
-                /* Nothing To Do */
             }
         }
     }
 
-    IDE_EXCEPTION_CONT(LABEL_EMPTY_LIST);
+    return IDE_SUCCESS;
+}
+
+/* BUG-48515 
+ * A ~ B 가 동일한 ip인지 체크하는 함수 */
+IDE_RC mmuAccessList::equalsIPACL( struct sockaddr_storage *aSessionAddr,
+                                   struct in6_addr         *aIPACLAddr,
+                                   UInt                     aIPACLFamily,
+                                   UInt                     aIPACLMask )
+{
+    struct sockaddr      *sSessionAddr     = NULL;
+    struct sockaddr_in   *sSessionAddrIn4  = NULL;
+    struct sockaddr_in6  *sSessionAddrIn6  = NULL;
+
+    UInt                  sSessionAddr4Dst   = 0;
+    idBool                sIsIPv6Client      = ID_FALSE;
+
+    sSessionAddr = (struct sockaddr*)aSessionAddr;
+
+    if (sSessionAddr->sa_family == AF_INET)
+    {
+        sSessionAddrIn4 = (struct sockaddr_in*)aSessionAddr;
+        sSessionAddr4Dst = *((UInt*)&sSessionAddrIn4->sin_addr);
+        sIsIPv6Client = ID_FALSE;
+    }
+    else
+    {
+        sSessionAddrIn6 = (struct sockaddr_in6*)aSessionAddr;
+        if (idlOS::in6_is_addr_v4mapped(&(sSessionAddrIn6->sin6_addr)))
+        {
+            sSessionAddr4Dst = *((UInt*)&(sSessionAddrIn6->sin6_addr) + 3);
+            sIsIPv6Client = ID_FALSE;
+        }
+        else
+        {
+            sIsIPv6Client = ID_TRUE;
+        }
+    }
+
+    if (sIsIPv6Client == ID_FALSE)
+    {
+        IDE_TEST( aIPACLFamily != AF_INET);
+        IDE_TEST( ((sSessionAddr4Dst & aIPACLMask) ^ ((*((UInt*)aIPACLAddr)) & aIPACLMask)) != 0 );
+    }
+    else
+    {
+        IDE_TEST( aIPACLFamily != AF_INET6 );
+        IDE_TEST( bitsIsSame(&sSessionAddrIn6->sin6_addr, aIPACLAddr, aIPACLMask) != ID_TRUE );
+    }
 
     return IDE_SUCCESS;
+
+    IDE_EXCEPTION_END;
+
+    return IDE_FAILURE;
+}
+
+IDE_RC mmuAccessList::disconnect(mmcTask *aTask)
+{
+    struct sockaddr_storage  sAddr;
+
+    cmiLink *sLinkPeer = NULL;
+    idBool   sIsRemoteIP = ID_FALSE;
+    idBool   sLocked = ID_FALSE;
+
+    lock();
+    sLocked = ID_TRUE;
+    if ( mIPACLCountWithLimit > 0 )
+    {
+        sLinkPeer = aTask->getLink();
+        if ( (sLinkPeer->mImpl == CMI_LINK_IMPL_TCP) ||
+             (sLinkPeer->mImpl == CMI_LINK_IMPL_SSL) ||
+             (sLinkPeer->mImpl == CMI_LINK_IMPL_IB) )
+        {
+            (void) cmiCheckRemoteAccess(sLinkPeer, &sIsRemoteIP);
+            if (sIsRemoteIP == ID_TRUE)
+            {
+                idlOS::memset(&sAddr, 0x00, ID_SIZEOF(sAddr));
+                IDE_TEST(cmiGetLinkInfo(sLinkPeer, (SChar *)&sAddr, ID_SIZEOF(sAddr),
+                                        CMI_LINK_INFO_REMOTE_SOCKADDR)
+                            != IDE_SUCCESS);
+
+                (void) mmuAccessList::checkIPACLWithSessDecre(&sAddr);
+            }
+        }
+    }
+    sLocked = ID_FALSE;
+    unlock();
+
+    return IDE_SUCCESS;
+
+    IDE_EXCEPTION_END;
+
+    if ( sLocked == ID_TRUE )
+    {
+        unlock();
+    }
+
+    return IDE_FAILURE;
 }
 
 /* idp::readSPFile()을 참조하여 구현 */
@@ -314,21 +568,37 @@ IDE_RC mmuAccessList::loadAccessList()
 {
     SChar            sLineBuf[IDP_MAX_PROP_LINE_SIZE];
     SChar            sMsg[IDP_MAX_PROP_LINE_SIZE];
-    FILE           * sFP = NULL;
+    FILE            *sFP = NULL;
     idBool           sOpened = ID_FALSE;
     struct in6_addr  sDummyAddr;
-    SChar          * sTk = NULL;
+    SChar           *sTk = NULL;
     UInt             sLen = 0;
     UInt             sLine = 0;
+
+    mmuIPACLInfo     sIPACLInfo[MM_IP_ACL_MAX_COUNT];
+    mmuIPACLInfo     sIPACLInfoWithLimit[MM_IP_ACL_MAX_COUNT];
+
+    UInt             sIndex  = 0;
+    UInt             sIndexWithLimit = 0;
     UInt             i = 0;
     UInt             j = 0;
 
-    idBool           sPermit[MM_IP_ACL_MAX_COUNT];
-    struct in6_addr  sAddr[MM_IP_ACL_MAX_COUNT];
-    UInt             sAddrFamily[MM_IP_ACL_MAX_COUNT];
-    SChar            sAddrStr[MM_IP_ACL_MAX_COUNT][MM_IP_ACL_MAX_ADDR_STR];
-    UInt             sMask[MM_IP_ACL_MAX_COUNT];
+    idBool           sPermit = ID_FALSE;
+    struct in6_addr  sAddr;
+    UInt             sAddrFamily;
+    SChar            sAddrStr[MM_IP_ACL_MAX_ADDR_STR];
+    UInt             sMask;
+    UInt             sLimitCount;
+
     UInt             sCount = 0;
+
+    idBool           sIsRemoteIP = ID_FALSE;
+    iduList         *sTaskList = NULL;
+    iduListNode     *sIterator = NULL;
+    iduListNode     *sNextNode = NULL;
+    mmcTask         *sTask     = NULL;
+    cmiLink         *sLink     = NULL;
+    struct sockaddr_storage  sSessionSockAddr;
 
     /* ACCESS_LIST_FILE 프로퍼티에 지정된 이름이 NULL - error */
     IDE_TEST_RAISE( mmuProperty::mIPACLFile[0] == '\0',
@@ -342,8 +612,6 @@ IDE_RC mmuAccessList::loadAccessList()
                     ERR_ABORT_ACCESS_LIST_FILE_OPEN_ERROR );
     sOpened = ID_TRUE;
 
-    /* 임시변수에 기록한다. */
-    i = 0;
     while ( idlOS::idlOS_feof( sFP ) == 0 )
     {
         idlOS::memset( sLineBuf, 0, IDP_MAX_PROP_LINE_SIZE );
@@ -371,15 +639,16 @@ IDE_RC mmuAccessList::loadAccessList()
             /* Nothing to do */
         }
 
-        IDE_TEST_RAISE( i >= MM_IP_ACL_MAX_COUNT,
+        IDE_TEST_RAISE( (sIndex + sIndexWithLimit) >= MM_IP_ACL_MAX_COUNT,
                         ERR_ABORT_EXCEEDED_ACCESS_LIST_COUNT_LIMIT );
 
         /* default setting; initialize */
-        sPermit[i] = ID_TRUE;
-        idlOS::memset(&sAddr[i], 0x00, ID_SIZEOF(struct in6_addr));
-        sAddrFamily[i] = AF_UNSPEC;
-        sAddrStr[i][0] = '\0';
-        sMask[i] = 0;
+        sPermit = ID_TRUE;
+        idlOS::memset(&sAddr, 0x00, ID_SIZEOF(struct in6_addr));
+        sAddrFamily = AF_UNSPEC;
+        sAddrStr[0] = '\0';
+        sMask = 0;
+        sLimitCount = 0;
 
         idlOS::memset( &sDummyAddr, 0x00, ID_SIZEOF(struct in6_addr) );
 
@@ -408,11 +677,11 @@ IDE_RC mmuAccessList::loadAccessList()
                         ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
         if (idlOS::strcasecmp(sTk, "DENY") == 0)
         {
-            sPermit[i] = ID_FALSE;
+            sPermit = ID_FALSE;
         }
         else if (idlOS::strcasecmp(sTk, "PERMIT") == 0)
         {
-            sPermit[i] = ID_TRUE;
+            sPermit = ID_TRUE;
         }
         else
         {
@@ -427,10 +696,10 @@ IDE_RC mmuAccessList::loadAccessList()
         if (idlOS::strchr(sTk, ':'))
         {
             /* inet_pton returns a negative value or 0 if error */
-            IDE_TEST_RAISE( idlOS::inet_pton(AF_INET6, sTk, &sAddr[i]) <= 0,
+            IDE_TEST_RAISE( idlOS::inet_pton(AF_INET6, sTk, &sAddr) <= 0,
                             ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
-            sAddrFamily[i] = AF_INET6;
-            idlOS::snprintf( sAddrStr[i],
+            sAddrFamily = AF_INET6;
+            idlOS::snprintf( sAddrStr,
                              MM_IP_ACL_MAX_ADDR_STR,
                              "%s",
                              sTk );
@@ -439,10 +708,10 @@ IDE_RC mmuAccessList::loadAccessList()
         else
         {
             /* inet_pton returns a negative value or 0 if error */
-            IDE_TEST_RAISE( idlOS::inet_pton(AF_INET, sTk, &sAddr[i]) <= 0,
+            IDE_TEST_RAISE( idlOS::inet_pton(AF_INET, sTk, &sAddr) <= 0,
                             ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
-            sAddrFamily[i] = AF_INET;
-            idlOS::snprintf( sAddrStr[i],
+            sAddrFamily = AF_INET;
+            idlOS::snprintf( sAddrStr,
                              MM_IP_ACL_MAX_ADDR_STR,
                              "%s",
                              sTk );
@@ -454,46 +723,137 @@ IDE_RC mmuAccessList::loadAccessList()
         sTk = idlOS::strtok(NULL, " \t,");
         IDE_TEST_RAISE( sTk == NULL,
                         ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
-        if (sAddrFamily[i] == AF_INET)
+        if (sAddrFamily == AF_INET)
         {
             /* inet_pton returns a negative value or 0 if error */
             IDE_TEST_RAISE( idlOS::inet_pton( AF_INET, sTk, &sDummyAddr ) <= 0,
                             ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
 
-            sMask[i] = idlOS::inet_addr(sTk);
+            sMask = idlOS::inet_addr(sTk);
         }
         else
         {
-            sMask[i] = idlOS::atoi(sTk);
+            sMask = idlOS::atoi(sTk);
             /* max ipv6 addr bits: 128 */
-            IDE_TEST_RAISE( sMask[i] > 128, 
+            IDE_TEST_RAISE( sMask > 128, 
                             ERR_ABORT_INVALID_ACCESS_LIST_VALUE );
         }
 
+        sTk = idlOS::strtok(NULL, " \t,");
+        if ( sTk != NULL && sPermit == ID_TRUE )
+        {
+            /* BUG-48515 ip 최대 허용 size */
+            sLimitCount = idlOS::atoi(sTk);
+        }
+        else
+        {
+            /* BUG-48515 ip 최대 허용 size가 셋팅하지 않았으므로 0으로 셋팅 */
+            sLimitCount = 0;
+        }
+
+        if ( sLimitCount > 0 )
+        {
+            sIPACLInfoWithLimit[sIndexWithLimit].mPermit = sPermit;
+            sIPACLInfoWithLimit[sIndexWithLimit].mAddr = sAddr;
+            sIPACLInfoWithLimit[sIndexWithLimit].mAddrFamily = sAddrFamily;
+            idlOS::snprintf( sIPACLInfoWithLimit[sIndexWithLimit].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", sAddrStr);
+            sIPACLInfoWithLimit[sIndexWithLimit].mMask = sMask;
+            sIPACLInfoWithLimit[sIndexWithLimit].mLimitCount = sLimitCount;
+            sIPACLInfoWithLimit[sIndexWithLimit].mCurConnCount = 0;
+            sIndexWithLimit++;
+        }
+        else
+        {
+            sIPACLInfo[sIndex].mPermit = sPermit;
+            sIPACLInfo[sIndex].mAddr = sAddr;
+            sIPACLInfo[sIndex].mAddrFamily = sAddrFamily;
+            idlOS::snprintf( sIPACLInfo[sIndex].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", sAddrStr);
+            sIPACLInfo[sIndex].mMask = sMask;
+            sIPACLInfo[sIndex].mLimitCount = 0;
+            sIPACLInfo[sIndex].mCurConnCount = 0;
+            sIndex++;
+        }
+
         ideLog::log( IDE_SERVER_0, "[ACCESS LIST] LOADED : %s", sMsg );
-        i++;
     }
-    sCount = i;
 
     sOpened = ID_FALSE;
     IDE_TEST_RAISE( idlOS::fclose( sFP ) != 0,
                     ERR_ABORT_ACCESS_LIST_FILE_CLOSE_ERROR );
 
+    /* BUG-48515 
+     * 현재 Session count를 동기화 한다. 
+     * limit size를 초과하였더라도 session을 close하지는 않는다 */
+    if ( mmtSessionManager::isRun() == ID_TRUE )
+    {
+        for ( i = 0; i < sIndexWithLimit; i++ )
+        {
+            mmtSessionManager::lockRead();
+
+            sTaskList = mmtSessionManager::getTaskList();
+
+            IDU_LIST_ITERATE_SAFE( sTaskList, sIterator, sNextNode )
+            {
+                sTask = (mmcTask *)sIterator->mObj;
+                sLink = sTask->getLink();
+
+                if( sLink == NULL)
+                {
+                    continue;
+                }
+
+                if ( (sLink->mImpl == CMI_LINK_IMPL_TCP) ||
+                     (sLink->mImpl == CMI_LINK_IMPL_SSL) ||
+                     (sLink->mImpl == CMI_LINK_IMPL_IB) )
+                {
+                    (void) cmiCheckRemoteAccess(sLink, &sIsRemoteIP);
+                    if (sIsRemoteIP == ID_TRUE)
+                    {
+                        idlOS::memset(&sSessionSockAddr, 0x00, ID_SIZEOF(sSessionSockAddr));
+                        if ( cmiGetLinkInfo(sLink, (SChar*)&sSessionSockAddr, ID_SIZEOF(sSessionSockAddr), CMI_LINK_INFO_REMOTE_SOCKADDR) != IDE_SUCCESS )
+                        {
+                            /* BUG-48515 sock addr을 얻어 오지 못하면 무시한다. */
+                            continue;
+                        }
+
+                        if( equalsIPACL(&sSessionSockAddr, &sIPACLInfoWithLimit[i].mAddr, sIPACLInfoWithLimit[i].mAddrFamily, sIPACLInfoWithLimit[i].mMask) == IDE_SUCCESS )
+                        {
+                            sIPACLInfoWithLimit[i].mCurConnCount++;
+                        }
+                    }
+                }
+            }
+
+            mmtSessionManager::unlock();
+        }
+    }
+
     /* 복제 */
     lock();
 
-    for ( i = 0; i < sCount; i++ )
+    for ( i = 0; i < sIndex; i++ )
     {
-        mIPACLPermit[i]     = sPermit[i];
-        mIPACLAddr[i]       = sAddr[i];
-        mIPACLAddrFamily[i] = sAddrFamily[i];
-        mIPACLMask[i]       = sMask[i];
-        idlOS::snprintf( mIPACLAddrStr[i],
-                         MM_IP_ACL_MAX_ADDR_STR,
-                         "%s",
-                         sAddrStr[i]);
+        mIPACLInfo[i].mPermit      = sIPACLInfo[i].mPermit;
+        mIPACLInfo[i].mAddr        = sIPACLInfo[i].mAddr;
+        mIPACLInfo[i].mAddrFamily  = sIPACLInfo[i].mAddrFamily;
+        idlOS::snprintf( mIPACLInfo[i].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", sIPACLInfo[i].mAddrStr);
+        mIPACLInfo[i].mMask        = sIPACLInfo[i].mMask;
+        mIPACLInfo[i].mLimitCount   = sIPACLInfo[i].mLimitCount;
+        mIPACLInfo[i].mCurConnCount = sIPACLInfo[i].mCurConnCount;
     }
-    mIPACLCount = sCount;
+
+    for ( i = 0; i < sIndexWithLimit; i++ )
+    {
+        mIPACLInfoWithLimit[i].mPermit      = sIPACLInfoWithLimit[i].mPermit;
+        mIPACLInfoWithLimit[i].mAddr        = sIPACLInfoWithLimit[i].mAddr;
+        mIPACLInfoWithLimit[i].mAddrFamily  = sIPACLInfoWithLimit[i].mAddrFamily;
+        idlOS::snprintf( mIPACLInfoWithLimit[i].mAddrStr, MM_IP_ACL_MAX_ADDR_STR, "%s", sIPACLInfoWithLimit[i].mAddrStr);
+        mIPACLInfoWithLimit[i].mMask        = sIPACLInfoWithLimit[i].mMask;
+        mIPACLInfoWithLimit[i].mLimitCount   = sIPACLInfoWithLimit[i].mLimitCount;
+        mIPACLInfoWithLimit[i].mCurConnCount = sIPACLInfoWithLimit[i].mCurConnCount;
+    }
+    mIPACLCount = sIndex;
+    mIPACLCountWithLimit = sIndexWithLimit;
 
     unlock();
 
@@ -584,6 +944,22 @@ iduFixedTableColDesc gAccessListColDesc[] =
         mmuAccessList::convertToChar,
         0, 0, NULL // for internal use
     },
+        {
+        (SChar *)"LIMIT",
+        offsetof(mmuAccessListInfo, mLimitCount),
+        IDU_FT_SIZEOF(mmuAccessListInfo, mLimitCount),
+        IDU_FT_TYPE_UINTEGER,
+        NULL,
+        0, 0, NULL // for internal use
+    },
+        {
+        (SChar *)"CONNECTED",
+        offsetof(mmuAccessListInfo, mCurConnCount),
+        IDU_FT_SIZEOF(mmuAccessListInfo, mCurConnCount),
+        IDU_FT_TYPE_UINTEGER,
+        NULL,
+        0, 0, NULL // for internal use
+    },
     {
         NULL,
         0,
@@ -606,72 +982,104 @@ iduFixedTableDesc gAccessListDesc =
     NULL
 };
 
+/* BUG-48515 */
+IDE_RC mmuAccessList::buildAccessListRecordAdd( void                * aHeader,
+                                                iduFixedTableMemory * aMemory, 
+                                                mmuIPACLInfo        * aIPAClInfo,
+                                                mmuAccessListInfo   * aACLInfo )
+{
+    struct in_addr         sAddr;
+    
+    /* Permit/Deny */
+    if ( aIPAClInfo->mPermit == ID_TRUE )
+    {
+        aACLInfo->mOp = 1;
+    }
+    else
+    {
+        aACLInfo->mOp = 0;
+    }
+
+    /* Address & Mask */
+    if ( aIPAClInfo->mAddrFamily == AF_INET )
+    {
+        /* AF_INET; IPv4 */
+        /* address */
+        idlOS::inet_ntop( AF_INET,
+                            (void*)(&aIPAClInfo->mAddr),
+                            aACLInfo->mAddress,
+                            MM_IP_ACL_MAX_ADDR_STR );
+
+        /* mask */
+        sAddr.s_addr = aIPAClInfo->mMask;
+        idlOS::inet_ntop( AF_INET,
+                            (void*)&sAddr,
+                            aACLInfo->mMask,
+                            MM_IP_ACL_MAX_MASK_STR );
+    }
+    else
+    {
+        /* IPv6 */
+        /* address */
+        idlOS::inet_ntop( AF_INET6,
+                            (void*)(&aIPAClInfo->mAddr),
+                            aACLInfo->mAddress,
+                            MM_IP_ACL_MAX_ADDR_STR );
+
+        /* mask */
+        idlOS::snprintf( aACLInfo->mMask,
+                            MM_IP_ACL_MAX_MASK_STR,
+                            "%"ID_UINT32_FMT"",
+                            aIPAClInfo->mMask );
+    }
+
+    aACLInfo->mLimitCount = aIPAClInfo->mLimitCount;
+    aACLInfo->mCurConnCount = aIPAClInfo->mCurConnCount;
+
+    IDE_TEST( iduFixedTable::buildRecord( aHeader,
+                                          aMemory,
+                                          (void *)(aACLInfo) )
+                != IDE_SUCCESS );
+
+    return IDE_SUCCESS;
+
+    IDE_EXCEPTION_END;
+
+    return IDE_FAILURE;
+}
+
 IDE_RC mmuAccessList::buildAccessListRecord( idvSQL              * /* aStatistics */,
                                              void                * aHeader,
                                              void                * /* aDumpObj */,
                                              iduFixedTableMemory * aMemory )
 {
     mmuAccessListInfo      sACLInfo;
-    struct in_addr         sAddr;
     idBool                 sLocked = ID_FALSE;
     UInt                   i = 0;
+    UInt                   sNumber = 1;
 
     lockRead();
     sLocked = ID_TRUE;
 
+    /* BUG-48515 */
     for ( i = 0; i < mIPACLCount; i++ )
     {
-        sACLInfo.mNumber = i + 1;
+        sACLInfo.mNumber = sNumber;
+        IDE_TEST( buildAccessListRecordAdd(aHeader,
+                                           aMemory,
+                                           &mIPACLInfo[i],
+                                           &sACLInfo) != IDE_SUCCESS );
+        sNumber++;
+    }
 
-        /* Permit/Deny */
-        if ( mIPACLPermit[i] == ID_TRUE )
-        {
-            sACLInfo.mOp = 1;
-        }
-        else
-        {
-            sACLInfo.mOp = 0;
-        }
-
-        /* Address & Mask */
-        if ( mIPACLAddrFamily[i] == AF_INET6 )
-        {
-            /* IPv6 */
-            /* address */
-            idlOS::inet_ntop( AF_INET6,
-                              (void*)(&mIPACLAddr[i]),
-                              sACLInfo.mAddress,
-                              MM_IP_ACL_MAX_ADDR_STR );
-
-            /* mask */
-            idlOS::snprintf( sACLInfo.mMask,
-                             MM_IP_ACL_MAX_MASK_STR,
-                             "%"ID_UINT32_FMT"",
-                             mIPACLMask[i] );
-        }
-        else
-        {
-            IDE_DASSERT( mIPACLAddrFamily[i] == AF_INET );
-
-            /* AF_INET; IPv4 */
-            /* address */
-            idlOS::inet_ntop( AF_INET,
-                              (void*)(&mIPACLAddr[i]),
-                              sACLInfo.mAddress,
-                              MM_IP_ACL_MAX_ADDR_STR );
-
-            /* mask */
-            sAddr.s_addr = mIPACLMask[i];
-            idlOS::inet_ntop( AF_INET,
-                              (void*)&sAddr,
-                              sACLInfo.mMask,
-                              MM_IP_ACL_MAX_MASK_STR );
-        }
-
-        IDE_TEST( iduFixedTable::buildRecord( aHeader,
-                                              aMemory,
-                                              (void *)&(sACLInfo) )
-                  != IDE_SUCCESS );
+    for ( i = 0; i < mIPACLCountWithLimit; i++ )
+    {
+        sACLInfo.mNumber = sNumber;
+        IDE_TEST( buildAccessListRecordAdd(aHeader,
+                                           aMemory,
+                                           &mIPACLInfoWithLimit[i],
+                                           &sACLInfo) != IDE_SUCCESS );
+        sNumber++;
     }
 
     sLocked = ID_FALSE;
@@ -683,7 +1091,7 @@ IDE_RC mmuAccessList::buildAccessListRecord( idvSQL              * /* aStatistic
 
     if (sLocked == ID_TRUE)
     {
-        mmuAccessList::unlock();
+        unlock();
     }
 
     return IDE_FAILURE;

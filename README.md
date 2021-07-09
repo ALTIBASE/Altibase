@@ -136,7 +136,6 @@
   make clean
   make build
 
-
 - Prepare Altibase configuration file
   cp $ALTIBASE_HOME/conf/altibase.properties.release $ALTIBASE_HOME/conf/altibase.properties 
 - Create Altibase database files

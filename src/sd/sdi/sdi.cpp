@@ -7721,6 +7721,50 @@ idBool sdi::hasShardCoordPlan( qcStatement * aStatement )
     return sRet;
 }
 
+idBool sdi::isShardDML( qcStatement * aStatement )
+{
+    qmnPlan * sPlan = NULL;
+    idBool    sRet  = ID_FALSE;
+
+    IDE_DASSERT( aStatement != NULL);
+    IDE_DASSERT( aStatement->myPlan != NULL);
+
+    sPlan = aStatement->myPlan->plan;
+
+    if ( sPlan != NULL )
+    {
+        if ( ( sPlan->type == QMN_SDEX ) ||
+             ( sPlan->type == QMN_SDIN ) )
+        {
+            sRet = ID_TRUE;
+        }
+        else
+        {
+            if ( aStatement->myPlan->mShardAnalysis != NULL )
+            {
+                if ( aStatement->myPlan->mShardAnalysis->mTopQueryFlag[ SDI_TQ_FOR_UPDATE_EXISTS ] == ID_TRUE )
+                {
+                    sRet = ID_TRUE;
+                }
+                else
+                {
+                    /* Nothing to do. */
+                }
+            }
+            else
+            {
+                /* Nothing to do. */
+            }
+        }
+    }
+    else
+    {
+        /* Nothing to do. */
+    }
+
+    return sRet;
+}
+
 void sdi::isShardSelectExists( qmnPlan * aPlan,
                                idBool  * aIsSDSEExists  )
 {

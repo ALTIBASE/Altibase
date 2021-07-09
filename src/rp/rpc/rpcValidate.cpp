@@ -2029,8 +2029,9 @@ IDE_RC rpcValidate::validateTempSync(void * aQcStatement)
 
     sRemoteHost = sParseTree->hosts;
 
-    IDE_TEST_RAISE( sRemoteHost->connOpt->connType != RP_SOCKET_TYPE_TCP, 
-                    ERR_NOT_SUPPORT_CONNECTION_TYPE )
+    // BUG-48997
+    //IDE_TEST_RAISE( sRemoteHost->connOpt->connType != RP_SOCKET_TYPE_TCP, 
+    //                ERR_NOT_SUPPORT_CONNECTION_TYPE )
 
     QCI_STR_COPY( sRemoteIP, sRemoteHost->hostIp );
     IDE_TEST_RAISE(isValidIPFormat(sRemoteIP) != ID_TRUE,

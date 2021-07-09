@@ -3572,12 +3572,13 @@ IDE_RC qdsd::executeSetNodes( qcStatement * aStatement )
                                QCI_STMT_MASK_SP,
                                sSqlStr,
                                QD_MAX_SQL_LENGTH,
-                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', NULL, INTEGER'%"ID_INT32_FMT"' ); ",
+                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"' ); ",
                                sLocalMetaInfo.mNodeName,
                                sLocalMetaInfo.mHostIP,
                                sLocalMetaInfo.mPortNo,
                                sLocalMetaInfo.mInternalHostIP,
-                               sLocalMetaInfo.mInternalPortNo,                               
+                               sLocalMetaInfo.mInternalPortNo,
+                               sLocalMetaInfo.mInternalConnType,
                                sLocalMetaInfo.mShardNodeId )
               != IDE_SUCCESS );
 
@@ -3604,12 +3605,13 @@ IDE_RC qdsd::executeSetNodes( qcStatement * aStatement )
                                             QCI_STMT_MASK_SP,
                                             sSqlStr,
                                             QD_MAX_SQL_LENGTH,
-                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', NULL, INTEGER'%"ID_INT32_FMT"' ); ",
+                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"' ); ",
                                             sLocalMetaInfo.mNodeName,
                                             sLocalMetaInfo.mHostIP,
                                             sLocalMetaInfo.mPortNo,
                                             sLocalMetaInfo.mInternalHostIP,
                                             sLocalMetaInfo.mInternalPortNo,
+                                            sLocalMetaInfo.mInternalConnType,
                                             sLocalMetaInfo.mShardNodeId )
                             != IDE_SUCCESS);
             }
@@ -3832,6 +3834,7 @@ IDE_RC qdsd::executeZookeeperJoin()
 IDE_RC qdsd::executeZookeeperDrop( qcStatement * aQcStmt )
 {
     SChar   sNodeName[SDI_NODE_NAME_MAX_SIZE + 1] = {0,};
+
     qdShardParseTree * sParseTree = (qdShardParseTree *)aQcStmt->myPlan->parseTree;
 
     if( QC_IS_NULL_NAME( sParseTree->mNodeName ) == ID_TRUE )
@@ -3984,14 +3987,28 @@ IDE_RC qdsd::executeTemporaryReplication( qcStatement * aStatement )
                                                           sSqlStr )
                   != IDE_SUCCESS );
 
-        idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
-                         "ALTER REPLICATION TEMPORARY GET TABLE "
-                         "SYS_SHARD.NODES_, SYS_SHARD.OBJECTS_, SYS_SHARD.REPLICA_SETS_, "
-                         "SYS_SHARD.SOLOS_, SYS_SHARD.CLONES_, SYS_SHARD.GLOBAL_META_INFO_, "
-                         "SYS_SHARD.RANGES_,SYS_SHARD.FAILOVER_HISTORY_ "
-                         "FROM '%s',%"ID_INT32_FMT" ",
-                         sRemoteLocalMetaInfo->mInternalRPHostIP, // internal_host_ip
-                         sRemoteLocalMetaInfo->mInternalRPPortNo ); // internal_port_no
+        if ( sCurrLocalMetaInfo.mInternalConnType == 8 ) // IB
+        {
+            idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
+                             "ALTER REPLICATION TEMPORARY GET TABLE "
+                             "SYS_SHARD.NODES_, SYS_SHARD.OBJECTS_, SYS_SHARD.REPLICA_SETS_, "
+                             "SYS_SHARD.SOLOS_, SYS_SHARD.CLONES_, SYS_SHARD.GLOBAL_META_INFO_, "
+                             "SYS_SHARD.RANGES_,SYS_SHARD.FAILOVER_HISTORY_ "
+                             "FROM '%s',%"ID_INT32_FMT" USING IB",
+                             sRemoteLocalMetaInfo->mInternalRPHostIP, // internal_host_ip
+                             sRemoteLocalMetaInfo->mInternalRPPortNo ); // internal_port_no
+        }
+        else
+        {
+            idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
+                             "ALTER REPLICATION TEMPORARY GET TABLE "
+                             "SYS_SHARD.NODES_, SYS_SHARD.OBJECTS_, SYS_SHARD.REPLICA_SETS_, "
+                             "SYS_SHARD.SOLOS_, SYS_SHARD.CLONES_, SYS_SHARD.GLOBAL_META_INFO_, "
+                             "SYS_SHARD.RANGES_,SYS_SHARD.FAILOVER_HISTORY_ "
+                             "FROM '%s',%"ID_INT32_FMT" ",
+                             sRemoteLocalMetaInfo->mInternalRPHostIP, // internal_host_ip
+                             sRemoteLocalMetaInfo->mInternalRPPortNo ); // internal_port_no
+        }
 
         IDE_TEST( sdi::shardExecTempDMLOrDCLWithNewTrans( aStatement,
                                                           sSqlStr )
@@ -11385,12 +11402,13 @@ IDE_RC qdsd::failbackFailedover( qcStatement        * aStatement,
                                               QCI_STMT_MASK_SP,
                                               sSqlStr,
                                               QD_MAX_SQL_LENGTH,
-                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', NULL, INTEGER'%"ID_INT32_FMT"' ); ",
+                               "EXEC DBMS_SHARD.SET_NODE( '"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"' ); ",
                                               sLocalMetaInfo.mNodeName,
                                               sLocalMetaInfo.mHostIP,
                                               sLocalMetaInfo.mPortNo,
                                               sLocalMetaInfo.mInternalHostIP,
                                               sLocalMetaInfo.mInternalPortNo,
+                                              sLocalMetaInfo.mInternalConnType,                                              
                                               sLocalMetaInfo.mShardNodeId )
                   != IDE_SUCCESS );
 
@@ -11417,12 +11435,13 @@ IDE_RC qdsd::failbackFailedover( qcStatement        * aStatement,
 
         /* SetNode 한걸 전노드 전파 하여야 한다. */
         idlOS::snprintf( sSqlStr, QD_MAX_SQL_LENGTH,
-                         "EXEC DBMS_SHARD.SET_NODE( VARCHAR'"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', NULL, INTEGER'%"ID_INT32_FMT"' ); ",
+                         "EXEC DBMS_SHARD.SET_NODE( VARCHAR'"QCM_SQL_STRING_SKIP_FMT"', VARCHAR'%s', INTEGER'%"ID_INT32_FMT"',VARCHAR'%s', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"', INTEGER'%"ID_INT32_FMT"' ); ",
                          sLocalMetaInfo.mNodeName,
                          sLocalMetaInfo.mHostIP,
                          sLocalMetaInfo.mPortNo,
                          sLocalMetaInfo.mInternalHostIP,
-                         sLocalMetaInfo.mInternalPortNo,                         
+                         sLocalMetaInfo.mInternalPortNo,
+                         sLocalMetaInfo.mInternalConnType,
                          sLocalMetaInfo.mShardNodeId );
 
         /* Local Node의 SetNode는 따로 수행했으므로 Exception 으로 제외한다. */

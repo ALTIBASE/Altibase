@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: qmoOneNonPlan.cpp 90978 2021-06-09 04:13:16Z donovan.seo $
+ * $Id: qmoOneNonPlan.cpp 91174 2021-07-08 04:54:09Z jayce.park $
  *
  * Description :
  *     Plan Generator
@@ -9349,7 +9349,6 @@ IDE_RC qmoOneNonPlan::makeSDEX( qcStatement      * aStatement,
 {
     qmncSDEX * sSDEX = (qmncSDEX*)aPlan;
     UInt       sDataNodeOffset = 0;
-    sdiShardAnalysis * sAnalysis       = NULL;
 
     //----------------------------------
     // 적합성 검사
@@ -9389,11 +9388,7 @@ IDE_RC qmoOneNonPlan::makeSDEX( qcStatement      * aStatement,
     }
 
     /* TASK-7219 Non-shard DML */
-    IDE_TEST( sdi::getParseTreeAnalysis( aStatement->myPlan->parseTree,
-                                         &( sAnalysis ) )
-              != IDE_SUCCESS );
-
-    if ( sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_PARTIAL_COORD_EXEC_NEEDED] == ID_TRUE )
+    if ( aShardAnalysis->mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] == ID_TRUE )
     {
         QC_SHARED_TMPLATE(aStatement)->shardExecData.partialExecType = SDI_SHARD_PARTIAL_EXEC_TYPE_COORD;
     }
@@ -9433,10 +9428,6 @@ IDE_RC qmoOneNonPlan::makeSDEX( qcStatement      * aStatement,
     qtc::dependencyClear( & sSDEX->plan.depInfo );
 
     return IDE_SUCCESS;
-
-    IDE_EXCEPTION_END;
-
-    return IDE_FAILURE;
 }
 
 IDE_RC qmoOneNonPlan::initSDIN( qcStatement   * aStatement ,

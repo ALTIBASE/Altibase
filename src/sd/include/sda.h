@@ -620,6 +620,7 @@ private:
                                   sdiKeyInfo ** aRetKeyInfo );
 
     static IDE_RC setAnalysisFlag4ParseTree( qmsParseTree * aParseTree,
+                                             ULong          aSMN,
                                              idBool         aIsSubKey );
 
     static IDE_RC appendKeyInfo( qcStatement * aStatement,

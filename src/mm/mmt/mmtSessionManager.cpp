@@ -1280,6 +1280,12 @@ void mmtSessionManager::run()
     }//while
 }
 
+/* BUG-48515 */
+idBool mmtSessionManager::isRun()
+{
+    return mRun;
+}
+
 void mmtSessionManager::stop()
 {
     mRun = ID_FALSE;
@@ -4783,3 +4789,8 @@ void mmtSessionManager::terminateAllClientAppInoType( mmcClientAppInfoType aType
     unlock();
 }
 
+/* BUG-48515 */
+iduList* mmtSessionManager::getTaskList()
+{
+    return &mTaskList;
+}

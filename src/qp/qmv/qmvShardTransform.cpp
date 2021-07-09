@@ -8213,7 +8213,8 @@ IDE_RC qmvShardTransform::makeShardForInsert( qcStatement      * aStatement,
 
             if ( sIsFullRange == ID_TRUE )
             {
-                sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+                sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+                aStatement->myPlan->mShardAnalysis->mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
                 sCanPartialCoordExec = ID_TRUE;
             }
             else
@@ -8223,7 +8224,8 @@ IDE_RC qmvShardTransform::makeShardForInsert( qcStatement      * aStatement,
         }
         else
         {
-            sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+            sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+            aStatement->myPlan->mShardAnalysis->mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
             sCanPartialCoordExec = ID_TRUE;
         }
     }
@@ -8286,7 +8288,8 @@ IDE_RC qmvShardTransform::makeShardForUptDel( qcStatement      * aStatement,
     aStatement->myPlan->parseTree->optimize = qmo::optimizeShardDML;
     aStatement->myPlan->parseTree->execute  = qmx::executeShardDML;
 
-    sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+    sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
+    aStatement->myPlan->mShardAnalysis->mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] = ID_TRUE;
     
     return IDE_SUCCESS;
 

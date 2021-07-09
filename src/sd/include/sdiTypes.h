@@ -16,7 +16,7 @@
  
 
 /***********************************************************************
- * $Id: sdiTypes.h 91046 2021-06-23 06:06:13Z jake.jang $
+ * $Id: sdiTypes.h 91173 2021-07-08 04:26:30Z jayce.park $
  *
  * Description : SD 및 타 모듈에서도 사용하는 자료구조 정의
  *
@@ -331,9 +331,10 @@ typedef enum
 
 typedef enum
 {
-    SDI_TQ_SUB_KEY_EXISTS           = 0, /* Sub-shard key를 가진 table이 참조 됨                     */
-    SDI_PARTIAL_COORD_EXEC_NEEDED   = 1, /* TASK-7219 Non-shard DML */
-    SDI_ANALYSIS_TOP_QUERY_FLAG_MAX = 2, /* TOP QUERY SET 까지 전달이 필요한 경우, 이 위로 추가한다. */
+    SDI_TQ_SUB_KEY_EXISTS            = 0, /* Sub-shard key를 가진 table이 참조 됨                     */
+    SDI_TQ_PARTIAL_COORD_EXEC_NEEDED = 1, /* TASK-7219 Non-shard DML */
+    SDI_TQ_FOR_UPDATE_EXISTS         = 2, /* BUG-49088 */
+    SDI_ANALYSIS_TOP_QUERY_FLAG_MAX  = 3, /* TOP QUERY SET 까지 전달이 필요한 경우, 이 위로 추가한다. */
 } sdiTopQueryFlag;
 
 #define SDI_INIT_ANALYSIS_CUR_QUERY_FLAG( _dst_ )  \
@@ -350,10 +351,11 @@ typedef enum
     _dst_[ SDI_SQ_UNSUPPORTED ]        = ID_FALSE; \
 }
 
-#define SDI_INIT_ANALYSIS_TOP_QUERY_FLAG( _dst_ )  \
-{                                                  \
-    _dst_[ SDI_TQ_SUB_KEY_EXISTS ]     = ID_FALSE; \
-    _dst_[ SDI_PARTIAL_COORD_EXEC_NEEDED ]  = ID_FALSE; \
+#define SDI_INIT_ANALYSIS_TOP_QUERY_FLAG( _dst_ )          \
+{                                                          \
+    _dst_[ SDI_TQ_SUB_KEY_EXISTS ]             = ID_FALSE; \
+    _dst_[ SDI_TQ_PARTIAL_COORD_EXEC_NEEDED ]  = ID_FALSE; \
+    _dst_[ SDI_TQ_FOR_UPDATE_EXISTS ]          = ID_FALSE; \
 }
 
 #define SDI_INIT_ANALYSIS_FLAG( _dst_ )                          \

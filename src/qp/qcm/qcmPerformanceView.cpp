@@ -15,7 +15,7 @@
  */
  
 /***********************************************************************
- * $Id: qcmPerformanceView.cpp 90425 2021-04-01 09:55:38Z justin.kwon $
+ * $Id: qcmPerformanceView.cpp 91159 2021-07-07 06:47:36Z jinku.ko $
  *
  * Description :
  *
@@ -1502,13 +1502,16 @@ SChar * gQcmPerformanceViews[] =
                 "                               'UNKNOWN') QUERY_REWRITE_ENABLE "
             "FROM X$INTERNAL_SESSION A",
     /* PROJ-2624 [기능성] MM - 유연한 access_list 관리방법 제공 */
+    /* BUG-48515 LIMIT(최대 접속 혀용개수), CONNECTED(현재 접속 개수) 추가*/
     (SChar*)"CREATE VIEW V$ACCESS_LIST "
-                "( ID, OPERATION, ADDRESS, MASK )"
+                "( ID, OPERATION, ADDRESS, MASK, LIMIT, CONNECTED )"
             "AS SELECT "
                 "A.ID ,"
                 "DECODE(A.OPERATION, 0, 'DENY', 1, 'PERMIT', NULL) ,"
                 "A.ADDRESS ,"
-                "A.MASK "
+                "A.MASK ,"
+                "A.LIMIT ,"
+                "A.CONNECTED "
             "FROM X$ACCESS_LIST A",
     /* PROJ-2626 Snapshot Export */
     (SChar *)"CREATE VIEW V$SNAPSHOT "

@@ -24,6 +24,7 @@
 #include <mmtThreadManager.h>
 #include <mmuProperty.h>
 #include <mmm.h>
+#include <mmuAccessList.h>
 
 #if defined(WRS_VXWORKS) 
 # define MMT_SERVICE_THREAD_MIN_POLL_TIMEOUT 100000
@@ -1425,6 +1426,9 @@ void mmtServiceThread::terminateTask(mmcTask *aTask)
     // Service Thread의 Dispatcher에서 뺀 link를 다시 넣지 않도록 하기 위해
     // 현재 rollback중인 task를 NULL로 설정한다.
     ID_SERIAL_BEGIN(setTask(NULL));
+
+    /* BUG-48515 최대 접속 사이즈가 설정된 access_list 가 있을경우 현재 접속 개수를 차감한다. */
+    (void) mmuAccessList::disconnect(aTask);
 
     //PROJ-1677
     ID_SERIAL_EXEC(IDE_ASSERT(cmiRemoveLinkFromDispatcher(mDispatcher,

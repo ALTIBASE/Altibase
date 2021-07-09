@@ -439,6 +439,15 @@ IDE_RC sda::makeAndSetAnalyzeInfo( qcStatement      * aStatement,
         /* Nothing to do. */
     }
 
+    /* BUG-49088
+     * FOR UPDATE 에 대한 식별이 필요하여
+     * 분석 결과에 mTopQueryFlag를 저장한다.
+     */
+    IDE_TEST( mergeFlag( sAnalysisFlag.mTopQueryFlag,
+                         sAnalysisResult->mTopQueryFlag,
+                         SDI_ANALYSIS_TOP_QUERY_FLAG_MAX )
+              != IDE_SUCCESS );
+
     if ( aAnalyzeInfo != NULL )
     {
         *aAnalyzeInfo = sAnalysisResult;
@@ -1815,6 +1824,7 @@ IDE_RC sda::analyzeParseTree( qcStatement * aStatement,
     // Check nonShardReason for parseTree
     //------------------------------------------
     IDE_TEST( setAnalysisFlag4ParseTree( sParseTree,
+                                         aSMN,
                                          aIsSubKey )
               != IDE_SUCCESS );
 
@@ -6768,12 +6778,14 @@ IDE_RC sda::getSameKey4Set( sdiKeyInfo  * aKeyInfo,
 }
 
 IDE_RC sda::setAnalysisFlag4ParseTree( qmsParseTree * aParseTree,
+                                       ULong          aSMN,
                                        idBool         aIsSubKey )
 {
     sdiShardAnalysis * sShardAnalysis  = NULL;
     idBool             sSkipLimitCheck = ID_FALSE;
     idBool             sIsOneNodeQuery = ID_FALSE;
     UInt               sDistKeyCount   = 0;
+    sdiObjectInfo    * sShardObjInfo   = NULL;
 
     if ( aIsSubKey == ID_FALSE )
     {
@@ -6847,6 +6859,54 @@ IDE_RC sda::setAnalysisFlag4ParseTree( qmsParseTree * aParseTree,
         if ( aParseTree->loopNode != NULL )
         {
             sShardAnalysis->mAnalysisFlag.mNonShardFlag[ SDI_NODE_TO_NODE_LOOP_EXISTS ] = ID_TRUE;
+        }
+        else
+        {
+            /* Nothing to do. */
+        }
+    }
+    else
+    {
+        /* Nothing to do. */
+    }
+
+
+    /* BUG-49088
+     * TOP QUERY FLAG 에 SELECT FOR UPDATE 사용 여부를 설정한다.
+     * Local table(non-shard table) records 에 대한 SELECT FOR UPDATE 의 경우에는 설정하지 않고,
+     * Shard table 에 대한 SELECT FOR UPDATE 에 대해서만 설정한다.
+     *
+     *     아래 사항을 고려하여 최소한의 검사로 판단한다.
+     *         1. View 가 simple view merging 되지 않고 남아 있는 경우, for update 가 동작하지 않는다. (BUGBUG)
+     *         2. [ERR-31066 : DISTINCT, UNION, UNION ALL, INTERSECT and MINUS are not allowed in SELECT FOR UPDATE statements.]
+     *         3. [ERR-31235 : JOIN is not allowed in SELECT FOR UPDATE statements.]
+     */
+    if ( aParseTree->forUpdate != NULL )
+    {
+        if ( aParseTree->querySet->SFWGH != NULL )
+        {
+            // TABLE 하나만 확인하면 된다.
+            //   [ERR-31235 : JOIN is not allowed in SELECT FOR UPDATE statements.]
+            //   View 가 simple view merging 되지 않고 남아 있는 경우, for update 가 동작하지 않는다. (BUGBUG)
+            if ( aParseTree->querySet->SFWGH->from->tableRef->mShardObjInfo != NULL )
+            {
+                sdi::getShardObjInfoForSMN( aSMN,
+                                            aParseTree->querySet->SFWGH->from->tableRef->mShardObjInfo,
+                                            &( sShardObjInfo ) );
+
+                if ( sShardObjInfo != NULL )
+                {
+                    sShardAnalysis->mAnalysisFlag.mTopQueryFlag[ SDI_TQ_FOR_UPDATE_EXISTS ] = ID_TRUE;
+                }
+                else
+                {
+                    /* Nothing to do. */
+                }
+            }
+            else
+            {
+                /* Nothing to do. */
+            }
         }
         else
         {

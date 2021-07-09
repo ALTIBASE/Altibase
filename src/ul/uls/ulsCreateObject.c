@@ -746,7 +746,7 @@ ulsCreateMultiPoint2D( ulsHandle               * aHandle,
                                               aNumPoints,
                                               (stdGeometryType  **) aPoints,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
 
         case STD_POINT_2D_TYPE:
@@ -759,7 +759,7 @@ ulsCreateMultiPoint2D( ulsHandle               * aHandle,
                                               aNumPoints,
                                               (stdGeometryType  **) aPoints,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
 
         default:
@@ -816,7 +816,7 @@ ulsCreateMultiLineString2D( ulsHandle                   * aHandle,
                                               aNumLineStrings,
                                               (stdGeometryType  **) aLineStrings,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
 
         case STD_LINESTRING_2D_TYPE:
@@ -829,7 +829,7 @@ ulsCreateMultiLineString2D( ulsHandle                   * aHandle,
                                               aNumLineStrings,
                                               (stdGeometryType  **) aLineStrings,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
 
         default:
@@ -886,7 +886,7 @@ ulsCreateMultiPolygon2D( ulsHandle               * aHandle,
                                               aNumPolygons,
                                               (stdGeometryType  **) aPolygons,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
             
         case STD_POLYGON_2D_TYPE:
@@ -899,7 +899,7 @@ ulsCreateMultiPolygon2D( ulsHandle               * aHandle,
                                               aNumPolygons,
                                               (stdGeometryType  **) aPolygons,
                                               aObjLength )
-                      != ACI_SUCCESS );
+                      != ACS_SUCCESS );
             break;
             
         default:
@@ -955,7 +955,7 @@ ulsCreateGeomCollection2D( ulsHandle               * aHandle,
                                           aNumGeometries,
                                           (stdGeometryType  **) aGeometries,
                                           aObjLength )
-                  != ACI_SUCCESS );
+                  != ACS_SUCCESS );
     }
     else
     {
@@ -968,7 +968,7 @@ ulsCreateGeomCollection2D( ulsHandle               * aHandle,
                                           aNumGeometries,
                                           (stdGeometryType  **) aGeometries,
                                           aObjLength )
-                  != ACI_SUCCESS );
+                  != ACS_SUCCESS );
     }
     
     return ACS_SUCCESS;

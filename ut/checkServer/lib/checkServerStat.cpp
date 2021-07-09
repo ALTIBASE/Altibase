@@ -21,7 +21,6 @@
 #include <smrDef.h>
 #include <checkServerStat.h>
 #include <mmErrorCode.h>
-#include <mmuProperty.h>
 
 
 /**
@@ -202,7 +201,8 @@ IDE_RC CheckServerStat::checkServerRunning(idBool *aRunningFlag)
     PDL_SOCKET          sFd = PDL_INVALID_SOCKET;
     UInt                sPortNo = 0;
 
-    sPortNo = mmuProperty::getPortNo();
+    /* BUG-48515 mmuProperty제거하고 idp 사용하도록 수정함. */
+    IDE_ASSERT( idp::read("PORT_NO", &sPortNo) == IDE_SUCCESS );
 
     /* ---------------------------
      *  [1] Server Running 검사 : FileLock

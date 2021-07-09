@@ -583,7 +583,6 @@ static IDE_RC answerShardAnalyzeResult( cmiProtocolContext *aProtocolContext,
 
     /* TASK-7219 Non-shard DML */
     UChar                 sIsPartialExecNeeded = 0;
-    sdiShardAnalysis    * sAnalysis            = NULL;
 
     IDE_TEST( qci::getShardAnalyzeInfo( sQciStmt, &sAnalyzeInfo )
               != IDE_SUCCESS );
@@ -611,27 +610,16 @@ static IDE_RC answerShardAnalyzeResult( cmiProtocolContext *aProtocolContext,
     }
 
     /* TASK-7219 Non-shard DML */
-    IDE_TEST( sdi::getParseTreeAnalysis( sQciStmt->statement.myPlan->parseTree,
-                                         &( sAnalysis ) )
-              != IDE_SUCCESS );
-
-    if ( sAnalysis != NULL )
+    if ( sAnalyzeInfo->mTopQueryFlag[SDI_TQ_PARTIAL_COORD_EXEC_NEEDED] == ID_TRUE )
     {
-        if ( sAnalysis->mAnalysisFlag.mTopQueryFlag[SDI_PARTIAL_COORD_EXEC_NEEDED] == ID_TRUE )
-        {
-            sIsPartialExecNeeded = 1;
+        sIsPartialExecNeeded = 1;
 
-            /*
-             * Partial shard execution이 필요한 non-shard DML인 경우,
-             * Client-side로 수행 시키기 위해
-             * Shard query로 설정한다.
-             */
-            sIsShardQuery = 1;
-        }
-        else
-        {
-            /* Nothing to do. */
-        }
+        /*
+         * Partial shard execution이 필요한 non-shard DML인 경우,
+         * Client-side로 수행 시키기 위해
+         * Shard query로 설정한다.
+         */
+        sIsShardQuery = 1;
     }
     else
     {

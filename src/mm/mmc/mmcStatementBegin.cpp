@@ -400,14 +400,25 @@ IDE_RC mmcStatement::beginDML(mmcStatement *aStmt)
      */
     if ( sdi::hasShardCoordPlan( &((aStmt->getQciStmt())->statement) ) == ID_TRUE )
     {
-        /*
-         * TASK-7219 Non-shard DML
-         * Partial execution DML(non-shard DML) 의 경우 data nodes에서 DML 이 실제 수행되기 때문에
-         * Update cursor를 사용하게 되므로, SMI_STATEMENT_SELF_TRUE 를 설정하지 않는다.
+        /* BUG-49088
+         * SELECT FOR UPDATE 를 포함하여 Shard coordinator 를 통해 수행되는
+         * DML statement 에 대해서는 SMI_STATEMENT_SELF_TRUE로 설정한다.
          */
-        if ( sdi::isPartialCoordinator( &((aStmt->getQciStmt())->statement) ) == ID_FALSE )
+        if ( sdi::isShardDML( &( ( aStmt->getQciStmt() )->statement ) ) == ID_TRUE )
         {
-            sFlag |= SMI_STATEMENT_SELF_TRUE;
+            /*
+             * TASK-7219 Non-shard DML
+             * Partial execution DML(non-shard DML) 의 경우 data nodes에서 DML 이 실제 수행되기 때문에
+             * Update cursor를 사용하게 되므로, SMI_STATEMENT_SELF_TRUE 를 설정하지 않는다.
+             */
+            if ( sdi::isPartialCoordinator( &((aStmt->getQciStmt())->statement) ) == ID_FALSE )
+            {
+                sFlag |= SMI_STATEMENT_SELF_TRUE;
+            }
+            else
+            {
+                /* Nothing to do. */
+            }
         }
         else
         {
